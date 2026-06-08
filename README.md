@@ -185,6 +185,8 @@ MIT License — see [LICENSE](LICENSE).
 
 ## Acknowledgments
 
-I am deeply grateful to Professor Manolis Kellis, the Mantis team, and my classmates from the Generative AI course (January 5, 2026) for many stimulating intellectual exchanges. Through this course, I gained a strong conceptual grounding in research ethics and the personal confidence to pursue this work. Any errors of interpretation are my own.
+I am deeply grateful to Professor Manolis Kellis, the Mantis team, and my classmates from the Generative AI course (January 5, 2026) for many stimulating intellectual exchanges. Through this course, I gained a strong conceptual grounding in research ethics and the personal confidence to pursue this work.
+
+I also thank the TMLR reviewers and action editors for their voluntary and rigorous engagement. Their feedback was instrumental in expanding this work from a focused Pythia mechanistic interpretability study into a cross-architecture analysis spanning seven models across five architectures — with discriminant validity controls, causal ablations, and few-shot unlockability experiments that substantially strengthened the empirical grounding. Any errors of interpretation are my own.
 
 This work also builds directly on and extends prior behavioral analysis of accessibility knowledge in Pythia models by Trisha Salas (Salas, 2026), whose exploratory work on February 1, 2026 motivated the choice of accessibility concepts as the case study for this paper. That work established that accessibility concepts such as *"screen reader"* and *"alt text"* emerge behaviorally at different rates across model scales. The present study extends this line of inquiry by shifting from **behavioral evaluation** to **mechanistic analysis**, introducing **EB\*** as an attention-based binding metric to probe *how* and *when* these concepts emerge internally during training, and how their causal role changes with scale.
