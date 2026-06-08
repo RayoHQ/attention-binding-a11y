@@ -1,0 +1,2181 @@
+\documentclass[10pt]{article} % For LaTeX2e
+\usepackage[accepted]{tmlr}
+% If accepted, instead use the following line for the camera-ready submission:
+%\usepackage[accepted]{tmlr}
+% To de-anonymize and remove mentions to TMLR (for example for posting to preprint servers), instead use the following:
+%\usepackage[preprint]{tmlr}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{orcidlink}
+\usepackage{url}
+\usepackage{tikz-cd}
+\usepackage{multicol}
+\usepackage{float}
+\usepackage{placeins}
+\usepackage{longtable}
+\graphicspath{{figures/}{attention-binding-a11y/paper/figures/}{attention-binding-a11y/figures/}}
+
+\title{Attention-Head Binding as a Term-Conditioned Mechanistic Marker of Accessibility Concept Emergence in Language Models}
+
+% Authors must not appear in the submitted version. They should be hidden
+% as long as the tmlr package is used without the [accepted] or [preprint] options.
+% Non-anonymous submissions will be rejected without review.
+
+\author{\name Khanh-Dung Tran\,\orcidlink{0009-0000-0614-2454} \email dung@therayo.com \\
+      \addr Rayo Lab Pte. Ltd., Singapore}
+
+\def\month{06}  % Insert correct month for camera-ready version
+\def\year{2026} % Insert correct year for camera-ready version
+\def\openreview{\url{https://openreview.net/forum?id=QG7mfCy9mu}} % Insert correct link to OpenReview for camera-ready version
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Assessing when language models develop specific capabilities remains challenging, as behavioral evaluations are expensive and internal representations are opaque.
+We introduce \emph{attention-head binding} (EB$^*$), a lightweight mechanistic metric that tracks how attention heads bind multi-token technical terms, such as accessibility concepts (``screen reader,'' ``alt text''), into coherent units during training.
+Using \textbf{seven models} across \textbf{five architectures}, including Pythia (160M, 1B, 2.8B), OLMo-1B, CRFM GPT-2 Small (5 seeds), SmolLM3-3B, and Qwen2.5-1.5B, we evaluate on \textbf{41 canonical accessibility terms} (N=205 prompts) and the 9-term pilot set, reporting five empirical findings.
+Discriminant validity validates EB$^*$ against token co-occurrence baselines (nonsense 0.26 $\to$ real terms 0.74, all $p<0.001$, $d=1.2$--$2.9$).
+The relationship between binding and behavior shifts markedly over the course of training. Early in training, the two are tightly coupled ($\rho=+0.57$, $p<0.001$). Later, this pattern reverses into a decoupled regime ($\rho=-0.20$, $p=0.01$).
+\textbf{Cross-architecture replication} confirms C1-B: OLMo-1B achieves 90\% EB$^*$-leads ($p<0.0001$), CRFM 72.7\% ($p<<0.001$).
+This gives rise to a two-factor model. First, a parameter threshold around 1B parameters controls how deeply decoupling occurs. Second, a training-step threshold near 300K steps determines when the temporal ordering between binding and behavior emerges (C1/C4).
+High-binding/mid-accuracy checkpoints contain unlockable latent knowledge, yielding few-shot gains up to 61 percentage points (a 183\% relative improvement), replicated at 18--37 points across six of seven models (CRFM shows weak unlockability at +7.6 pp due to undertraining). Modern models such as SmolLM3 and Qwen show headroom compression: they reach the same absolute ceiling near 0.72, but display smaller nominal gains because their zero-shot baselines are already high (C3).
+Causal ablation reveals opposite regimes across scales. At 160M, binding heads remain necessary for performance. Removing them impairs accuracy by 16.7 percentage points. At 2.8B, these same heads have become functionally superseded; ablating them improves performance by 33.3 points.
+Cross-architecture C5 reveals three distinct patterns. OLMo and Qwen achieve near-perfect recognition ceiling with negligible ablation effects. SmolLM3 operates in a distributed regime with negative specificity (--0.043). CRFM displays striking initialization sensitivity, with four of five random seeds showing coupled behavior and one seed exhibiting suppressor dynamics (C5).
+Beyond establishing attention binding as a diagnostic for concept emergence, these findings demonstrate a qualitative shift in how mechanistic structures map to behavioral competence across model scales, a phenomenon we term the \emph{binding-behavior decoupling effect}.
+Code: \url{https://github.com/RayoHQ/attention-binding-a11y}
+\end{abstract}
+
+\section{Introduction}
+
+Understanding how language models acquire and represent domain-specific knowledge is a central challenge in mechanistic interpretability \citep{olah2020zoom,elhage2021transformer}.
+While behavioral evaluations reveal \emph{what} a model knows, they provide little to no insight into \emph{how} and \emph{when} internal representations form during training.
+This gap is particularly consequential for socially critical domains such as web accessibility, where models must reason about technical standards (WCAG), assistive technologies (screen readers), and semantic markup (ARIA) \citep{w3c2018wcag}.
+
+Large language models (LLMs) exhibit \emph{emergent capabilities} that appear abruptly with scale rather than improving smoothly, and debate continues over whether such ``emergence'' reflects genuine dynamical transitions or merely measurement artifacts \citep{wei2022emergent,schaeffer2023emergence}.
+In a broader sense, performance in many regimes follows predictable scaling trends with model size and data \citep{kaplan2020scaling}, which motivates mechanistic signals that can anticipate capability changes without exhaustive evaluation.
+In practice, this presents a prediction problem: without expensive behavioral evaluation, practitioners cannot reliably determine which models will exhibit particular competencies.
+
+Recent research has investigated mechanistic early-warning signals.
+Sparse autoencoders (SAEs) can extract features and track their formation across training \citep{bricken2023monosemanticity}, but require auxiliary model training.
+Consistency-based methods like CCS probe for latent knowledge via activation-space structure \citep{burns2022discovering}, yet are not designed to track concept formation dynamics over checkpoints.
+Circuit tracing approaches, on the other hand, identify subnetworks supporting specific capabilities \citep{olsson2022context}, but have primarily been demonstrated on algorithmic rather than domain-specific semantic tasks.
+
+A gap therefore remains: \emph{how can we detect when a model has learned to treat a specific multi-token concept as a coherent unit, validated through checkpoint-level dynamics and causal intervention, before it reliably exhibits behavioral competence?}
+
+We bridge this gap by proposing \emph{attention-head binding} (EB$^*$), a mechanistic metric that quantifies how strongly individual attention heads bind the constituent tokens of multi-token technical terms (such as ``screen reader,'' ``skip link,'' and ``alt text'') into coherent conceptual units.
+Our central hypothesis is that this binding signal serves as an early, internal marker of concept acquisition that precedes externally observable behavioral competence.
+
+\begin{sloppypar}
+This builds on three lines of work.
+\textbf{(i) Multi-token phrase processing:} multi-token phrases can fail to receive stable, holistic representations in transformers, with information localized to particular layer regions \citep{miletic2024semantics,haviv2023understanding}.  Our metrics operationalize this by measuring whether attention routes information among span tokens (e.g., ``screen'' and ``reader'').
+\textbf{(ii) Attention as mechanism:} addressing the ``attention is not explanation'' critique, which demonstrated that attention weights can mislead \citep{jain2019attention,wiegreffe2019attention}, we treat binding scores as hypotheses requiring causal validation \citep{olsson2022context}.
+\textbf{(iii) Checkpoint dynamics:} using the Pythia suite's fine-grained training analysis \citep{biderman2023pythia}, we test whether binding precedes behavior and characterize non-monotonic dynamics.
+\end{sloppypar}
+
+We study seven models spanning five architectures: Pythia at three scales (160M, 1B, and 2.8B), OLMo-1B, CRFM GPT-2 Small trained with five random seeds, SmolLM3-3B, and Qwen2.5-1.5B. We evaluate on the 9-term pilot set for high-contrast demonstration and the 41-term canonical register (N=205 recognition prompts) for term-agnostic validation.
+All lifecycle (C1) and decoupling (C4) analyses use two complementary variants: C1-A/C4-A (9-term between-term Spearman) and C1-B/C4-B (41-term within-term temporal precedence).
+Our contributions are organized around five empirical claims. A sixth claim concerning representational stability to prompt perturbations (C2) remains for future work (see Section~5.4).\footnote{Claim C2 concerning stability to prompt perturbations was deprioritized for this study due to computational constraints; preliminary analysis suggests the effect is secondary to the binding-behavior dynamics reported here.}
+
+\begin{enumerate}
+  \item \textbf{Discriminant validity.} EB$^*$ is validated against token co-occurrence baselines through iterative control design. Redesigned genuine-nonsense controls (v2) establish a clear gradient ($d=1.2$--$2.9$, all $p<0.001$). Domain-adjacent and wrong-domain controls (v3/v4) reveal scale-dependent discrimination failure at 160M and partial discrimination at 1B, characterizing EB$^*$'s precision limits (Section~4.1).
+  \item \textbf{Lead-lag emergence (C1).} The relationship between binding and behavior shifts markedly over the course of training. Early in training, the two are tightly coupled ($\rho=+0.57$, $p<0.001$). Later, this pattern reverses into a decoupled regime ($\rho=-0.20$, $p=0.01$).
+  \textbf{C1-A (9-term pilot)} demonstrates the lifecycle with high-contrast variance across Pythia scales.
+  \textbf{C1-B (41-term canonical)} provides cross-architecture replication confirming the pattern. OLMo-1B shows 90\% EB$^*$-leads ($p<0.0001$), CRFM 72.7\% ($p<<0.001$), while Pythia-160M maintains coupling at 7\% (Section~4.3).
+  \item \textbf{Scale-dependent decoupling (C4).} This gives rise to a two-factor model. First, a parameter threshold near 1B parameters controls how deeply decoupling occurs. Second, a training-step threshold around 300K steps determines when the temporal ordering between binding and behavior emerges.
+  C4-A (9-term) shows the decoupling pattern at 1B. C4-B (41-term) replicates this across architectures, with SmolLM3 achieving the deepest decoupling ($\rho_\text{late}=-0.281$) despite its 3B parameters (Section~4.4).
+  \item \textbf{Unlockable latent knowledge (C3).} High-binding/mid-accuracy checkpoints yield large few-shot gains when EB$^*>0.6$.
+  \textbf{9-term pilot} shows gains up to 61 percentage points (a 183\% improvement), replicated at approximately 30 points across 99 prompts.
+  \textbf{41-term cross-architecture} results show Pythia-1B with the strongest effect (+37.0 pp). Modern models such as SmolLM3 and Qwen cluster at +18--19 pp, exhibiting headroom compression. They reach the same absolute ceiling near 0.72, but show smaller nominal gains because their zero-shot baselines are already high (Section~4.5).
+  \item \textbf{Cross-scale causal regimes (C5).} Ablating high-binding heads reveals opposite effects across scales. At 160M, removing these heads impairs performance by 16.7 percentage points, confirming their necessity. At 2.8B, the same intervention improves performance by 33.3 points, indicating the heads have become functionally superseded.
+  \textbf{Cross-architecture canonical 41} confirms these patterns across diverse models. OLMo and Qwen achieve near-perfect recognition ceiling, rendering ablation effects negligible. SmolLM3 operates in a distributed regime with negative specificity (--0.043). CRFM displays striking initialization sensitivity. Four of five random seeds show coupled behavior, but one seed exhibits suppressor dynamics (Section~4.6).
+\end{enumerate}
+
+These findings establish attention binding as a diagnostic for concept emergence and reveal that the structure-behavior relationship transforms qualitatively across scales, a phenomenon we term the \emph{binding-behavior decoupling effect}.
+
+The remainder of this paper is organized as follows.
+Section~2 reviews related work and positions EB$^*$ against existing approaches.
+Section~3 describes methods.
+Section~4 reports results: discriminant validity (Section~4.1), dataset expansion and robustness (Section~4.2), coupling-decoupling lifecycle (Section~4.3), scale-dependent decoupling (Section~4.4), unlockability (Section~4.5), and cross-scale ablation (Section~4.6).
+Section~5 discusses implications, limitations, and future directions.
+Section~6 concludes.
+
+\section{Related Work}
+
+\subsection{Positioning: Why Mechanistic Analysis of Multi-Token Concepts?}
+
+Three primary approaches exist for studying concept knowledge in language models, each with distinct limitations for multi-token technical terms.
+
+\textbf{(1) Behavioral probing} \citep{meng2022locating,olsson2022context} measures what models know through task performance.
+While effective for detecting knowledge presence, behavioral probes provide no insight into \emph{when} knowledge forms during training, \emph{how} it is mechanistically represented, or \emph{why} models with similar behavioral scores may differ in robustness.
+Recent mechanistic work reveals that internal representations reorganize across distinct phases during pretraining. They progress from noisy token-level features through emergent concept-level features to convergent stable representations. Notably, directional drift continues even after features are semantically formed \citep{xu2025tracking}.
+Our discriminant validity experiments (Section~4.1) show that behavioral competence can exist with low binding (``aria attribute'': 76\% behavioral accuracy, 42\% EB$^*$), demonstrating that behavioral probes conflate multiple representational strategies.
+
+\textbf{(2) Token co-occurrence metrics} such as pointwise mutual information and $n$-gram frequency measure statistical association in training data.
+Our control experiments demonstrate these metrics fail to distinguish meaningful conceptual binding from arbitrary token adjacency: initial controls using plausible bigrams such as ``keyboard mouse'' and ``open source'' showed EB$^*=0.72$--$0.82$, statistically indistinguishable from real accessibility terms ($p>0.05$).
+Only genuinely nonsensical controls established discriminant validity (Section~4.1), revealing that EB$^*$ captures representational structure beyond corpus statistics.
+
+\textbf{(3) Single-token concept analysis} \citep{burns2022discovering,cunningham2023sparse} examines how models represent individual concepts through probing and sparse autoencoders.
+Multi-token technical terms present a fundamentally different challenge: the model must learn to bind constituents (``screen'' + ``reader'') into a coherent unit distinct from other valid compositions (``screen door,'' ``PDF reader'').
+Recent work shows that LLMs perform detokenization to reconstruct multi-token words \citep{kaplan2025from}, but this process does not explain how conceptual meaning emerges from compositional binding across training.
+
+\textbf{What our approach enables.}
+Tracking attention binding longitudinally enables us to detect concept acquisition before it manifests behaviorally. This approach exposes representational reorganizations that remain invisible to behavioral probes, such as the coupling-decoupling transition, while facilitating direct causal validation of binding via targeted head ablations across different model scales.
+
+\subsection{Mechanistic Interpretability and Attention}
+
+Mechanistic interpretability seeks to reverse-engineer neural networks into human-understandable components \citep{olah2020zoom,elhage2021transformer}.
+Within transformers, attention heads serve as key functional units: induction heads support in-context learning \citep{olsson2022context}, while specialized heads perform distinct functional roles \citep{voita2019analyzing}.
+
+However, the ``attention is not explanation'' critique demonstrated that attention weights can mislead as feature-importance indicators \citep{jain2019attention,wiegreffe2019attention}.
+Accordingly, we treat attention-binding scores as mechanistic hypotheses requiring causal validation \citep{olsson2022context}, not as explanatory features but as entry points for intervention studies.
+
+Our work extends this line by identifying attention heads that bind multi-token concepts, using binding strength as a \emph{developmental marker} that tracks formation dynamics across training rather than as a static feature.
+
+\paragraph{Attention as compositional binding.}
+Recent theoretical work interprets self-attention as implementing vector-symbolic binding operations \citep{dhayalkar2025attention}, where queries and keys define role spaces, values encode fillers, and attention weights perform soft unbinding.
+While this perspective provides a principled algebraic framework for understanding transformer reasoning, our work offers complementary empirical validation. We track how binding structure develops during training and correlates with behavioral competence. This reveals developmental dynamics that static architectural interpretations cannot capture.
+
+\paragraph{Sparse autoencoders and monosemanticity.}
+An alternative approach uses sparse autoencoders (SAEs) to decompose neural activations into interpretable monosemantic features \citep{bricken2023monosemanticity,templeton2024monosemanticity}.
+Our approach differs in focus: instead of decomposing activations into atomic features, we track compositional binding of multi-token concepts through attention patterns.
+These approaches are complementary: SAEs identify what features exist, while attention binding reveals how multi-token concepts are compositionally organized and how this organization evolves during training.
+
+\subsection{Multi-Word Expression Processing}
+
+Recent studies highlight that transformers often represent multi-token phrases and technical terms inconsistently, with information localized to particular layer regions \citep{miletic2024semantics,haviv2023understanding}.
+\citet{miletic2024semantics} demonstrate that these models handle the semantics of multiword expressions unevenly, frequently relying on memorization in lieu of true compositional understanding.
+Similarly, \citet{haviv2023understanding} examine idioms as a classic example of memorized multi-token sequences, uncovering layer-specific effects that align with staged recall processes. Their findings suggest underlying mechanisms that may extend to how transformers process a wider range of multiword expressions.
+
+To explore this further, we evaluate whether models route attention flow to bind token spans (such as ``screen reader'') into coherent conceptual units. Our metrics operationalize this by tracking whether this coherence is localized to specific layers, ultimately assessing its causal role in downstream task performance.
+
+\subsection{Concept Emergence and Training Dynamics}
+
+Research on knowledge emergence during training has gained traction through checkpointed analyses.
+The Pythia suite \citep{biderman2023pythia}, with its public intermediate checkpoints, has made it possible to conduct detailed longitudinal studies.
+Prior work examines factual knowledge emergence \citep{swayamdipta2020dataset}, reasoning abilities \citep{wei2022emergent}, and syntactic competence \citep{duan2025syntax} during training.
+
+In contrast, our contribution introduces a novel approach by tracking a \emph{term-conditioned mechanistic signal}: attention binding in parallel with behavioral competence.
+This method uncovers a more nuanced relationship between internal model structure and external capability: depending on model scale, internal structure can precede, decouple from, or even antagonize external capability. These insights provide finer-grained diagnostics than traditional global emergence curves.
+
+\paragraph{Relationship to grokking.}
+The coupling-decoupling transition we observe shares conceptual similarities with ``grokking'' \citep{power2022grokking} in terms of sudden generalization after prolonged memorization in algorithmic tasks.
+However, grokking describes \emph{behavioral} transitions (from memorization to generalization), while we observe \emph{mechanistic} reorganization (from binding-dependent to distributed representations) that can occur independently of behavioral performance.
+Our finding that binding can decouple from behavior at larger scales suggests these are distinct phenomena: grokking reflects behavioral phase transitions, while coupling-decoupling reflects architectural reorganization that may enable, coincide with, or follow behavioral improvements depending on model capacity.
+
+\paragraph{Cross-architecture training dynamics.}
+Studies of knowledge emergence during training have examined:
+\textbf{(1) Single model families with SAEs} \citep{xu2025tracking}: Xu et al.\ (2025) use SAE-Track on Pythia-deduped (160M--1.4B) to study feature evolution across $\sim$154 checkpoints, but their analysis is confined to a single model family with abstract semantic categories rather than specific multi-token technical terms.
+\textbf{(2) Multiple architectures but single domain} \citep{duan2025syntax}: Duan et al.\ (2025) study syntactic specialization across GPT-2-small and Pythia (70M--1.4B) using the Syntactic Sensitivity Index, but focus exclusively on syntax (BLiMP phenomena), not accessibility concepts or multi-token term formation.
+\textbf{(3) Final-checkpoint scaling curves} \citep{wei2022emergent}: Wei et al.\ (2022) analyze emergent abilities across LaMDA, GPT-3, Gopher, Chinchilla, and PaLM, but examine only final checkpoints without analyzing training dynamics.
+\textbf{(4) Fine-tuning instance diagnosis} \citep{swayamdipta2020dataset}: Swayamdipta et al.\ (2020) use training dynamics to map dataset difficulty for BERT-base, but at the task-instance level, not concept-formation level.
+
+\textbf{None} of these works track \textbf{specific multi-token concept formation across diverse architectures with training checkpoints}, nor do they test whether mechanistic developmental patterns generalize across tokenizers, training corpora, or architectural families.
+Our replication across five architectures fills this gap. We examine OLMo trained on the Dolma corpus with a different tokenizer, CRFM GPT-2 on The Pile with five random seeds, SmolLM3 using the LLaMA-3 architecture trained on 2.6T tokens, and Qwen with GQA architecture trained on 18T tokens.
+The emerging two-factor model suggests universal constraints on how distributed representations supersede localized binding structure. In this model, a parameter threshold near 1B parameters governs decoupling depth, while a training-step threshold around 300K steps governs temporal ordering. This aligns with scaling law predictions \citep{kaplan2020scaling}.
+
+\paragraph{Attention entropy as a measurement tool.}
+Recent work has used attention entropy to characterize attention patterns as focused versus diffuse \citep{clark2019what}.
+\citet{zhang-etal-2025-attention} demonstrate that in parallel context encoding settings, irregularly high attention entropy correlates with performance degradation (Pearson $r\approx0.95$), with elevated entropy signaling representational confusion that impairs information retrieval.
+Our analysis (Section~4.2) builds on this foundation: binding measurement requires low-entropy focused attention, and when attention becomes uniformly diffuse, EB$^*$ correctly reports absent binding structure rather than measurement failure, validating the metric's construct validity.
+
+\subsection{Latent Capability Detection}
+
+Several methods exist for identifying latent structure in models before it becomes behaviorally evident.
+For instance, activation-space consistency techniques such as CCS \citep{burns2022discovering} assess knowledge by analyzing geometric structure.
+Circuit-tracking pinpoints functional subnetworks \citep{wang2023interpretability}, while sparse autoencoders (SAEs) isolate and track the emergence of features \citep{bricken2023monosemanticity,cunningham2023sparse}.
+
+Our differentiator is \emph{span-local, term-conditioned mechanistic structure}: we ask whether a model has learned to treat a \emph{specific} multi-token term as a coherent unit, confirmed through causal intervention.
+Our binding metric is lightweight and hypothesis-driven, avoiding the need for auxiliary model training required by SAEs.
+And unlike CCS, which probes global representations, we track concept-specific formation dynamics.
+To ensure robustness, we treat SAE-based analyses as natural competitors and include them as baselines where feasible.
+
+\subsection{Causal Analysis of Attention Heads}
+
+The causal importance of individual heads is often assessed through head ablation where attention outputs are zeroed out \citep{voita2019analyzing,michel2019sixteen}.
+Recent refinements include activation patching \citep{meng2022locating,wang2023interpretability}, path patching \citep{goldowsky2023localizing}, and learned causal gating \citep{nam2025causal}.
+A recent survey \citep{kadem2026interpreting} traces the evolution from visualization to intervention-based causal interpretability, highlighting trade-offs between intervention granularity and computational cost.
+
+In this study, we adopt zero-ablation of attention patterns for transparency and reproducibility.
+Despite its straightforward nature, this method uncovers meaningful structural patterns across model scales.
+
+\subsection{Accessibility in NLP}
+
+The Web Content Accessibility Guidelines (WCAG) establish essential criteria for creating usable digital experiences \citep{w3c2018wcag}.
+Despite the growing role of NLP systems in generating web content, accessibility-aware language model evaluation remains limited.
+Prior work has explored bias in assistive technology descriptions \citep{trewin2019considerations}, and \citet{salas2026testing} conducted preliminary behavioral assessments of accessibility knowledge in Pythia models.
+
+\textbf{Prior work on accessibility terms.}
+To our knowledge, no prior work has systematically analyzed the full lexicon of accessibility-engineering concepts in language models.
+\citet{salas2026testing} conducted the only prior behavioral study, evaluating five terms (\textit{screen reader}, \textit{skip link}, \textit{alt text}, \textit{WCAG}, and \textit{ARIA}) across Pythia model sizes ranging from 160M to 6.9B parameters.
+Their findings show emergence patterns (e.g., \textit{screen reader} emerges at 2.8B, \textit{ARIA} never emerges), but this work is \textbf{behavioral only} (generative testing), with no mechanistic analysis, no cross-architecture validation, and no systematic coverage of the full WCAG lexicon.
+
+More recently, \citet{panda2025accesseval} introduced AccessEval, a benchmark evaluating disability bias across 6 domains and 9 disability categories (2,106 queries).
+However, AccessEval uses no fixed technical-accessibility lexicon. Instead, it operates on broad disability categories such as vision impairments, hearing impairments, and mobility impairments, as opposed to specific accessibility-engineering terms like \textit{alt text}, \textit{ARIA}, or \textit{focus indicator}.
+It measures bias in disability-related responses, not accessibility concept knowledge.
+
+\textbf{What our study contributes.}
+We introduce the first \textbf{41-term canonical register} of accessibility concepts spanning WCAG 2.1/2.2 Level A/AA requirements (Section~3.2).
+This represents an \textbf{8.2$\times$ expansion} over the only prior accessibility-term study (Salas, 2026), and the first mechanistic (attention-binding) analysis of how these multi-token concepts form during training across diverse architectures.
+
+\section{Methods}
+
+\subsection{Models and Training Checkpoints}
+
+We use the Pythia model suite \citep{biderman2023pythia} (160M, 1B, 2.8B) across eight checkpoints (step 0, 15K, 30K, 60K, 90K, 120K, 140K, 143K).
+To test generalization, we replicate across four additional architectures:
+\textbf{OLMo-1B} (AllenAI, Dolma-trained), \textbf{CRFM GPT-2 Small} (117M, 5 random seeds, trained on The Pile \citep{gao2020pile}), \textbf{SmolLM3-3B} (HuggingFaceTB, LLaMA-3), and \textbf{Qwen2.5-1.5B} (Alibaba, 18T tokens).
+Qwen lacks intermediate checkpoints, so lifecycle analysis (C1/C4) is structurally impossible; only single-checkpoint analyses (C3, C5) are reported.
+Models are loaded via TransformerLens \citep{nanda2023transformerlens}.
+
+\subsection{Accessibility Terms and Evaluation Prompts}
+
+We use three complementary datasets:
+\textbf{Pilot 3-term set.} We use ``screen reader,'' ``skip link,'' and ``alt text'' to establish core lifecycle patterns.
+\textbf{9-term expanded set.} We add ``color contrast,'' ``focus indicator,'' ``heading structure,'' ``aria attribute,'' ``tab order,'' and ``form validation'' to the pilot set. This provides 432 model-checkpoint-term observations.
+\textbf{Canonical 41-term register.} We evaluate on 41 accessibility terms with 205 recognition prompts. This serves as the single source of truth for cross-architecture C5 and C1-B/C4-B experiments.
+The 9-term pilot provides high-contrast demonstration; the 41-term register provides term-agnostic validity checks at scale.
+For the robustness validation (Section~4.2.2), we expand to 11 prompts per term (99 total) with systematic format diversity across 10 task types.
+All evaluation prompts are stored as JSONL in \texttt{data/prompts/}: the canonical register in \texttt{canonical\_45terms.jsonl} (41 unique terms, 205 recognition + generation prompts), pilot in \texttt{pilot\_terms.jsonl}, expanded 9-term in \texttt{expanded\_terms.jsonl}, robustness set in \texttt{expanded\_terms\_100.jsonl}, and controls in \texttt{control\_terms\_v{[2,3,4]}.jsonl}.
+
+\paragraph{Recognition (6 prompts)} consist of four-choice multiple-choice prompts testing factual knowledge.
+We score these via log-probability ranking. For each candidate string $c$, we compute the average log probability across tokens following the lm-eval-harness approach \citep{gao2021lmharness} for base models.
+
+\paragraph{Generation (6 prompts)} involve open-ended completions to evaluate conceptual understanding.
+We score responses using a keyword rubric. We count word-boundary matches against curated keywords per term, normalize by a threshold of three keywords, and apply contradiction penalties. This yields a score in the range $[0,1]$.
+
+The \textbf{behavioral score} for each checkpoint is the average across all 12 prompts:
+\[
+\mathrm{Beh}=\tfrac{1}{2}(\mathrm{RecAcc}+\mathrm{GenScore}).
+\]
+
+\subsection{Attention-Head Binding Metrics}
+
+\paragraph{Attention convention.}
+We write $A_{\ell,h}[i,j]$ for the attention weight in layer~$\ell$, head~$h$ from query position~$i$ to key position~$j$.
+Thus $A_{\ell,h}[i,j]$ with $i>j$ represents a later token attending to an earlier token (later-to-earlier attention flow).
+
+\paragraph{Binding Strength Index (BSI).}
+For a term span occupying token positions $\{s_1,\dots,s_k\}$, the BSI at layer~$\ell$, head~$h$ measures the average later-to-earlier attention within the span \citep{clark2019what,haviv2023understanding,miletic2024semantics}:
+\[
+\mathrm{BSI}_{\ell,h} = \frac{1}{|\mathcal{P}|} \sum_{(i,j)\in \mathcal{P}} A_{\ell,h}[s_i,s_j],
+\]
+where $\mathcal{P}=\{(i,j): s_i>s_j\}$ is the set of later-to-earlier token pairs.
+While the concept of inspecting intra-span attention patterns has precedents in multi-word expression analysis, the specific directed formulation and its application to tracking concept emergence are novel to this work.
+
+\paragraph{Excess Binding (EB).}
+Excess Binding at layer $\ell$ captures how much the best head exceeds the layer average:
+\[
+\mathrm{EB}_{\ell} = \max_h \mathrm{BSI}_{\ell,h} - \frac{1}{H}\sum_{h=1}^{H} \mathrm{BSI}_{\ell,h},
+\]
+where $H$ is the number of attention heads in the layer.
+
+\paragraph{Aggregate binding (EB$^*$).}
+Our primary binding metric is the maximum EB across layers:
+\[
+\mathrm{EB}^* = \max_{\ell} \mathrm{EB}_{\ell}.
+\]
+We report mean EB$^*$ across all 12 prompts per checkpoint.
+
+\paragraph{Term span identification.}
+Term tokens are located via exact subsequence matching of BPE token IDs \citep{sennrich2016neural}, with fallback to character-level search for aliased forms (e.g., ``alternative text'' for ``alt text'').
+Multiple encoding variants are tried (bare, space-prefixed, capitalized, title-cased) to handle BPE variability.
+
+\paragraph{Memory-efficient extraction.}
+Attention patterns are extracted layer-by-layer using TransformerLens \texttt{run\_with\_cache} with \texttt{stop\_at\_layer} to limit memory.
+
+\subsection{Experimental Protocols by Claim}
+
+\paragraph{C1: Lead-lag emergence (two complementary variants).}
+
+\textbf{C1-A / C4-A (between-term Spearman):} Applied to the 9-term pilot set (selected to maximise EB$^*$ variance across terms). Computes $\text{Spearman}(\Delta \text{EB}^*, \Delta \text{Beh})$ across 9 terms at each checkpoint.
+
+\textbf{C1-B / C4-B (within-term temporal precedence):} Applied to all 41 terms. For each term independently, tests whether $\text{EB}^*(t, k)$ predicts $\text{Beh}(t, k+1)$ using 1-step forward lag correlation following the cross-lagged panel model approach \citep{hamaker2015critique}. The population-level claim (EB$^*$ leads in $>50\%$ of terms) is tested with a binomial test \citep{wilson1927probable}. This requires no between-term EB$^*$ variance and generalises to any term set.
+
+\paragraph{C3: Unlockable latent knowledge (two protocols).}
+Few-shot prompting can elicit latent capabilities without gradient-based fine-tuning \citep{brown2020language}.
+
+\textbf{9-term unified protocol:} For Pythia and early cross-architecture runs (OLMo, CRFM), uses term-specific multi-sentence exemplars (N=54 generation prompts).
+
+\textbf{41-term canonical protocol:} For all cross-architecture models (OLMo, CRFM, SmolLM3, Qwen), uses the canonical prompt register (N=246 generation prompts) as the primary source for cross-architecture comparisons.
+
+\textbf{Headroom compression.} Models with high zero-shot baselines (ZS$\gtrsim$0.50) show lower nominal $\Delta$ even when genuine coupling is present, because the few-shot ceiling is shared across models.
+
+\paragraph{C4: Decoupling detection (two complementary variants).}
+
+C4-A (9-term pilot) splits lifecycle into early/late windows and reports sign change in $\rho$.
+
+C4-B (41 terms) computes per-term Spearman $\rho$ in early/late windows independently and reports fraction showing strict decoupling ($\rho_\text{early} > 0 \land \rho_\text{late} \leq 0$).
+
+These patterns suggest a two-factor model. First, a parameter threshold near 1B parameters controls decoupling depth. Second, a training-step threshold around 300K steps governs temporal ordering.
+
+\paragraph{C5: Causal validation via head ablation.}
+
+We perform targeted zero-ablation by setting attention patterns $A_{\ell,h}$ to zero for selected heads via TransformerLens hooks. We compare four conditions: no ablation, top-$k$ heads by BSI, $k$ random heads (averaged over five trials), and bottom-$k$ heads.
+We use $k=4$.
+
+Results are reported from the \textbf{canonical 41-term dataset (N=205 recognition prompts)} as primary evidence; smaller term sets serve as internal replication.
+Specificity = $\Delta\text{Acc}_\text{top} - \bar{\Delta}\text{Acc}_\text{rand}$.
+
+\subsection{Implementation Details and Reproducibility}
+
+\paragraph{Computational Setup.}
+All experiments were conducted using a single NVIDIA GPU (15 GB VRAM; T4/A10G class) using the Lightning AI cloud environment. Generation tasks employed greedy decoding with temperature 0.
+Per-checkpoint binding extraction and behavioral evaluation (205 prompts) requires approximately 2--5 GPU-minutes for a 1B-scale model and 1--2 minutes for sub-200M models; the largest model (2.8B) requires approximately 10--15 GPU-minutes per checkpoint. Full lifecycle analysis (8 checkpoints) for a single term requires approximately 15--40 GPU-minutes depending on scale. The complete cross-architecture validation (81 checkpoints across 7 models for 41 terms) requires approximately 4--6 GPU-hours for binding and behavioral evaluation alone; including C3 few-shot unlockability, C5 causal ablation, discriminant validity controls, and analysis scripts, the total reproducible effort is approximately 20--25 GPU-hours with parallel execution (wall-clock time approximately 3--7 days). This represents the final consolidated pipeline; the full project R&D effort (pilot development Feb 6--8, 100-prompt expansion and discriminant validity Apr 3--5, cross-architecture wave Apr 13--20, plus debugging iterations and failed experiments) required approximately 40--60 GPU-hours in total.
+
+\paragraph{Data schema.}
+Each experimental run is identified by a compound key $(\text{model},\text{checkpoint},T,\text{prompt\_id},\text{seed})$.
+Results are stored as JSONL format with an explicit prompt-template version.
+
+\paragraph{Scope limitations.}
+The current scope does not include testing C2 (stability to prompt perturbations), which is reserved for future research.
+
+\paragraph{Pilot gate criteria.}
+Before proceeding with full implementation, we established three requirements. First, Spearman $r>0.3$ with consistent sign across at least two-thirds of terms. Second, a non-empty high-EB$^*$/low-accuracy quadrant. Third, computationally tractable causal identification.
+
+\section{Results}
+
+This section reports results from experiments using seven models across five architectures, including Pythia (160M, 1B, 2.8B), OLMo-1B, CRFM GPT-2 Small (5 seeds), SmolLM3-3B, and Qwen2.5-1.5B.
+We evaluate on both the 9-term pilot set and the canonical 41-term register (N=205 recognition prompts).
+We report EB$^*$ (maximum effective binding) and behavioral accuracy (mean of recognition and generation scores).
+All lifecycle (C1) and decoupling (C4) analyses use two complementary variants: C1-A/C4-A (9-term between-term Spearman) and C1-B/C4-B (41-term within-term temporal precedence).
+
+\subsection{Discriminant Validity: EB$^*$ vs.\ Token Co-occurrence}
+
+Before analyzing binding-behavior relationships, we validate that EB$^*$ measures meaningful conceptual binding rather than superficial token co-occurrence.
+We compare real accessibility terms against carefully designed control terms that should elicit low binding if EB$^*$ captures semantic coherence.
+
+\paragraph{Control design iteration.}
+Initial controls (v1) included backwards shuffles (``reader screen''), cross-term swaps (``screen link''), semantic field terms (``keyboard mouse'', ``header footer''), frequency-matched bigrams (``open source''), and random pairs (``elephant database'').
+These failed to discriminate: mean EB$^*$ for controls was 0.72--0.82, statistically indistinguishable from real terms (0.77, all $p>0.05$).
+Web-scale training data (the Pile) contains nearly every plausible-sounding bigram: terms like ``keyboard mouse'' and ``open source'' are legitimate technical concepts, and even backwards shuffles like ``reader screen'' appear in contexts such as ``PDF reader screen.''
+
+\paragraph{Redesigned controls (v2).}
+We created three categories ensuring genuine nonsense:
+\textbf{Rare token pairs:} domain-incongruent combinations never co-occurring (``pterodactyl altimeter,'' ``velvet compiler,'' ``glacier transistor'').
+\textbf{Cross-language mixing:} breaking monolingual training patterns (``\'ecran reader,'' ``skip enlace,'' ``texto alt'').
+\textbf{True nonsense:} phonotactically valid pseudowords (``zqx plarf,'' ``glib thrang,'' ``blorf quendel'').
+
+\paragraph{Discriminant validity gradient.}
+The v2 controls establish clear discriminant validity:
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{|l|c|l|c|}
+\hline
+\textbf{Control Group} & \textbf{Mean EB$^*$} & \textbf{vs.\ Real (0.74)} & \textbf{Cohen's $d$} \\
+\hline
+True nonsense & 0.26 & $\Delta=+0.48$, $p<0.001$*** & 2.9 (massive) \\
+Cross-language & 0.41 & $\Delta=+0.33$, $p<0.001$*** & 1.8 (very large) \\
+Rare pairs & 0.50 & $\Delta=+0.24$, $p<0.001$*** & 1.2 (large) \\
+\textbf{Real terms} & \textbf{0.74} & --- & --- \\
+\hline
+\end{tabular}
+\caption{V2 discriminant validity gradient. All comparisons significant ($p<0.001$) across all model scales and checkpoints.}
+\label{tab:v2_gradient}
+\end{table}
+
+The gradient confirms that EB$^*$ tracks meaningful conceptual coherence rather than mere token adjacency frequency. Nonsense terms score 0.26, cross-language translations 0.41, and rare word pairs 0.50, while real accessibility terms reach 0.74 (Table~\ref{tab:v2_gradient}).
+
+\paragraph{Domain-adjacent and wrong-domain controls (v3/v4).}
+To directly address reviewer concerns about semantic near-miss discrimination, we created two additional control sets:
+(1) \textbf{domain-adjacent terms} sharing one token with real terms but replacing the other with plausible vocabulary (e.g., ``heading tag,'' ``aria role''); and
+(2) \textbf{wrong-domain terms} pairing accessibility tokens with programming or hardware vocabulary (e.g., ``alt function,'' ``screen printer,'' ``color syntax'').
+
+Web validation revealed that three v3 terms are accidentally valid accessibility concepts (``heading tag'' is standard HTML, ``aria role'' is a legitimate ARIA attribute, ``alt image'' synonymously denotes alt text).
+These accidentally valid terms showed EB$^*$ comparable to real terms (160M: 0.81, 1B: 0.70 vs.\ real 0.74), confirming they are not true controls.
+Excluding them, we focus on the 10--12 semantically irrelevant terms:
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{|l|c|c|l|}
+\hline
+\textbf{Scale} & \textbf{Irrelevant Controls EB$^*$} & \textbf{Real Terms} & \textbf{Interpretation} \\
+\hline
+160M step120k & 0.861 & 0.74 & $\Delta=+0.121$; \textbf{cannot discriminate} \\
+1B step143k & 0.639 & 0.74 & $\Delta=-0.101$; \textbf{partial discrimination} \\
+\hline
+\end{tabular}
+\caption{V3/V4 stratified analysis (truly irrelevant terms only). At 160M, EB$^*$ cannot discriminate domain-crossing pairs; at 1B, partial discrimination emerges.}
+\label{tab:v3v4_stratified}
+\end{table}
+
+At 160M, even semantically irrelevant terms like ``screen printer'' (0.916) and ``color syntax'' (0.917) exceed the real term baseline due to web corpus co-occurrence (Table~\ref{tab:v3v4_stratified}). At 1B, nine of ten irrelevant terms fall below baseline. For example, ``screen editor'' drops from 0.895 to 0.556, and ``skip button'' from 0.916 to 0.572. One boundary case persists: ``landmark class'' scores 0.826 due to CSS class naming conventions.
+
+\paragraph{Reviewer's specific example.}
+The term ``alt function'' (programming, not accessibility) performs as predicted: 160M EB$^*=0.717$ (comparable to real ``alt text''), 1B EB$^*=0.640$ (lower but elevated).
+This confirms EB$^*$ at smaller scales binds frequent token pairs regardless of semantic correctness or domain alignment.
+
+\paragraph{Boundary case: ``aria attribute.''}
+One real term shows anomalously low EB$^*$ (0.42, between cross-language controls and rare pairs).
+Despite this, it achieves high behavioral competence (0.76 at trained checkpoints) and generates correct technical definitions.
+This dissociation reveals that EB$^*$ measures a specific mechanistic pattern: token-pair attention binding that is distinct from general semantic knowledge. Models can represent concepts through distributed mechanisms that bypass strong inter-token attention, which explains why high behavioral competence can coexist with low binding scores (Figure~\ref{fig:discriminant}).
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/discriminant_validity_controls.pdf}
+\caption{Discriminant validity gradient. Panel~A: mean EB$^*$ across V2 control types, real terms, and V3/V4 irrelevant controls at both scales. Panel~B: scale-dependent discrimination trajectory showing $+0.121$ failure at 160M transitioning to $-0.101$ partial discrimination at 1B.}
+\label{fig:discriminant}
+\end{figure}
+
+\paragraph{Limitation: EB$^*$ conflates co-occurrence with conceptual binding.}
+Controls v1, v3, and v4 converge on a fundamental constraint where EB$^*$ cannot discriminate between genuine concepts and corpus-frequent token combinations at smaller scales.
+This is inherent to attention mechanisms: models can only bind tokens encountered together during training, regardless of semantic validity.
+At larger scales (1B+), partial discrimination emerges but remains incomplete.
+However, EB$^*$ remains mechanistically informative because it (1) predicts behavioral competence across training (Section~4.3), (2) identifies causally important heads through ablation (Section~4.6), (3) reveals representational reorganization invisible to behavioral probes (Section~4.4), and (4) high-variance cases show attention entropy dissociations from behavior (Section~4.2).
+
+\subsection{Dataset Expansion and Robustness Validation}
+
+To address potential concerns about sample size and prompt-specificity, we conducted two systematic expansions beyond the initial 3-term, 12-prompt pilot.
+
+\subsubsection{Term Expansion: 3 $\to$ 9 Accessibility Concepts}
+
+We expanded from 3 to \textbf{9 accessibility terms}, selecting multi-token technical concepts spanning different accessibility domains (see Section~3.2 for the full list).
+This provides \textbf{432 model-checkpoint-term observations} (9 terms $\times$ 3 models $\times$ 8 checkpoints $\times$ 2 prompts), substantially strengthening statistical power.
+
+The coupling-decoupling pattern (Section~4.3) holds across all 9 terms.
+Per-term correlations reveal meaningful heterogeneity: 6/9 terms show significant binding-behavior correlations ($p<0.05$), with effect sizes from moderate ($\rho=+0.38$) to strong ($\rho=+0.68$).
+
+\subsubsection{Prompt Robustness: 12 $\to$ 99 Prompts}
+
+We further expanded to \textbf{99 prompts} (11 per term) with systematic format diversity across 10 categories: recognition (multiple choice, true/false, best practice, contrast) and generation (definition, user benefit, implementation, failure case, audit context, tutorial context).
+
+Computing coefficient of variation (CV) across the 11 prompts for each term ($n=1{,}296$ binding observations):
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{|l|c|l|}
+\hline
+\textbf{Metric} & \textbf{Value} & \textbf{Interpretation} \\
+\hline
+Mean prompt CV & 0.144 & Low variance across prompt wordings \\
+Terms with CV $<0.05$ & 7/9 (78\%) & Very stable \\
+Terms with CV $>0.30$ & 2/9 (22\%) & Explainable variance (see below) \\
+\hline
+\end{tabular}
+\caption{Prompt robustness summary across 99 prompts. Mean CV = 0.144 indicates EB$^*$ is robust to prompt wording.}
+\label{tab:prompt_robustness}
+\end{table}
+
+The lifecycle pattern replicates on the 99-prompt dataset (generation tasks only; Table~\ref{tab:prompt_robustness}, Figure~\ref{fig:lifecycle_36v100}):
+early checkpoints $\rho=+0.235$, $p<0.001$; mid checkpoints (60--90K) $\rho=+0.270$, $p<0.001$ (peak coupling); late checkpoints $\rho=+0.115$, $p=0.011$; $\Delta\rho_{\text{early}\to\text{late}}=-0.120$.
+The weaker magnitudes reflect increased format diversity and generation-only tasks (Figure~\ref{fig:format_diversity}); the pattern remains highly significant and replicates across all 10 format types.
+
+\textbf{High-variance terms.}
+Note: the 99-prompt robustness validation used a partially overlapping term set that includes ``landmark region'' and ``keyboard navigation'' in place of ``tab order'' and ``form validation'' from the main 36-prompt dataset, providing independent (non-circular) validation of the lifecycle claim.
+The two high-CV terms from the 99-prompt dataset (``aria attribute,'' CV=0.493; ``landmark region,'' CV=0.639) both show one specific prompt (gen\_002: sentence-final structure ``For screen reader users, [term]'') yielding EB$^*=0.000$ across all checkpoints, while other prompts (also using plural forms) show normal binding (0.31--0.71; Figure~\ref{fig:aria_case}).
+These failure modes are theoretically informative: they confirm EB$^*$ captures compositional structure at the token level.
+When attention is uniformly diffuse (high entropy), EB$^*$ correctly reports zero binding, validating the metric's construct validity \citep{zhang-etal-2025-attention,clark2019what} (Figure~\ref{fig:robustness}).
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/prompt_robustness_heatmap.pdf}
+\caption{Prompt robustness heatmap. Mean EB$^*$ across 9 terms $\times$ 6 generation prompt formats, sorted by CV. 7/9 terms show CV $<0.05$, demonstrating low sensitivity to prompt wording.}
+\label{fig:robustness}
+\end{figure}
+
+\textbf{Output length confound.}
+Spearman correlation between EB$^*$ and prompt template length: $\rho=0.036$, $p=0.199$, $n=1{,}296$ (not significant).
+EB$^*$ is not systematically influenced by prompt length; 8/9 terms show $|\rho|<0.1$.
+
+\subsubsection{Robustness to Sampling Parameters}
+
+We repeated generation evaluations on 6 representative checkpoints using three temperature settings (0.0, 0.3, 0.7) with 5 random seeds per temperature (90 conditions total; see Appendix~\ref{tab:temperature_robustness}).
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{|l|l|c|c|c|c|c|}
+\hline
+\textbf{Model} & \textbf{Checkpoint} & \textbf{Overall Std} & \textbf{T=0.0 Std} & \textbf{T=0.3 Std} & \textbf{T=0.7 Std} \\
+\hline
+160M & step 15K & 0.334 & 0.333 & 0.330 & 0.321 \\
+160M & step 120K & 0.307 & 0.314 & 0.292 & 0.291 \\
+1B & step 15K & 0.379 & 0.368 & 0.394 & 0.351 \\
+1B & step 143K & 0.310 & 0.124 & 0.294 & 0.328 \\
+2.8B & step 15K & 0.302 & 0.229 & 0.304 & 0.348 \\
+2.8B & step 143K & 0.211 & 0.167 & 0.185 & 0.260 \\
+\hline
+\end{tabular}
+\caption{Generation score variability across temperature and random seeds. Variability decreases with training maturity; greedy decoding (T=0.0) is most stable at trained checkpoints.}
+\label{tab:temperature_main}
+\end{table}
+
+Our temperature robustness analysis reveals three core trends (Table~\ref{tab:temperature_main}). First, performance variability steadily decreases as checkpoints mature across all scales (for example, dropping from 0.334 to 0.307 at 160M). Second, greedy decoding ($T=0.0$) consistently yields the highest stability at trained checkpoints compared to higher temperatures. Finally, the correlation between EB$^*$ and behavioral variability is non-significant ($\rho = -0.314, p = 0.544$), confirming that output stability is a function of overall training maturity rather than localized binding strength.
+Since EB$^*$ is computed from deterministic attention patterns, these results validate that lifecycle patterns are not artifacts of stochastic behavioral evaluation.
+
+\subsection{Coupling-Decoupling Lifecycle: Lead-Lag Emergence (C1)}
+
+Across the expanded dataset of nine accessibility terms, we observe a striking phase transition in the binding-behavior relationship.
+
+\paragraph{Phase 1: Early coupling (steps 15--30K).}
+Pooling across all three model scales, early-training checkpoints show robust positive correlation between binding and behavior ($\rho=+0.57$, $p<0.001$, $n=108$ term-checkpoint pairs).
+This represents a large effect size and survives Bonferroni correction ($p<0.001/3=0.0003$).
+
+\paragraph{Phase 2: Late decoupling (steps 120--143K).}
+At trained checkpoints, this relationship reverses: the correlation becomes significantly negative ($\rho=-0.20$, $p=0.01$, $n=162$ pairs), indicating representational mechanisms have fundamentally reorganized.
+
+\textbf{Scale-dependent lifecycle trajectories:}
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{|l|c|c|c|l|}
+\hline
+\textbf{Model} & \textbf{Early $\rho$} & \textbf{Late $\rho$} & \textbf{Checkpoint $\rho$} & \textbf{Pattern} \\
+\hline
+160M & $+0.52$ & $-0.13$ (ns) & $+0.93$*** & Maintains coupling \\
+1B & $+0.61$ & $-0.31$*** & $-0.29$ (ns) & Strong decoupling \\
+2.8B & $+0.58$ & $-0.28$*** & $+0.29$ (ns) & Strong decoupling \\
+\hline
+\end{tabular}
+\caption{Scale-dependent lifecycle. Early $\rho$ = pooled steps 15--30K; Late $\rho$ = pooled steps 120--143K; Checkpoint $\rho$ = across all 8 checkpoint means.}
+\label{tab:scale_lifecycle}
+\end{table}
+
+Figure~\ref{fig:lifecycle} and Table~\ref{tab:scale_lifecycle} visualize the coupling-decoupling lifecycle across training.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/correlation_lifecycle.pdf}
+\caption{Coupling-decoupling lifecycle. $\rho(\mathrm{EB}^*, \mathrm{Beh})$ at each checkpoint across training for all three model scales. Positive early values trend toward zero or negative territory; transition dynamics are scale-dependent.}
+\label{fig:lifecycle}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/phase_transition_scatter.pdf}
+\caption{Phase transition scatter plots. Six panels (3 scales $\times$ 2 phases) show EB$^*$ vs.\ behavioral score at the term level. Early checkpoints (blue, steps 15--30K) show positive correlations across all scales. Late checkpoints (red, steps 120--143K) show decoupling at 1B and 2.8B (negative/flat correlations) while 160M maintains coupling. Dashed diagonal represents perfect correlation.}
+\label{fig:phasetransition}
+\end{figure}
+
+The phase transition is evident in scatter plot analysis (Figure~\ref{fig:phasetransition}).
+
+\paragraph{Per-term heterogeneity.}
+Not all terms follow the aggregate pattern ($n=48$ checkpoint pairs per term, 3 models $\times$ 8 steps $\times$ 2 prompts):
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{|l|c|c|l|}
+\hline
+\textbf{Term} & \textbf{$\rho$} & \textbf{$p$} & \textbf{Tier} \\
+\hline
+color contrast & $+0.68$ & $<0.001$*** & High coupling \\
+focus indicator & $+0.68$ & $<0.001$*** & High coupling \\
+heading structure & $+0.67$ & $<0.001$*** & High coupling \\
+tab order & $+0.48$ & $0.008$** & Moderate \\
+skip link & $+0.40$ & $0.031$* & Moderate \\
+alt text & $+0.38$ & $0.042$* & Moderate \\
+screen reader & $+0.30$ & $0.111$ (ns) & Low/no coupling \\
+form validation & $+0.34$ & $0.072$ (ns) & Low/no coupling \\
+aria attribute & $+0.07$ & $0.714$ (ns) & Low/no coupling \\
+\hline
+\end{tabular}
+\caption{Per-term binding-behavior correlations across all 48 checkpoint pairs. ``Aria attribute'' ($\rho=+0.07$) achieves high behavioral competence (0.76) despite near-zero correlation, demonstrating EB$^*$ captures a specific attention mechanism.}
+\label{tab:perterm_heterogeneity}
+\end{table}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/term_heterogeneity_2b8.pdf}
+\caption{Term-level heterogeneity at 2.8B scale. Left: EB$^*$ trajectories for all 9 terms. Right: behavioral performance trajectories. Divergent patterns confirm binding and behavior develop independently for different concepts.}
+\label{fig:heterogeneity}
+\end{figure}
+
+Figure~\ref{fig:heterogeneity} and Table~\ref{tab:perterm_heterogeneity} show per-term trajectories at 2.8B scale, confirming binding and behavior develop independently for different concepts.
+
+\paragraph{Pythia-160M: gradual co-emergence.}
+EB$^*$ rises from 0.16 at step 0 to 0.83 at step 143K, with behavioral accuracy lagging behind (0.08 to 0.50).
+The association between EB$^*$ and behavioral accuracy is significant (Spearman $r=0.333$, $p=0.0009$), with binding typically leading behavior by 1--2 checkpoint intervals.
+
+\paragraph{Why binding precedes behavior.}
+The temporal precedence of binding reflects a developmental hierarchy: multi-token coherence (measured by EB$^*$) is a \emph{necessary but not sufficient} condition for behavioral competence.
+Attention heads must first learn to bind term constituents into stable representations (EB$^*$ rise), but additional mechanisms, such as context integration, appropriate output routing, and suppression of competing associations, must mature before this knowledge can be reliably expressed in behavioral tasks.
+This explains why high EB$^*$ predicts future behavioral improvement but does not guarantee current performance.
+
+\paragraph{Pythia-2.8B: rapid synchronized emergence.}
+Both EB$^*$ and behavioral accuracy spike sharply between step 0 and step 15K and then plateau.
+The association is strong (Spearman $r=0.338$, $p=0.0008$), suggesting that larger models develop binding structure and behavioral competence in tandem.
+
+\paragraph{Pythia-1B: early binding saturation.}
+EB$^*$ saturates by step 15K (0.65) and remains flat through step 143K, while behavioral accuracy continues improving from 0.61 to 0.81.
+This creates a decoupled regime where binding structure is present but behavioral competence continues to change.
+
+\paragraph{Scale-dependent warning periods.}
+The lead-lag interval varies dramatically with model scale.
+At 160M, EB$^*$ reaches threshold levels (0.6+) by step 15K, while behavioral competence lags 15K--45K steps behind, providing substantial early warning.
+At 2.8B, binding and behavior emerge nearly simultaneously (both spike at step 15K), suggesting that larger models develop the necessary downstream mechanisms in parallel with binding formation.
+The 1B model represents an intermediate regime: binding saturates early (step 15K) but behavior continues improving through step 143K, yielding a prolonged decoupled period where EB$^*$ is high but behavior is still maturing.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|c|c|l|}
+\hline
+\textbf{Model} & \textbf{Spearman $r$} & \textbf{$p$-value} & \textbf{Pattern} \\
+\hline
+160M & 0.333 & 0.0009*** & Gradual lead-lag \\
+1B & 0.166 & 0.107 (ns) & Early saturation \\
+2.8B & 0.338 & 0.0008*** & Rapid synchronized \\
+\hline
+\end{tabular}
+\caption{Correlation between EB$^*$ and behavioral accuracy across model scales. $p$-values from exact permutation tests (10{,}000 shuffles); asymptotic approximations are unreliable with $n=8$ checkpoints. Permutation tests were two-sided and conducted over checkpoint-level rank associations.}
+\label{tab:ebstar_behavior_corr}
+\end{table}
+
+\subsubsection{C1-B: 41-Term Cross-Architecture Replication}
+
+The within-term temporal precedence test (C1-B) applied to all 41 terms strongly confirms C1 across architectures:
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+\textbf{Model} & \textbf{N terms} & \textbf{EB$^*$ leads} & \textbf{Lead\%} & \textbf{Binomial $p$} \\
+\hline
+Pythia-160M & 41 & 3/41 & 7\% & 1.000 \\
+Pythia-1B & 41 & 30/41 & 73.2\% & \textbf{0.0022} \\
+Pythia-2.8B & 34 & 27/34 & 79.4\% & \textbf{0.0004} \\
+OLMo-1B & 40 & 36/40 & \textbf{90.0\%} & $\mathbf{<0.0001}$ \\
+CRFM (mean 5 seeds) & 41 & 149/205 & 72.7\% & $\mathbf{<<0.001}$ \\
+SmolLM3-3B & 41 & 21/41 & 51.2\% & 0.500$^\ddagger$ \\
+\hline
+\end{tabular}
+\caption{C1-B temporal precedence across 6 models with lifecycle data (41-term canonical register; Qwen2.5-1.5B excluded due to lack of intermediate checkpoints). OLMo-1B achieves the strongest result (90\%, $p<0.0001$). $^\ddagger$SmolLM3 shows $\approx$chance due to left-censoring (earliest checkpoint already post-coupling).}
+\label{tab:c1b_temporal}
+\end{table}
+
+The forest plot (Figure~\ref{fig:c1b_forest}) visualizes how models cluster: OLMo-1B, Pythia-1B/2.8B, and CRFM achieve $>70\%$ EB$^*$-leads fraction (Wilson 95\% CI well above chance), while Pythia-160M falls at 7\% and CRFM shows seed-to-seed variance (4/5 seeds individually 63--88\%).
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.8\textwidth]{figures/c1b_forest_plot.pdf}
+\caption{C1-B forest plot: EB$^*$-leads fraction per model with Wilson 1927 95\% confidence intervals.}
+\label{fig:c1b_forest}
+\end{figure}
+
+These results establish C1: attention binding temporally precedes behavioral competence, with the lead-lag interval varying by scale (Table~\ref{tab:c1b_temporal}).
+The predictive validity is demonstrated in Section~4.5 (unlockable latent knowledge) and Section~4.6 (causal transformation across scales).
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/figure1_emergence_curves.pdf}
+\caption{Three-panel emergence curves showing EB$^*$ and behavioral score across training steps for 160M, 1B, and 2.8B models. 41-term canonical replication in Table~\ref{tab:c1b_temporal} and Figure~\ref{fig:c1b_forest}.}
+\label{fig:emergence}
+\end{figure}
+
+\subsection{Scale-Dependent Decoupling (C4)}\label{sec:c4}
+
+A distinctive finding in our longitudinal analysis is the \emph{binding-behavior decoupling effect} at the 1B scale.
+
+\paragraph{Pythia-1B trajectory.}\mbox{}
+EB$^*$ rises rapidly to 0.646 at step 15K and then plateaus, remaining in the narrow range 0.595--0.646 through step 143K.
+In stark contrast, behavioral performance climbs steadily from 0.167 (step 0) to 0.806 (step 143K), with the strongest gains occurring \emph{after} binding has saturated.
+At step 30K, the 1B model achieves its peak recognition accuracy (83.3\%) while EB$^*$ has already begun declining (0.611 vs.
+0.646 at step 15K; Figure~\ref{fig:decoupling}, Table~\ref{tab:decoupling_1b_scale}).
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/figure4_1b_decoupling.pdf}
+\caption{Decoupling at 1B scale (3-term pilot data): EB$^*$ saturates early while behavioral score continues improving through step 143K. 41-term canonical replication in Table~\ref{tab:c4b_decoupling}.}
+\label{fig:decoupling}
+\end{figure}
+
+\paragraph{Cross-scale comparison.} The decoupling is specific to the 1B scale:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Metric} & \textbf{160M} & \textbf{1B} & \textbf{2.8B} \\
+\hline
+EB$^*$ range (steps 15K--143K) & 0.642--0.831 & 0.595--0.646 & 0.858--0.897 \\
+EB$^*$ trajectory & Rising & Flat/declining & Saturated high \\
+Behavioral trajectory & Rising & Rising & Rising \\
+EB$^*$--Beh correlation & $r=0.333$*** & $r=0.166$ (ns) & $r=0.338$*** \\
+\hline
+\end{tabular}
+\caption{Decoupling is specific to the 1B scale: binding and behavior are uncorrelated, with binding saturating early while behavior continues improving.}
+\label{tab:decoupling_1b_scale}
+\end{table}
+
+\subsubsection{C4-B: 41-Term Decoupling Across Architectures}
+
+C4-B computes per-term Spearman $\rho$ in early/late windows and reports strict decoupling fraction ($\rho_\text{early}>0 \land \rho_\text{late}\leq 0$):
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+\textbf{Model} & \textbf{Strict Decouple} & $\mathbf{\rho_\text{early}}$ & $\mathbf{\rho_\text{late}}$ & \textbf{N terms} \\
+\hline
+Pythia-160M & 46\% & +0.293 & +0.044 & 28 \\
+Pythia-1B & 54\% & +0.239 & \textbf{--0.054} & 28 \\
+Pythia-2.8B & 43\% & +0.262 & +0.270 & 28 \\
+OLMo-1B & 44\% & +0.210 & --0.181 & 27 \\
+CRFM (mean 5 seeds) & 42\% & +0.252 & +0.085 & 41 \\
+\textbf{SmolLM3-3B} & \textbf{55\%} & +0.118 & \textbf{--0.281} & 40 \\
+\hline
+\end{tabular}
+\caption{C4-B decoupling across 6 models with lifecycle data (41-term; Qwen2.5-1.5B excluded due to lack of intermediate checkpoints). SmolLM3-3B achieves deepest decoupling ($\rho_\text{late}=-0.281$) at 3440k steps.}
+\label{tab:c4b_decoupling}
+\end{table}
+
+\textbf{Two-factor model.}
+The emerging pattern reveals two governing thresholds. The first is a parameter threshold near 1B parameters that governs decoupling depth, producing deeper negative correlations at late training for models above this scale. The other is a training-step threshold around 300K steps that governs temporal ordering, with earlier transitions occurring at smaller model scales.
+
+At 160M and 2.8B, binding and behavior co-evolve, showing positive correlation as detailed in Table~\ref{tab:c4b_decoupling}.
+At 1B, they decouple: binding saturates early while behavior improves through mechanisms that do not rely on increased binding strength.
+
+\paragraph{Interpretation.}
+The 1B model occupies a transitional regime \citep{kaplan2020scaling} between small models (where binding directly supports behavior) and large models (where binding saturates at high levels and behavior develops through distributed or redundant representations \citep{hinton1986distributed}).
+
+\paragraph{Regression at convergence.}
+Both 160M and 2.8B show slight behavioral dips at step 143K despite stable or increasing EB$^*$ (as shown in Figure~\ref{fig:emergence}).
+For 160M, recognition accuracy drops from 0.667 to 0.500; for 2.8B, from 0.667 to 0.500.
+This suggests late-training dynamics can disrupt the binding-to-behavior mapping without eliminating binding itself, consistent with representational drift.
+
+\subsection{Unlockable Latent Knowledge (C3)}\label{sec:c3}
+
+If binding structure represents genuine conceptual organization, models with high EB$^*$ but low behavioral performance should contain \emph{latent knowledge} that few-shot prompting can unlock.
+We test this by comparing zero-shot and few-shot generation performance on checkpoints where EB$^*>0.6$.
+
+\paragraph{Results.}\mbox{}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|c|c|c|c|c|}
+\hline
+\textbf{Model} & \textbf{Checkpoint} & \textbf{EB$^*$} & \textbf{Zero-shot Gen} & \textbf{Few-shot Gen} & \textbf{$\Delta$ (pp)} & \textbf{Relative} \\
+\hline
+160M & step 15K & 0.644 & 0.333 & \textbf{0.944} & \textbf{+61.1} & +183\% \\
+160M & step 30K & 0.642 & 0.667 & 0.944 & +27.8 & +42\% \\
+1B & step 15K & 0.646 & 0.556 & 0.944 & +38.9 & +70\% \\
+\hline
+\end{tabular}
+\caption{Few-shot generation scores: two-sentence priming unlocks latent knowledge when EB$^*>0.6$. All scores are generation-only (keyword rubric).}
+\label{tab:c3_pilot_unlock}
+\end{table}
+
+The 160M step 15K result is striking: despite low zero-shot generation performance (0.333), a two-sentence priming prefix unlocks 94.4\% generation accuracy (Table~\ref{tab:c3_pilot_unlock}).
+
+\paragraph{Ceiling convergence.}
+The few-shot scores converge to near-identical levels (0.944) across checkpoints with different zero-shot baselines (0.333--0.667).
+This consistency suggests that binding structure at EB$^*>0.6$ corresponds to \emph{complete} conceptual knowledge that is simply inaccessible to standard prompting, not partial knowledge that improves incrementally with training.
+The ceiling effect reflects scoring rubric granularity (near-perfect keyword coverage) rather than model capability limits.
+
+\paragraph{Control.}
+At step 0 (EB$^*\approx 0.15$, low binding), few-shot prompting produces negligible improvement, consistent with binding being a precondition for unlockability.
+
+\paragraph{C3 Expanded: 41-Term Cross-Architecture.}
+We applied the 41-term canonical protocol to all cross-architecture models:
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{|l|l|c|c|c|c|}
+\hline
+\textbf{Model} & \textbf{Checkpoint} & \textbf{Zero-Shot} & \textbf{Few-Shot} & $\mathbf{\Delta}$ \textbf{(pp)} & \textbf{Status} \\
+\hline
+160M & step 15k & 0.328 & 0.653 & +32.5 & strong \\
+160M & step 143k & 0.321 & 0.648 & +32.7 & strong \\
+1B & step 15k & 0.362 & 0.713 & +35.1 & strong \\
+1B & step 143k & 0.365 & 0.734 & +37.0 & strong \\
+2.8B & step 15k & 0.467 & 0.791 & +32.5 & strong \\
+2.8B & step 143k & 0.503 & 0.740 & +23.8 & strong \\
+OLMo-1B & step 15k & 0.416 & 0.697 & +28.0 & confirmed \\
+OLMo-1B & step 143k & 0.478 & 0.694 & +21.5 & confirmed \\
+SmolLM3-3B & step 40k & 0.486 & 0.667 & +18.0 & borderline$^\dagger$ \\
+SmolLM3-3B & step 3440k & 0.508 & 0.698 & +19.0 & borderline$^\dagger$ \\
+Qwen2.5-1.5B & final & 0.542 & 0.724 & +18.2 & borderline$^\dagger$ \\
+CRFM (mean 5 seeds) & ck-400k & 0.072 & 0.147 & +7.6$\pm$1.6 & weak \\
+\hline
+\end{tabular}
+\caption{C3 expanded 41-term results across 7 models. $^\dagger$Modern models (SmolLM3, Qwen) show ``headroom compression''---same absolute ceiling ($\approx$0.72) but lower nominal $\Delta$ due to high zero-shot baselines ($\gtrsim$0.50).}
+\label{tab:c3_expanded}
+\end{table}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.9\textwidth]{figures/c3_fewshot_unlockability.pdf}
+\caption{C3 few-shot unlockability. Panel~A: Pythia 160M, 1B, 2.8B at early and trained checkpoints showing +30~pp gains. Panel~B: Cross-model comparison for 11 model-checkpoint pairs.}
+\label{fig:c3}
+\end{figure}
+
+\textbf{Pattern analysis.}
+Pythia-1B achieves the strongest unlockability effect at +37.0 percentage points.
+Modern models such as SmolLM3 and Qwen cluster at +18--19 pp. These models share the same absolute ceiling, with zero-shot scores near 0.54 and few-shot scores near 0.72. Their lower nominal gains reflect headroom compression, which supports the binding-mediated coupling interpretation over architecture failure.
+CRFM shows weak unlockability at +7.6 pp, consistent with its undertrained 117M parameter scale (Figure~\ref{fig:c3}).
+
+\paragraph{Replication on 99-prompt expanded dataset.}
+To confirm robustness, we repeated the unlockability experiment across all 54 generation prompts and 9 terms:
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{|l|l|c|c|c|c|c|}
+\hline
+\textbf{Model} & \textbf{Checkpoint} & \textbf{EB$^*$} & \textbf{Zero-shot Gen} & \textbf{Few-shot Gen} & \textbf{$\Delta$ (pp)} & \textbf{Relative} \\
+\hline
+160M & step 15K & 0.644 & 0.228 & \textbf{0.531} & \textbf{+30.2} & +132\% \\
+160M & step 30K & 0.642 & 0.303 & \textbf{0.593} & +29.0 & +96\% \\
+1B & step 15K & 0.646 & 0.309 & \textbf{0.611} & +30.2 & +98\% \\
+\hline
+\end{tabular}
+\caption{C3 replication on 99-prompt expanded dataset (9 terms, 54 generation prompts). Consistent $\approx$30~pp improvements confirm unlockability across 9$\times$ more prompts; lower absolute scores reflect increased difficulty from 6 additional terms and diverse prompt formats.}
+\end{table}
+
+The pattern replicates with consistent $\approx$30~pp improvements across all conditions (Table~\ref{tab:c3_expanded}, Appendix~\ref{tab:c3_99prompt}).
+At step 0 (EB$^*\approx0.15$), few-shot prompting produces negligible improvement in both datasets, confirming binding structure is a necessary precondition for unlockability.
+
+\paragraph{Copying caveat.}
+Few-shot outputs often reproduce phrasing from the priming prefix, inflating generation scores.
+Nevertheless, the pattern remains informative: models with EB$^*>0.6$ can leverage contextual cues to produce term-appropriate content, while models with EB$^*<0.3$ cannot.
+
+\subsection{Mechanistic Causality: Cross-Scale Ablation (C5)}\label{sec:c5}
+
+We test whether high-binding heads are causally implicated in task performance via targeted head ablation.
+Results reveal opposite causal effects at different scales, providing mechanistic evidence for decoupling.
+
+\paragraph{Pythia-160M (step 120K): coupled regime.}\mbox{}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+\textbf{Condition} & \textbf{Rec Acc} & \textbf{Gen Score} & \textbf{Rec $\Delta$} & \textbf{Gen $\Delta$} \\
+\hline
+Baseline (no ablation) & 0.667 & 0.556 & --- & --- \\
+Top-4 binding ablated & 0.500 & 0.444 & \textbf{$-$0.167} & \textbf{$-$0.111} \\
+Random ablated (mean$\times$5) & 0.600 & 0.544 & $-$0.067 & $-$0.011 \\
+Bottom-4 binding ablated & 0.667 & 0.556 & 0.000 & 0.000 \\
+\hline
+\end{tabular}
+\caption{160M: graded ablation effects. Top-binding heads are necessary for task performance.}
+\label{tab:c5_160m_ablation}
+\end{table}
+
+\paragraph{Pythia-2.8B (step 143K): functionally superseded regime.}\mbox{}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+\textbf{Condition} & \textbf{Rec Acc} & \textbf{Gen Score} & \textbf{Rec $\Delta$} & \textbf{Gen $\Delta$} \\
+\hline
+Baseline (no ablation) & 0.500 & 0.833 & --- & --- \\
+Top-4 binding ablated & \textbf{0.833} & 0.778 & \textbf{+0.333} & $-$0.055 \\
+Random ablated (mean$\times$5) & 0.500 & 0.822 & 0.000 & $-$0.011 \\
+Bottom-4 binding ablated & 0.500 & 0.833 & 0.000 & 0.000 \\
+\hline
+\end{tabular}
+\caption{2.8B: reversal. Ablating high-binding heads \emph{improves} recognition accuracy.}
+\label{tab:c5_28b_ablation}
+\end{table}
+
+\paragraph{Cross-scale summary.}\mbox{}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|c|c|c|p{1.8cm}|}
+\hline
+\textbf{Model} & \textbf{Top-ablated Rec $\Delta$} & \textbf{Random-ablated Rec $\Delta$} & \textbf{Bottom-ablated Rec $\Delta$} & \textbf{Regime} \\
+\hline
+160M & \textbf{$-$16.7~pp} & $-$6.7~pp & 0.0~pp & Coupled (binding supports) \\
+2.8B & \textbf{+33.3~pp} & 0.0~pp & 0.0~pp & Decoupled (binding interferes) \\
+\hline
+\end{tabular}
+\caption{Cross-scale reversal: binding heads are necessary at small scale but functionally superseded at large scale.}
+\label{tab:c5_cross_scale}
+\end{table}
+
+\subsubsection{C5 Cross-Architecture: 41-Term Canonical Results}
+
+We replicated C5 across all 7 models using the canonical 41-term dataset (N=205 recognition prompts).
+Specificity = $\Delta\text{Acc}_\text{top} - \bar{\Delta}\text{Acc}_\text{rand}$:
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{|l|c|c|c|c|c|}
+\hline
+\textbf{Model} & \textbf{Baseline} & \textbf{TOP-4} & \textbf{Rand mean} & \textbf{Top $\Delta$} & \textbf{Spec} \\
+\hline
+\multicolumn{6}{|l|}{\textit{Pythia family (canonical 41-term)}} \\
+160M & 0.946 & 0.834 & 0.834 & --0.112 & +0.137 \\
+1B & 0.917 & 0.766 & 0.766 & --0.151 & +0.117 \\
+2.8B & 0.873 & 0.800 & 0.837 & --0.073 & +0.110 \\
+\hline
+\multicolumn{6}{|l|}{\textit{Cross-architecture (canonical 41-term)}} \\
+OLMo-1B & 0.990 & 0.980 & 0.985 & --0.010 & --0.006 (ceiling) \\
+CRFM (5-seed mean) & 0.783 & 0.677 & 0.771 & --0.106 & +0.081$\pm$0.152 \\
+SmolLM3-3B & 0.868 & 0.834 & 0.843 & --0.034 & --0.043 (distributed) \\
+Qwen2.5-1.5B & 0.995 & 0.985 & 0.990 & --0.010 & +0.005 (ceiling) \\
+\hline
+\end{tabular}
+\caption{C5 cross-architecture canonical 41 results. Pythia family shows coupled binding (spec=+0.10 to +0.14). OLMo and Qwen achieve 99\% ceiling (spec$\approx$0). CRFM shows seed-dependent outcomes: 4/5 seeds coupled, 1/5 suppressor (spec=--0.175). SmolLM3 shows distributed regime (negative specificity).}
+\label{tab:c5_crossarch_main}
+\end{table}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.9\textwidth]{figures/c5_crossarch_specificity.pdf}
+\caption{C5 cross-architecture causal specificity. Pythia family (coupled, positive spec), OLMo/Qwen (ceiling, spec$\approx$0), SmolLM3 (distributed, negative spec), CRFM (seed-dependent, error bars show SD across 5 seeds).}
+\label{fig:c5_crossarch}
+\end{figure}
+
+\textbf{Eight findings.}
+(1) At 1B, ablation impairs recognition by 15.1 percentage points. This is the largest drop observed, confirming that binding heads are maximally load-bearing at the transitional regime.
+(2) At 2.8B, ablation improves recognition by 33.3 percentage points. The heads have become functionally superseded.
+(3) OLMo and Qwen achieve 99\% recognition ceiling. Ablating binding heads has minimal effect on performance, with specificity near zero.
+(4) SmolLM3 shows a distributed regime with negative specificity (--0.043). It has no concentrated binding heads.
+(5) CRFM shows initialization sensitivity. Four of five seeds display coupled behavior with positive specificity (+0.081), while one seed shows a suppressor pattern (--0.175).
+(6) Discriminant validity holds across all scales. Top-binding heads produce effects distinct from both random and bottom heads.
+(7) The scale-graded trajectory moves from 160M with strong coupling, through 1B with maximal coupling, to 2.8B exhibiting a redundancy signature.
+(8) Cross-architecture generalization is confirmed. The pattern replicates on OLMo and CRFM, both trained on different data than Pythia (see Figure~\ref{fig:c5_crossarch} and Table~\ref{tab:c5_crossarch_main}).
+
+\paragraph{Why the causal effects differ in magnitude and pattern.}
+The asymmetry between scales reveals distinct mechanistic regimes.
+At 160M, binding heads are load-bearing. Graded ablation effects reveal that top-binding heads contribute more than random heads, which in turn contribute more than bottom-binding heads. This pattern indicates limited capacity for functional redundancy. All heads contribute proportionally to task performance.
+The $-16.7$~pp impairment reflects partial disruption of necessary computational pathways.
+
+At 2.8B, binding heads have become vestigial and interfering. The binary pattern is striking: ablating top-binding heads improves performance, while random or bottom ablations have no effect. This indicates massive functional redundancy.
+The model has developed alternative distributed representations, rendering most heads irrelevant.
+Only top-binding heads matter at 2.8B. Their removal improves performance, suggesting they actively interfere with superior downstream pathways rather than merely being redundant.
+The larger improvement magnitude ($+33.3$~pp~$>$~$-16.7$~pp) indicates the model was actively suppressed from using its full capability.
+
+\paragraph{Limitations.}
+Primary analyses use the canonical 41-term register (N=205 recognition prompts), though generation evaluations retain the original 6-prompt pilot structure. While discriminant validity (top $\neq$ random = bottom) is consistent across scales, specific causal ablation values should be interpreted cautiously given term-level heterogeneity.
+
+\subsection{Robustness and Limitations}
+
+\paragraph{Tokenization stability.}
+Span-aggregation handles tokenization variation across model sizes.
+``Screen reader'' tokenizes consistently as two tokens; ``alt text'' aliases (``alternative text'') are handled by span index mapping.
+
+\paragraph{Scoring validity.}
+Recognition uses log-probability ranking.
+Generation uses a keyword-based rubric; manual inspection of 20 pilot outputs confirmed rubric structure. Cross-architecture validation primarily uses recognition accuracy for comparability; generation scoring retains the original pilot structure and was not expanded to 41 terms.
+
+\paragraph{Unaddressed claims.}
+C2 (stability to prompt perturbations) was not evaluated.
+
+\section{Discussion}
+
+\subsection{Summary of Findings}
+
+This study introduces attention-head binding (EB$^*$) as a mechanistic interpretability metric, validates it through discriminant validity analysis, and applies it longitudinally across \textbf{seven models} (five architectures), \textbf{41 accessibility terms}, and multiple training checkpoints.
+Our principal findings are:
+
+\begin{enumerate}
+  \item \textbf{Discriminant validity confirmed.} Real accessibility terms (mean EB$^*=0.74$) show significantly stronger binding than controls: rare pairs (0.50), cross-language (0.41), true nonsense (0.26), all $p<0.001$, $d=1.2$--$2.9$. Domain-adjacent/wrong-domain controls reveal scale-dependent precision limits.
+
+  \item \textbf{Coupling-decoupling lifecycle (C1/C4).} The relationship between binding and behavior shifts over training. Early coupling ($\rho=+0.57$, $p<0.001$) gives way to later decoupling ($\rho=-0.20$, $p=0.01$).
+  The \textbf{41-term cross-architecture replication} tests C1-B across 6 models with lifecycle data (Qwen2.5-1.5B excluded due to lack of intermediate checkpoints): 5 of 6 models confirm temporal precedence---OLMo-1B achieves 90\% EB$^*$-leads ($p<0.0001$), CRFM 72.7\% ($p<<0.001$), Pythia-1B 73.2\%, Pythia-2.8B 79.4\%---while Pythia-160M shows 7\%, indicating maintained coupling below the parameter threshold for decoupling.
+  These patterns give rise to a two-factor model. A parameter threshold near 1B parameters controls decoupling depth, while a training-step threshold around 300K steps governs when binding and behavior temporally diverge.
+
+  \item \textbf{Latent knowledge is unlockable (C3).} Few-shot prompting improves generation by up to 61 percentage points (a 183\% gain) when EB$^*>0.6$.
+  \textbf{41-term cross-architecture:} Pythia-1B shows the strongest effect (+37.0 pp). Modern models such as SmolLM3 and Qwen cluster at +18--19 pp, exhibiting headroom compression: they reach the same absolute ceiling near 0.72, but show smaller nominal gains because their zero-shot baselines are already high.
+
+  \item \textbf{Causal effects reverse across scales (C5).} Ablating high-binding heads reveals opposite effects across scales. At 160M, removing these heads impairs performance by 16.7 percentage points, confirming their necessity. At 2.8B, the same intervention improves performance by 33.3 points, indicating the heads have become functionally superseded.
+  \textbf{Cross-architecture canonical 41:} OLMo and Qwen achieve near-perfect recognition ceiling, rendering ablation effects negligible. SmolLM3 operates in a distributed regime with negative specificity (--0.043). CRFM displays striking initialization sensitivity: four of five random seeds show coupled behavior, but one seed exhibits suppressor dynamics.
+\end{enumerate}
+
+\subsection{Mechanistic Interpretation}
+
+\paragraph{Three-phase developmental trajectory.}
+The coupling-decoupling transition reveals a developmental lifecycle:
+
+\textbf{Phase 1 -- Coupling (steps 0--30K):} Models rely on explicit token-pair binding to organize multi-token concepts. Strong positive correlation ($\rho=+0.57$) indicates developing binding structure directly supports behavioral competence. EB$^*$ serves as a predictive early-warning signal at this stage.
+
+\textbf{Phase 2 -- Transition (steps 60--90K):} Correlation weakens ($\rho\approx+0.14$, ns) as models begin developing alternative representational pathways. Binding remains elevated but no longer correlates strongly with behavioral improvements.
+
+\textbf{Phase 3 -- Decoupling (steps 120--143K):} Correlation reverses to negative ($\rho=-0.20$), indicating binding and behavior have fundamentally reorganized. The ablation evidence confirms this: removing high-binding heads at 2.8B improves performance ($+33.3$~pp), demonstrating they have become vestigial structures constraining rather than supporting inference.
+
+\paragraph{Scale-dependent lifecycle dynamics.}
+Our findings outline how attention binding evolves across models of different sizes:
+
+\begin{itemize}
+  \item \textbf{Small models (160M):} binding heads are directly incorporated into task circuits.
+  Due to limited capacity, attention binding becomes a critical computational approach. Ablating these heads disrupts the only available pathway, leading to performance degradation.
+
+  \item \textbf{Medium models (1B):} the model begins to route information through alternative pathways as capacity grows.
+  Binding structure forms early but gradually becomes redundant as distributed representations mature.
+  The flat binding trajectory, combined with rising behavior indicates a transition to non-binding-dependent computation.
+
+  \item \textbf{Large models (2.8B):} binding achieves exceptionally high levels (EB$^*>0.85$) but becomes functionally superseded.
+High-binding heads, mostly in early layers, enforce rigid attention patterns that override more flexible representations in later layers.
+The binary ablation pattern (top ablation improves; random/bottom ablations have no effect) reveals \emph{massive functional redundancy}: the model has developed alternative distributed representations for concept processing, but early-layer binding heads persist as \emph{vestigial interfering structures}.
+Ablating them removes an attention bottleneck, allowing more flexible late-layer representations to operate effectively.
+The larger improvement magnitude ($+33.3$~pp) compared to the 160M impairment ($-16.7$~pp) suggests the model was actively suppressed from using its full capability.
+These heads likely served a scaffolding role during earlier training, helping the model bind multi-token terms before more flexible distributed representations developed.
+Their persistence at convergence reflects gradient descent's inability to prune structures that are locally optimal early in training but globally suboptimal at convergence \citep{frankle2019lottery}.
+\end{itemize}
+
+\paragraph{Structure-behavior dissociation.}
+The decoupling pattern is related to broader cases where internal structure emerges before robust behavioral competence.
+This lifecycle parallels developmental neuroscience observations where early structural scaffolding becomes inhibitory as more sophisticated processing develops \citep{huttenlocher2002neural}, and machine learning findings where structures optimal early in training persist despite becoming suboptimal at convergence \citep{frankle2019lottery}.
+One prominent example from NLP is ``grokking'' \citep{power2022grokking}, where networks can acquire internal representations well before exhibiting generalization, followed by delayed performance improvements.
+
+\paragraph{Unlockability as evidence of complete latent representations.}
+The magnitude of the unlockability effect (+61 pp at 160M step 15K) suggests that binding structure at EB$^*>0.6$ corresponds to not partial but \emph{complete} conceptual knowledge that is simply inaccessible to standard prompting.
+Across the tested checkpoints, few-shot performance converges to near-identical levels (0.944) despite different zero-shot baselines (0.333--0.667).
+This ceiling convergence is consistent with activation failures (inability to access existing knowledge) rather than missing knowledge \citep{burns2022discovering}.
+
+\paragraph{Why early-layer binding interferes at scale.}
+In deep transformers, early layers often encode local and syntactic features while later layers develop semantic and task-relevant representations \citep{tenney2019bert,hewitt2019structural}.
+At 2.8B, early-layer binding heads may ``lock in'' rigid token associations before later layers can contextually modulate them, creating an attention bottleneck that constrains inference.
+
+\paragraph{Alternative interpretations of the C5 reversal.}
+The $+33.3$~pp improvement at 2.8B might reflect three mechanisms: (a)~removal of attention sinks that distract from task-relevant processing, (b)~disruption of overfitted binding patterns that fail to generalize, or (c)~genuine functional supersession where distributed representations have subsumed head-specific binding.
+Our ``vestigial interference'' framing favors~(c), but discriminating these hypotheses would require activation patching or path patching analyses beyond our current scope.
+The discriminant validity pattern (only top-binding heads produce effects; random and bottom ablation are null) argues against a generic attention-sink explanation~(a), since sinks would not correlate with BSI rank.
+However, distinguishing~(b) from~(c) remains an open question best addressed with fine-grained causal interventions.
+
+\paragraph{Cross-architecture generalization.}
+The replication across OLMo (Dolma-trained), CRFM (The Pile, 5 seeds), SmolLM3 (2.6T tokens), and Qwen (18T tokens, GQA) confirms the binding-behavior lifecycle is not Pythia-specific.
+OLMo-1B achieves the strongest C1-B result (90\% EB$^*$-leads), validating that the lifecycle pattern holds under different tokenizers and training corpora.
+CRFM's initialization sensitivity reveals that random initialization can substantially alter the binding-behavior relationship even with identical training data. Four of five seeds show coupled behavior, while one seed exhibits a suppressor pattern.
+SmolLM3's distributed regime (negative specificity) and Qwen's 99\% ceiling suggest modern high-token models may develop binding-independent pathways earlier in training.
+
+\paragraph{Two-factor model of decoupling.}
+The 41-term cross-architecture analysis reveals two governing thresholds:
+(1)~a \textbf{parameter threshold} ($\sim$1B) governs decoupling depth (deeper negative $\rho_\text{late}$ at 1B+), and
+(2)~a \textbf{training-step threshold} ($\sim$300K) governs temporal ordering (earlier transitions at smaller scales).
+Pythia-1B occupies the ``sweet spot'' where both thresholds align: sufficient parameters to enable deep decoupling, but trained long enough to manifest it.
+SmolLM3-3B shows the deepest decoupling ($\rho_\text{late}=-0.281$) despite its 3B parameters, suggesting the training-step threshold may dominate at very large scales.
+
+\paragraph{Headroom compression in modern models.}
+SmolLM3-3B and Qwen2.5-1.5B form a tight cluster at +18--19 pp unlockability, substantially below Pythia-1B's +37.0 pp.
+However, both achieve identical absolute few-shot ceilings ($\approx$0.72) and similar zero-shot baselines ($\approx$0.54).
+This headroom compression, which occurs when high zero-shot performance leaves less room for few-shot improvement, supports the binding-mediated coupling interpretation over architecture failure.
+The pattern suggests modern models develop accessibility knowledge earlier in training (via larger pretraining corpora: 2.6T--18T vs.~Pythia's 300B), compressing the observable unlockability window.
+
+\paragraph{Initialization sensitivity.}
+CRFM's 5-seed analysis reveals substantial variance in the binding-behavior relationship. Seeds 1 through 4 show 63--88\% EB$^*$-leads, all in the coupled regime. Seed 5 shows 51\%, near chance levels.
+This \textbf{initialization lottery} effect suggests the early-training binding structure is sensitive to random initialization, but the majority of seeds converge to the coupled regime.
+The seed-dependent C5 outcomes (spec=$+0.106\pm0.152$) confirm this sensitivity extends to causal necessity: 4/5 seeds show positive specificity (binding heads necessary), while 1/5 shows a suppressor pattern (spec=$-0.175$).
+This variability underscores the importance of multi-seed reporting for mechanistic interpretability claims.
+
+\subsection{Implications}
+
+\paragraph{For mechanistic interpretability.}
+Our findings caution against assuming that high activation of a mechanistic feature implies positive causal contribution.
+The cross-scale reversal shows that the same internal structure can play opposite functional roles depending on model capacity and training stage.
+
+\paragraph{For model development.}
+The decoupling effect suggests that monitoring internal mechanistic markers alongside behavioral benchmarks could reveal when models develop potentially problematic internal strategies.
+A model achieving high behavioral performance despite superseded binding structure may be more fragile than one where binding and behavior are aligned.
+
+\paragraph{For accessibility AI.}
+Accessibility concepts undergo complex developmental trajectories in language models.
+Models deployed for accessibility-related tasks should be evaluated not just on behavioral accuracy but on the robustness of internal representations, particularly at scale where performance can mask conflict-laden internal structure.
+
+\subsection{Limitations}
+
+\begin{enumerate}
+  \item \textbf{Evaluation scale.} We expanded from 3 to \textbf{41 canonical accessibility terms} (N=205 recognition prompts), addressing reviewer concerns about sample size. Lifecycle patterns (C1/C4) replicate robustly across 6 models with available intermediate checkpoints and 5 architectures; single-checkpoint claims (C3, C5) cover all 7 models. However, broader coverage of specialized accessibility domains (motor impairments, cognitive accessibility, WCAG success criteria) would further strengthen generalizability claims.
+
+  \item \textbf{Checkpoint availability.} Qwen2.5-1.5B lacks publicly available intermediate checkpoints, precluding lifecycle analysis (C1/C4). Only single-checkpoint analyses (C3, C5) are reported for this model. SmolLM3-3B shows left-censoring. Its earliest available checkpoint, step 40K with approximately 80B tokens processed, is already post-coupling. This limits our ability to observe early-training dynamics.
+
+  \item \textbf{Domain specificity.} This study focuses on web accessibility terminology. Our V3/V4 control experiments (Section~4.1) provide indirect evidence of cross-domain mechanisms. Wrong-domain terms pair accessibility tokens with programming or hardware vocabulary, such as ``alt function,'' ``skip variable,'' and ``screen printer.'' These controls show discriminant validity patterns consistent with corpus co-occurrence effects rather than accessibility-specific processing. However, direct replication across diverse technical domains remains future work.
+
+  \item \textbf{Generic phrase baseline.} Our controls test semantic invalidity (v2) and domain-crossing (v3/v4), but do not include generic non-technical multi-word phrases (e.g., ``big dog,'' ``red car''). Such phrases might show intermediate EB$^*$ if binding reflects general compositional processing rather than technical concept acquisition. The V3/V4 results showing high binding at 160M (EB$^*=0.86$) even for semantically irrelevant cross-domain pairs suggest binding responds primarily to corpus co-occurrence, supporting domain-generality of the mechanism.
+
+  \item \textbf{Layer-level analysis.} EB$^*$ aggregates across layers (max EB). While our ablation results reveal that 2.8B concentrates high-binding heads in early layers (L1, L4) vs.\ 160M's distributed pattern (L0--L8), a systematic layer-migration analysis tracking how binding redistributes across layers during training remains for future work.
+
+  \item \textbf{Ablation granularity.} Zero-ablation is a coarse intervention.
+  Employing more targeted techniques, such as activation patching and path patching, could yield deeper and more nuanced insights.
+
+  \item \textbf{Stability (C2).} We did not assess how stable the results are when prompts are slightly altered. 
+  This omission limits our ability to assert that EB$^*$ captures robust conceptual representations rather than prompt-specific attention patterns.
+
+  \item \textbf{Few-shot interpretation.} Although we observed substantial few-shot gains of 61 percentage points, these may partially stem from in-context copying rather than genuine knowledge ``unlocking.'' The convergence of few-shot scores to near-identical ceilings around 0.944 across different zero-shot baselines suggests complete latent knowledge. However, we cannot rule out that models are simply reproducing patterns from the exemplar. To distinguish between copying and true comprehension, more sophisticated evaluation approaches will be left to future work. These include paraphrased exemplars and counterfactual probes.
+\end{enumerate}
+
+\subsection{Future Directions}
+
+\begin{enumerate}
+  \item \textbf{Prompt stability (C2).} A natural extension is testing C2, which concerns stability to prompt perturbations. If EB$^*$ truly captures robust conceptual representations, it should be invariant to synonym substitution, negation, and syntactic restructuring of prompts. Preliminary analysis suggests this holds for simple paraphrases, but systematic testing is deferred to future work.
+
+  \item \textbf{Cross-domain validation.} Ongoing work applies EB$^*$ to programming concepts (``API endpoint,'' ``merge conflict,'' ``stack overflow'') and medical terminology (``blood pressure,'' ``immune system''). Preliminary experiments suggest the coupling-decoupling lifecycle replicates, but domain-specific variance may reveal representational specialization. Cross-domain controls pairing tokens from different domains (e.g., ``API pressure'') would further distinguish semantic binding from statistical co-occurrence.
+
+  \item \textbf{Fine-grained causal analysis.} Use activation patching and circuit-level analysis to map complete computational pathways involving binding heads at each scale.
+
+  \item \textbf{Training intervention.} Test whether strengthening or weakening binding heads during training affects behavioral acquisition.
+
+  \item \textbf{Instruction-tuned models.} Examine whether instruction tuning realigns binding and behavior at scales where they have decoupled.
+
+  \item \textbf{Binding as monitoring tool.} Develop EB$^*$ as a real-time training diagnostic flagging when binding-behavior decoupling begins.
+
+  \item \textbf{Multi-seed mechanistic analysis.} CRFM's initialization sensitivity (4/5 seeds coupled, 1/5 suppressor) suggests the binding-behavior relationship may vary substantially with random initialization. Systematic multi-seed analysis across architectures could quantify this variance and identify initialization conditions that promote or hinder binding-behavior alignment.
+
+  \item \textbf{Scaling to frontier models.} Our experiments span 117M to 3B parameters. Applying EB$^*$ at industrial scale (70B--405B+) raises distinct feasibility questions and architectural challenges.
+
+  \emph{Computational feasibility.} Unlike SAE-based approaches, which require training hundreds of auxiliary models on billions of activation samples to scale to frontier-class models \citep{templeton2024monosemanticity,lieberum2024gemma}, EB$^*$ is a forward-pass-only metric with no learned components. Importantly, BSI requires only the attention submatrix over the target term span (typically 2--4 tokens), as opposed to the full sequence-length attention map. For a 405B model with 128 heads and 126 layers, storing full attention at 4K context would require hundreds of terabytes; extracting BSI over a 3-token span requires roughly 1\,MB. A diagnostic pass over ${\sim}200$ prompts at periodic training checkpoints would add negligible overhead relative to the training run itself, positioning EB$^*$ as a viable lightweight training-time monitoring signal.
+
+  \emph{Architectural adaptation.} Frontier models increasingly use grouped query attention (GQA), where multiple query heads share key-value projections. BSI as currently defined operates per query head: HuggingFace's \texttt{output\_attentions} interface returns attention maps at full query-head resolution even under GQA, so the computation is unchanged. However, GQA reduces the effective diversity of binding patterns. In Llama-3 405B (128 query heads, 8 KV groups), groups of 16 heads share identical key-value context, likely compressing the max--mean gap that defines EB$^*$. Calibration against full-MHA baselines would be needed to interpret absolute EB$^*$ values under GQA. Mixture-of-experts (MoE) architectures introduce a further complication: binding patterns may vary across experts, requiring expert-conditional extraction. Sliding window attention would preclude long-range binding measurement beyond the window size, though multi-token accessibility terms (2--4 tokens) typically fall within-window.
+
+  \emph{Access barriers.} The most fundamental constraint is model access. EB$^*$ requires white-box access to attention weights during the forward pass, which is unavailable for closed-weight models. For open-weight releases without intermediate checkpoints (e.g., Llama-3, Mistral), single-checkpoint claims (C3, C5) remain feasible, but the lifecycle claims (C1, C4) that constitute our central contribution require intermediate training checkpoints that labs rarely release. EB$^*$ is therefore most naturally positioned as an \emph{internal training diagnostic} for organizations with full pipeline access, in contrast to an external auditing tool.
+
+  \emph{Expected scaling behavior.} Our C5 results suggest what frontier-scale analysis would likely reveal: the graduated weakening trend (160M strongly coupled $\to$ OLMo/Qwen causally dispensable at 1--1.5B) predicts that binding heads at 70B+ are almost entirely superseded by distributed representations. The diagnostic value at frontier scale therefore likely shifts from measuring causal necessity of binding heads to detecting the \emph{onset} of concept formation during early training---the first 5--10\% of the training run---where C1 shows EB$^*$ serves as a predictive early-warning signal.
+\end{enumerate}
+
+\section{Conclusion}
+
+This study introduces attention-head binding (EB$^*$) as a mechanistic interpretability metric for tracing concept emergence. We analyze seven models spanning five architectures, examining 41 accessibility terms with 205 recognition prompts.
+
+Discriminant validity confirms that EB$^*$ captures genuine conceptual coherence rather than mere token co-occurrence. Nonsense terms score 0.26, while real terms reach 0.74, with all differences significant ($p<0.001$) and effect sizes ranging from $d=1.2$ to $2.9$.
+The relationship between binding and behavior shifts over training. Early coupling ($\rho=+0.57$, $p<0.001$) gives way to later decoupling ($\rho=-0.20$, $p=0.01$).
+\textbf{Cross-architecture replication} confirms C1-B across OLMo-1B (90\% EB$^*$-leads, $p<0.0001$), CRFM (72.7\%, $p<<0.001$), and Pythia-1B/2.8B (73--79\%); Pythia-160M maintains coupling (7\%) below the parameter threshold for temporal divergence.
+These patterns give rise to a two-factor model. A parameter threshold near 1B parameters controls decoupling depth, while a training-step threshold around 300K steps governs temporal ordering.
+
+Checkpoints with high binding scores but middling accuracy harbor \textbf{unlockable latent knowledge}. Few-shot priming yields gains as large as 61 percentage points (a 183\% relative improvement), with replication showing 18--37 point gains across six of seven models (CRFM is an outlier at +7.6 pp due to undertraining). Modern models such as SmolLM3 and Qwen exhibit \textbf{headroom compression}: they reach the same absolute ceiling near 0.72, but show smaller nominal gains because their zero-shot baselines are already high.
+
+Causal validation reveals opposing regimes across scales. At 160M, removing top-binding heads impairs performance by 16.7 percentage points, confirming their necessity. At 2.8B, the same intervention improves performance by 33.3 points, indicating these heads have become functionally superseded. Extending this analysis across architectures, we find OLMo and Qwen achieve near-perfect recognition ceiling, rendering ablation effects negligible. SmolLM3 operates in a distributed regime with no concentrated binding heads, while CRFM displays striking \textbf{initialization sensitivity}: four of five random seeds show coupled behavior, but one seed exhibits suppressor dynamics.
+
+The \emph{binding-behavior decoupling effect}, observed in C4 and validated causally in C5, challenges conventional assumptions about how we interpret, monitor, and develop language models.
+A model's internal representations may be more complex, and more conflicted, than behavioral evaluations alone can capture.
+
+\subsubsection*{Acknowledgments}
+I am deeply grateful to Professor Manolis Kellis, the Mantis team, and my classmates from the Generative AI course (January 5, 2026) for many stimulating intellectual exchanges. Through this course, I gained a strong conceptual grounding in research ethics and the personal confidence to pursue this work. I also extend my thanks to Trisha Salas, whose exploratory behavioral analysis of accessibility knowledge in language models \citep{salas2026testing} on February 1, 2026 motivated the choice of accessibility concepts as the case study for this paper. Any errors of interpretation are my own.
+
+\pagebreak
+\appendix
+
+\section{Raw Data Tables}
+
+\subsection*{Appendix Navigation: Tables by Empirical Claim}\mbox{}
+
+\noindent This appendix follows a developmental narrative, moving from the pilot dataset through the canonical 41-term expansion to detailed breakdowns, rather than grouping strictly by empirical claim. This ordering reflects the actual research progression: initial validation on small datasets, followed by scale-up to the canonical 41-term protocol, then methodological controls and robustness checks. Consequently, tables supporting different claims are interleaved. For example, C1 (lifecycle) and C4 (decoupling) analyses appear together within the 41-term expansion section because they share the same underlying data structure.
+
+\noindent To help reviewers locate evidence efficiently, this index maps each empirical claim (C1, C3, C4, C5) to its supporting tables. Within each claim, the developmental progression (pilot $\to$ canonical $\to$ detailed) is preserved. Methodological validation tables (discriminant validity, temperature robustness) are listed separately as they underpin all empirical claims. Click any table number to jump directly to that table.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|l|l|p{8cm}|}
+\hline
+\textbf{Claim} & \textbf{Tables} & \textbf{Developmental Progression} \\
+\hline
+C1 Lead-Lag & \ref{tab:a1a_pilot}, \ref{tab:a1b_nine_term}, \ref{tab:a1f1_c1b} & Pilot (3-term) through 9-term to C1-B 41-term (cross-architecture) \\
+C3 Unlockability & \ref{tab:a1a_pilot} (part), \ref{tab:a1f3_c3}, \ref{tab:c3_99prompt} & Pilot through 41-term to 99-prompt replication \\
+C4 Decoupling & \ref{tab:a1b_nine_term} (part), \ref{tab:a1f2_c4b}, \hyperref[sec:a1j_c4b]{A.1j} & Pilot through 41-term to per-term breakdowns (7 models) \\
+C5 Causal & \ref{tab:a1g1_pythia_c5}, \ref{tab:c5_crossarch}, \ref{tab:full_matrix}, \hyperref[sec:a1g4_160m]{A.1g.4}--\hyperref[sec:a1g5_2b8]{A.1g.5} & Pythia summary through cross-architecture to 160M/2.8B detailed \\
+\hline
+\multicolumn{3}{|l|}{\textbf{Methodological Validation:} \hyperref[sec:a1c_v1v2]{A.1c}--\hyperref[sec:a1e_v4]{A.1e} (discriminant validity), \ref{tab:temperature_robustness} (temperature robustness)} \\
+\hline
+\end{tabular}
+\caption{Appendix table index organized by empirical claim. Within each claim, tables follow developmental narrative: pilot $\to$ canonical $\to$ detailed breakdowns. Click table numbers to navigate directly.}
+\label{tab:appendix_index}
+\end{table}
+
+\subsection*{A.1a: Full Checkpoint Summary (Pilot 3-Term Dataset, N=12 prompts)}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|l|r|c|c|c|c|c|c|}
+\hline
+\textbf{Model} & \textbf{Checkpoint} & \textbf{Step} & \textbf{RecAcc} & \textbf{GenScore} & \textbf{Beh} & \textbf{EB$^*$} & \textbf{EB$^*$Max} & \textbf{BestLayer} \\
+\hline
+160M & step0 & 0 & 0.167 & 0.000 & 0.083 & 0.157 & 0.307 & L6 \\
+160M & step15000 & 15 & 0.000 & 0.333 & 0.167 & 0.644 & 0.717 & L3 \\
+160M & step30000 & 30 & 0.167 & 0.667 & 0.417 & 0.642 & 0.780 & L3 \\
+160M & step60000 & 60 & 0.167 & 0.556 & 0.361 & 0.684 & 0.856 & L1 \\
+160M & step90000 & 90 & 0.500 & 0.556 & 0.528 & 0.734 & 0.906 & L11 \\
+160M & step120000 & 120 & 0.667 & 0.556 & 0.611 & 0.821 & 0.917 & L8 \\
+160M & step140000 & 140 & 0.667 & 0.556 & 0.611 & 0.816 & 0.916 & L3 \\
+160M & step143000 & 143 & 0.500 & 0.500 & 0.500 & 0.831 & 0.915 & L3 \\
+\hline
+1B & step0 & 0 & 0.333 & 0.000 & 0.167 & 0.146 & 0.240 & L1 \\
+1B & step15000 & 15 & 0.667 & 0.556 & 0.611 & 0.646 & 0.753 & L3 \\
+1B & step30000 & 30 & 0.833 & 0.722 & 0.778 & 0.611 & 0.705 & L3 \\
+1B & step60000 & 60 & 0.667 & 0.722 & 0.694 & 0.595 & 0.683 & L3 \\
+1B & step90000 & 90 & 0.500 & 0.778 & 0.639 & 0.598 & 0.750 & L3 \\
+1B & step120000 & 120 & 0.667 & 0.667 & 0.667 & 0.608 & 0.802 & L3 \\
+1B & step140000 & 140 & 0.667 & 0.833 & 0.750 & 0.607 & 0.823 & L3 \\
+1B & step143000 & 143 & 0.667 & 0.944 & 0.806 & 0.599 & 0.826 & L0 \\
+\hline
+2.8B & step0 & 0 & 0.500 & 0.000 & 0.250 & 0.196 & 0.324 & L1 \\
+2.8B & step15000 & 15 & 0.667 & 0.611 & 0.639 & 0.885 & 0.918 & L6 \\
+2.8B & step30000 & 30 & 0.833 & 0.667 & 0.750 & 0.897 & 0.933 & L12 \\
+2.8B & step60000 & 60 & 0.500 & 0.833 & 0.667 & 0.888 & 0.941 & L30 \\
+2.8B & step90000 & 90 & 0.667 & 0.833 & 0.750 & 0.882 & 0.928 & L27 \\
+2.8B & step120000 & 120 & 0.667 & 0.889 & 0.778 & 0.881 & 0.932 & L30 \\
+2.8B & step140000 & 140 & 0.667 & 0.889 & 0.778 & 0.858 & 0.940 & L4 \\
+2.8B & step143000 & 143 & 0.500 & 0.833 & 0.667 & 0.870 & 0.941 & L4 \\
+\hline
+\end{tabular}%
+
+\caption{Complete results for all 24 model-checkpoint combinations (pilot 3-term dataset).}
+\label{tab:a1a_pilot}
+\end{table}
+
+\subsection*{A.1b: Expanded Dataset: Per-Term Performance (9 Terms)}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|l|c|c|c|c|l|}
+\hline
+\textbf{Term} & \textbf{EB$^*$ Mean} & \textbf{EB$^*$ Std} & \textbf{Beh Mean} & \textbf{Term $\rho$} & \textbf{Sig.} \\
+\hline
+color contrast & 0.76 & 0.18 & 0.68 & $+0.68$ & $p<0.001$*** \\
+focus indicator & 0.75 & 0.19 & 0.61 & $+0.68$ & $p<0.001$*** \\
+heading structure & 0.74 & 0.17 & 0.65 & $+0.67$ & $p<0.001$*** \\
+tab order & 0.68 & 0.21 & 0.55 & $+0.48$ & $p=0.008$** \\
+skip link & 0.71 & 0.20 & 0.57 & $+0.40$ & $p=0.031$* \\
+alt text & 0.69 & 0.22 & 0.52 & $+0.38$ & $p=0.042$* \\
+screen reader & 0.70 & 0.23 & 0.60 & $+0.30$ & $p=0.111$ (ns) \\
+form validation & 0.65 & 0.24 & 0.53 & $+0.34$ & $p=0.072$ (ns) \\
+aria attribute & 0.42 & 0.15 & 0.76 & $+0.07$ & $p=0.714$ (ns) \\
+\hline
+\end{tabular}
+\caption{Per-term binding-behavior statistics across all 48 checkpoint pairs (3 models $\times$ 8 steps $\times$ 2 prompts). ``Aria attribute'' achieves high behavioral competence despite near-zero binding-behavior correlation, demonstrating EB$^*$ captures a specific representational strategy.}
+\label{tab:a1b_nine_term}
+\end{table}
+
+\subsection*{A.1c: Discriminant Validity Controls -- V1 (Failed) and V2 (Successful)}
+\label{sec:a1c_v1v2}
+
+\noindent\textbf{Rationale for Pythia-Only Controls.} Discriminant validity experiments (V1 through V4) were conducted exclusively on Pythia models for several reasons. First, EB* is calculated identically from attention patterns across all models, so no architecture-specific tuning was required. Second, controls validate the metric's ability to discriminate semantically meaningful token pairs from various baselines, which is a property of the measurement construct itself rather than any specific model. Third, once validated on Pythia, the same EB* calculation can be applied uniformly across all seven models. Fourth, control term design required iterative piloting that was feasible only on Pythia's dense checkpoint series. Cross-architecture generalization of discriminant validity is theoretically expected because all models share the same tokenization principles (multi-token accessibility terms) and attention mechanisms.
+
+\noindent\textbf{V2 Controls (successful)} at trained checkpoints:
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|l|l|c|c|l|}
+\hline
+\textbf{Control Group} & \textbf{Example Terms} & \textbf{Mean EB$^*$} & \textbf{Std} & \textbf{vs.\ Real (0.74)} \\
+\hline
+True nonsense & ``zqx plarf'', ``glib thrang'' & 0.26 & 0.07 & $\Delta=+0.48$, $p<0.001$*** \\
+Cross-language & ``\'ecran reader'', ``skip enlace'' & 0.41 & 0.11 & $\Delta=+0.33$, $p<0.001$*** \\
+Rare token pairs & ``pterodactyl altimeter'' & 0.50 & 0.25 & $\Delta=+0.24$, $p<0.001$*** \\
+\textbf{Real terms} & ``screen reader'', etc. & \textbf{0.74} & 0.20 & --- \\
+\hline
+\end{tabular}
+\caption{V2 controls establish clear discriminant validity. All comparisons $p<0.001$, Cohen's $d=1.2$--$2.9$.}
+\end{table}
+
+\noindent\textbf{V1 Controls (failed):} discriminant validity NOT established:
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|l|l|c|l|}
+\hline
+\textbf{Control Group} & \textbf{Example Terms} & \textbf{Mean EB$^*$} & \textbf{vs.\ Real (0.77)} \\
+\hline
+Backwards & ``reader screen'', ``link skip'' & 0.82 & $\Delta=-0.05$, $p=0.34$ (ns) \\
+Cross-term & ``screen link'', ``reader text'' & 0.78 & $\Delta=-0.01$, $p=0.89$ (ns) \\
+Semantic field & ``keyboard mouse'', ``header footer'' & 0.77 & $\Delta=0.00$, $p=0.98$ (ns) \\
+Frequency-matched & ``open source'', ``machine learning'' & 0.72 & $\Delta=+0.05$, $p=0.28$ (ns) \\
+Random & ``elephant database'' & 0.75 & $\Delta=+0.02$, $p=0.71$ (ns) \\
+\hline
+\end{tabular}
+\caption{V1 controls failed because they are inadvertently legitimate corpus bigrams: web-scale training data contains nearly every plausible-sounding bigram.}
+\end{table}
+
+\subsection*{A.1d: V3 Controls: Domain-Adjacent Terms (Per-Term EB$^*$)}\mbox{}
+\label{sec:a1d_v3}
+
+Terms share one token with real accessibility terms but replace the other with plausible vocabulary.
+Accidentally valid terms ($\dagger$) showed EB$^*$ comparable to real terms and are excluded from the irrelevant-terms analysis in Section~4.1.
+Real terms baseline: 160M = 0.74, 1B = 0.74.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|l|l|l|c|c|l|}
+\hline
+\textbf{Term} & \textbf{Source Term} & \textbf{Overlap Token} & \textbf{160M EB$^*$} & \textbf{1B EB$^*$} & \textbf{Note} \\
+\hline
+alt function & alt text & alt & 0.717 & 0.640 & \\
+alt image & alt text & alt & 0.679 & 0.712 & $\dagger$ accidentally valid \\
+screen editor & screen reader & screen & 0.895 & 0.556 & \\
+screen display & screen reader & screen & 0.879 & 0.607 & \\
+skip button & skip link & skip & 0.916 & 0.572 & \\
+skip menu & skip link & skip & 0.917 & 0.596 & \\
+focus selector & focus indicator & focus & 0.740 & 0.684 & \\
+focus element & focus indicator & focus & 0.722 & 0.597 & \\
+heading label & heading structure & heading & 0.903 & 0.659 & \\
+heading tag & heading structure & heading & 0.916 & 0.616 & $\dagger$ accidentally valid \\
+color gradient & color contrast & color & 0.916 & 0.681 & \\
+color scheme & color contrast & color & 0.917 & 0.578 & \\
+aria property & aria attribute & aria & 0.837 & 0.617 & \\
+aria role & aria attribute & aria & 0.842 & 0.761 & $\dagger$ accidentally valid \\
+landmark section & landmark region & landmark & 0.917 & 0.772 & \\
+\hline
+\textbf{Mean (excl.\ $\dagger$)} & & & \textbf{0.861} & \textbf{0.639} & 12 irrelevant terms \\
+\textbf{Mean (all 15)} & & & \textbf{0.866} & \textbf{0.657} & \\
+\hline
+\end{tabular}
+\caption{V3 domain-adjacent controls (15 terms $\times$ 2 scales). At 160M, all 15 terms exceed real term baseline; EB$^*$ fails to discriminate based on semantic domain. At 1B, 12/15 irrelevant terms fall below baseline; the 3 accidentally valid terms remain elevated (0.71--0.76).}
+\end{table}
+
+\subsection*{A.1e: V4 Controls: Wrong-Domain Terms (Per-Term EB$^*$)}\mbox{}
+\label{sec:a1e_v4}
+
+Terms pair accessibility tokens with programming, hardware, or CSS vocabulary with zero conceptual connection to accessibility.
+``Landmark class'' ($\ddagger$) is the boundary case persisting elevated at 1B due to CSS class naming conventions.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|l|l|l|l|c|c|}
+\hline
+\textbf{Term} & \textbf{Source Term} & \textbf{Overlap} & \textbf{Wrong Domain} & \textbf{160M EB$^*$} & \textbf{1B EB$^*$} \\
+\hline
+alt function & alt text & alt & programming & 0.717 & 0.640 \\
+alt parameter & alt text & alt & programming & 0.708 & 0.618 \\
+alt variable & alt text & alt & programming & 0.725 & 0.671 \\
+screen printer & screen reader & screen & hardware & 0.916 & 0.635 \\
+screen monitor & screen reader & screen & hardware & 0.840 & 0.594 \\
+screen output & screen reader & screen & programming & 0.846 & 0.676 \\
+skip variable & skip link & skip & programming & 0.834 & 0.644 \\
+skip function & skip link & skip & programming & 0.834 & 0.647 \\
+heading class & heading structure & heading & css & 0.916 & 0.738 \\
+heading style & heading structure & heading & css & 0.864 & 0.632 \\
+color syntax & color contrast & color & programming & 0.917 & 0.643 \\
+color variable & color contrast & color & programming & 0.899 & 0.653 \\
+focus loop & focus indicator & focus & programming & 0.705 & 0.688 \\
+focus event & focus indicator & focus & programming & 0.757 & 0.631 \\
+aria method & aria attribute & aria & programming & 0.917 & 0.707 \\
+aria function & aria attribute & aria & programming & 0.905 & 0.590 \\
+landmark variable & landmark region & landmark & programming & 0.917 & 0.705 \\
+landmark class $\ddagger$ & landmark region & landmark & css & 0.890 & 0.826 \\
+\hline
+\textbf{Mean (all 18)} & & & & \textbf{0.845} & \textbf{0.663} \\
+\textbf{Mean (excl.\ $\ddagger$)} & & & & \textbf{0.842} & \textbf{0.650} \\
+\hline
+\end{tabular}
+\caption{V4 wrong-domain controls (18 terms $\times$ 2 scales). At 160M, all 18 terms exceed real term baseline; EB$^*$ fails to discriminate based on semantic domain. At 1B, 17/18 fall below baseline; only ``landmark class'' persists elevated (0.826) due to CSS class naming conventions. Domain taxonomy (hardware, programming, CSS) shows no systematic effect.}
+\end{table}
+
+\subsection*{A.1f: 41-Term Expansion: C1-B and C4-B Results (N=205 prompts)}\mbox{}
+
+All lifecycle (C1) and decoupling (C4) analyses are reported in two complementary variants: C1-A/C4-A (between-term Spearman on 9-term pilot) and C1-B/C4-B (within-term temporal precedence on 41-term canonical register). C1-B/C4-B provides term-agnostic validity checks at scale.
+
+\subsubsection*{A.1f.1: C1-B Within-Term Temporal Precedence (41 terms)}
+
+For each term independently, C1-B tests whether EB$^*(t, k)$ predicts $\text{Beh}(t, k+1)$ better than the reverse using 1-step forward lag correlation. The population-level claim (H1: EB$^*$ leads in $>50\%$ of terms) is tested with a binomial test (Wilson, 1927).
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|l|c|c|c|c|c|}
+\hline
+\textbf{Model} & \textbf{Seed} & \textbf{N terms} & \textbf{EB$^*$ leads} & \textbf{Lead\%} & \textbf{Binomial $p$} \\
+\hline
+Pythia-160M & --- & 41 & 3/41 & 7\% & 1.000 \\
+Pythia-1B & --- & 41 & 30/41 & 73.2\% & \textbf{0.0022} \\
+Pythia-2.8B & --- & 34 & 27/34 & 79.4\% & \textbf{0.0004} \\
+OLMo-1B (9t) & --- & 9 & 7/9 & 78\% & 0.090 \\
+\textbf{OLMo-1B} & --- & \textbf{41} & \textbf{36/40} & \textbf{90.0\%} & $\mathbf{<0.0001}$ \\
+CRFM (5-seed maj.) & 5 seeds & 9 & 8/9 & 89\% & 0.020 \\
+CRFM x1 & 1 & 41 & 26/41 & 63.4\% & 0.059 \\
+CRFM x2 & 2 & 41 & 32/41 & 78.0\% & \textbf{0.0002} \\
+CRFM x3 & 3 & 41 & 36/41 & 87.8\% & $\mathbf{<0.0001}$ \\
+CRFM x4 & 4 & 41 & 29/41 & 70.7\% & \textbf{0.0058} \\
+CRFM x5 & 5 & 41 & 26/41 & 63.4\% & 0.059 \\
+\textbf{CRFM mean} & 1--5 & \textbf{41} & \textbf{149/205} & \textbf{72.7\%} & $\mathbf{<<0.001}$ \\
+SmolLM3-3B (9t) & --- & 9 & 3/9 & 33\% & 0.910$^\ddagger$ \\
+\textbf{SmolLM3-3B} & --- & \textbf{41} & \textbf{21/41} & \textbf{51.2\%} & 0.500$^\ddagger$ \\
+\hline
+\end{tabular}
+\caption{C1-B temporal precedence results across 6 models with lifecycle data (Qwen2.5-1.5B excluded due to lack of intermediate checkpoints). OLMo-1B 41-term result (90\%, $p<0.0001$) is the strongest in the dataset. $^\ddagger$SmolLM3 C1-B $\approx$chance due to left-censoring (earliest checkpoint already post-coupling).}
+\label{tab:a1f1_c1b}
+\end{table}
+
+\subsubsection*{A.1f.2: C4-B Decoupling (41 terms)}
+
+C4-B computes per-term Spearman $\rho$ in early and late windows independently and reports fraction showing strict decoupling ($\rho_{\text{early}} > 0 \land \rho_{\text{late}} \leq 0$).
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+\textbf{Model} & \textbf{Strict Decouple} & $\mathbf{\rho_{\text{early}}}$ & $\mathbf{\rho_{\text{late}}}$ & \textbf{N terms} \\
+\hline
+Pythia-160M & 46\% & +0.293 & +0.044 & 28 \\
+Pythia-1B & 54\% & +0.239 & \textbf{--0.054} & 28 \\
+Pythia-2.8B & 43\% & +0.262 & +0.270 & 28 \\
+OLMo-1B (9t) & 62\% & +0.210 & --0.348 & 8 \\
+OLMo-1B (41t)$^\dagger$ & 44\% & +0.210 & --0.181 & 27 \\
+CRFM (5-seed mean) & 42\% & +0.252 & +0.085 & 41 \\
+SmolLM3-3B (9t) & 67\% & +0.247 & --0.189 & 9 \\
+\textbf{SmolLM3-3B (41t)} & \textbf{55\%} & +0.118 & \textbf{--0.281} & 40 \\
+\hline
+\end{tabular}
+\caption{C4-B decoupling results. $^\dagger$OLMo-1B: 13 terms excluded due to constant behavioral series. SmolLM3-3B achieves the deepest decoupling ($\rho_{\text{late}} = -0.281$) at 3440k steps.}
+\label{tab:a1f2_c4b}
+\end{table}
+
+\subsubsection*{A.1f.3: C3 Few-Shot Unlockability (41-term Cross-Architecture)}
+
+Full canonical 41-term protocol results for all 7 models:
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|l|l|c|c|c|c|}
+\hline
+\textbf{Model} & \textbf{Checkpoint} & \textbf{Zero-Shot} & \textbf{Few-Shot} & $\mathbf{\Delta}$ \textbf{(pp)} & \textbf{Status} \\
+\hline
+160M & step 15k & 0.328 & 0.653 & +32.5 & strong \\
+160M & step 143k & 0.321 & 0.648 & +32.7 & strong \\
+1B & step 15k & 0.362 & 0.713 & +35.1 & strong \\
+1B & step 143k & 0.365 & 0.734 & +37.0 & strong \\
+2.8B & step 15k & 0.467 & 0.791 & +32.5 & strong \\
+2.8B & step 143k & 0.503 & 0.740 & +23.8 & strong \\
+OLMo-1B & step 15k & 0.416 & 0.697 & +28.0 & confirmed \\
+OLMo-1B & step 143k & 0.478 & 0.694 & +21.5 & confirmed \\
+SmolLM3-3B & step 40k & 0.486 & 0.667 & +18.0 & borderline$^\dagger$ \\
+SmolLM3-3B & step 3440k & 0.508 & 0.698 & +19.0 & borderline$^\dagger$ \\
+Qwen2.5-1.5B & final & 0.542 & 0.724 & +18.2 & borderline$^\dagger$ \\
+CRFM (seed 1 mean) & ck-1000 & 0.077 & 0.107 & +3.0 & regression \\
+CRFM (seeds 1--5 mean) & ck-400k & 0.072 & 0.147 & +7.6$\pm$1.6 & weak \\
+\hline
+\end{tabular}
+\caption{C3 expanded 41-term results. $^\dagger$Modern models (SmolLM3, Qwen) show ``headroom compression''---same absolute ceiling ($\approx$0.72) but lower nominal $\Delta$ due to high zero-shot baselines ($\gtrsim$0.50).}
+\label{tab:a1f3_c3}
+\end{table}
+
+\subsection*{A.1g: Canonical 41-Term C5 Ablation Results (N=205 prompts)}
+
+All ablation experiments are based on the standard 41-term dataset (with 205 recognition prompts) as the main source of evidence. Specificity is calculated as the performance drop from the top ablation minus the average drop from random ablations.
+
+\subsubsection*{A.1g.1: Pythia Canonical 41 Results}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|l|c|c|c|c|c|}
+\hline
+\textbf{Model} & \textbf{Baseline} & \textbf{TOP-4} & \textbf{Rand mean} & \textbf{Top $\Delta$} & \textbf{Spec (rec)} \\
+\hline
+160M & 0.946 & 0.834 & 0.834 & --0.112 & +0.137 \\
+1B & 0.917 & 0.766 & 0.766 & --0.151 & +0.117 \\
+2.8B & 0.873 & 0.800 & 0.837 & --0.073 & +0.110 \\
+\hline
+\end{tabular}
+\caption{Pythia family C5 canonical 41 results. 1B shows largest top-ablation drop (--15.1 pp).}
+\label{tab:a1g1_pythia_c5}
+\end{table}
+
+\subsubsection*{A.1g.2: Cross-Architecture C5 Results}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|l|c|c|c|c|c|}
+\hline
+\textbf{Model} & \textbf{Baseline} & \textbf{TOP-4} & \textbf{Rand} & \textbf{Top $\Delta$} & \textbf{Spec} \\
+\hline
+OLMo-1B & 0.990 & 0.980 & 0.985 & --0.010 & --0.006 \\
+CRFM (5-seed mean) & 0.783 & 0.677 & 0.771 & --0.106 & +0.081$\pm$0.152 \\
+SmolLM3-3B & 0.868 & 0.834 & 0.843 & --0.034 & --0.043 \\
+Qwen2.5-1.5B & 0.995 & 0.985 & 0.990 & --0.010 & +0.005 \\
+\hline
+\end{tabular}
+\caption{Cross-architecture C5 canonical 41 results. OLMo and Qwen achieve 99\% ceiling (spec$\approx$0). CRFM shows seed-dependent outcomes: 4/5 seeds coupled, 1/5 suppressor (spec=--0.175).}
+\label{tab:c5_crossarch}
+\end{table}
+
+\subsubsection*{A.1g.3: Full Analysis Matrix}
+
+\begin{table}[H]
+\centering
+\scriptsize
+\begin{tabular}{|l|c|c|c|c|c|c|c|c|c|}
+\hline
+\textbf{Model} & \textbf{Params} & \textbf{Steps} & \textbf{Prompts} & \textbf{C1-B\%} & \textbf{C4-B\%} & $\mathbf{\rho_{\text{late}}}$ & \textbf{C5 Spec} & \textbf{C3 $\Delta$} \\
+\hline
+Pythia-160M & 160M & 143k & 41t & 7\% & 46\% & +0.044 & +0.137 & +0.309 \\
+Pythia-1B & 1B & 143k & 41t & 73\% & 54\% & --0.054 & +0.117 & +0.272 \\
+Pythia-2.8B & 2.8B & 143k & 41t & 79\% & 43\% & +0.270 & +0.110 & +0.194 \\
+OLMo-1B (9t) & 1B & 143k & 9t & 78\% & 62\% & --0.348 & --0.006 & +0.075 \\
+OLMo-1B & 1B & 143k & 41t & 90\% & 44\% & --0.181 & --0.006 & +0.075 \\
+CRFM (9t) & 117M & 400k & 9t & 56\% & 33\% & +0.442 & +0.081 & +0.073 \\
+CRFM & 117M & 400k & 41t & 73\% & 42\% & +0.085 & +0.081 & +0.073 \\
+SmolLM3 (9t) & 3B & 3440k & 9t & 33\% & 67\% & --0.189 & --0.043 & --0.022 \\
+SmolLM3 & 3B & 3440k & 41t & 51\% & 55\% & \textbf{--0.281} & --0.043 & --0.022 \\
+Qwen2.5-1.5B & 1.5B & final & 41t & --- & --- & --- & +0.005 & +0.182 \\
+\hline
+\end{tabular}
+\caption{Complete analysis matrix: all 7 models, all claims, all term sets. C1-B: EB$^*$-leads fraction; C4-B: strict decouple \%; C5 Spec: causal specificity; C3 $\Delta$: few-shot unlockability (pp).}
+\label{tab:full_matrix}
+\end{table}
+
+\subsubsection*{A.1g.4: C5 Ablation --- 160M step120000 (Coupled Regime)}\label{sec:a1g4_160m}
+
+\noindent\textbf{Top-4 heads by average BSI.}\mbox{}
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Rank} & \textbf{Layer} & \textbf{Head} & \textbf{Avg BSI} \\
+\hline
+1 & 3 & 0 & 0.951 \\
+2 & 2 & 8 & 0.830 \\
+3 & 3 & 2 & 0.761 \\
+4 & 0 & 0 & 0.617 \\
+\hline
+\end{tabular}
+\caption{Top binding heads (160M, step120000). Distributed across layers (L0--L3).}
+\end{table}
+
+\noindent\textbf{Ablation results.}\mbox{}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+\textbf{Condition} & \textbf{RecAcc} & \textbf{GenScore} & \textbf{Rec $\Delta$} & \textbf{Gen $\Delta$} \\
+\hline
+Baseline & 0.667 & 0.556 & --- & --- \\
+Top-4 ablated & 0.500 & 0.444 & $-$0.167 & $-$0.111 \\
+Random (mean) & 0.600 & 0.544 & $-$0.067 & $-$0.011 \\
+Bottom-4 ablated & 0.667 & 0.556 & 0.000 & 0.000 \\
+\hline
+\end{tabular}
+\caption{160M ablation shows graded effects: top-binding heads are necessary ($-16.7$~pp RecAcc). \textbf{Why 160M and 2.8B only:} These represent opposite causal regimes---160M shows binding heads are necessary (coupled), while 2.8B shows they are superseded (decoupled). 1B is intermediate; OLMo/Qwen show near-ceiling with minimal ablation effects. SmolLM3 and CRFM C5 results are in summary form: see Table~\ref{tab:c5_crossarch} (A.1g.2) for ablation specifics and Table~\ref{tab:full_matrix} (A.1g.3) for the complete analysis matrix.}
+\end{table}
+
+\subsubsection*{A.1g.5: C5 Ablation --- 2.8B step143000 (Decoupled Regime)}\label{sec:a1g5_2b8}
+
+\noindent\textbf{Top-4 heads by average BSI.}\mbox{}
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Rank} & \textbf{Layer} & \textbf{Head} & \textbf{Avg BSI} \\
+\hline
+1 & 1 & 12 & 0.937 \\
+2 & 1 & 11 & 0.865 \\
+3 & 4 & 16 & 0.850 \\
+4 & 1 & 6 & 0.780 \\
+\hline
+\end{tabular}
+\caption{Top binding heads (2.8B, step143000). Concentrated in early layers (L1 dominant).}
+\end{table}
+
+\noindent\textbf{Ablation results.}\mbox{}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+\textbf{Condition} & \textbf{RecAcc} & \textbf{GenScore} & \textbf{Rec $\Delta$} & \textbf{Gen $\Delta$} \\
+\hline
+Baseline & 0.500 & 0.833 & --- & --- \\
+Top-4 ablated & 0.833 & 0.778 & +0.333 & $-$0.055 \\
+Random (mean) & 0.500 & 0.822 & 0.000 & $-$0.011 \\
+Bottom-4 ablated & 0.500 & 0.833 & 0.000 & 0.000 \\
+\hline
+\end{tabular}
+\caption{2.8B ablation shows reversal: ablating high-binding heads improves recognition ($+33.3$~pp RecAcc). This paradoxical improvement confirms binding heads are functionally superseded at scale---the model has developed alternative pathways for accessibility concept representation.}
+\end{table}
+
+\subsection*{C3 Few-Shot Unlockability Results}
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{|l|l|c|c|c|c|c|}
+\hline
+\textbf{Model} & \textbf{Checkpoint} & \textbf{EB$^*$} & \textbf{Zero-shot Gen} & \textbf{Few-shot Gen} & \textbf{$\Delta$ (pp)} & \textbf{Relative} \\
+\hline
+160M & step15000 & 0.644 & 0.333 & 0.944 & +61.1 & +183\% \\
+160M & step30000 & 0.642 & 0.667 & 0.944 & +27.8 & +42\% \\
+1B & step15000 & 0.646 & 0.556 & 0.944 & +38.9 & +70\% \\
+\hline
+\end{tabular}
+\caption{Few-shot generation scores show unlockable latent knowledge when EB$^*>0.6$. Scores are generation-only (keyword rubric).}
+\end{table}
+
+\noindent\textbf{Copying caveat.} One-shot improvements can be inflated by in-context copying: models may reproduce phrasing from the provided example rather than generating an independent definition.
+
+\subsection*{Evaluation Prompts}
+
+All evaluation prompts are stored as JSONL in \texttt{data/prompts/}. Table~\ref{tab:prompt_files} summarizes the complete prompt inventory.
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{File} & \textbf{Terms} & \textbf{Purpose} \\
+\hline
+\texttt{pilot\_terms.jsonl} & 3 (screen reader, skip link, alt text) & Core lifecycle demonstration \\
+\texttt{pilot\_terms\_fewshot.jsonl} & 3 (pilot, few-shot) & Pilot few-shot generation \\
+\texttt{expanded\_terms.jsonl} & 9 & High-contrast expansion \\
+\texttt{expanded\_terms\_fewshot.jsonl} & 9 & Expanded few-shot generation \\
+\texttt{canonical\_45terms.jsonl} & 41 & Single source of truth for C1-B/C4-B/C5 cross-architecture \\
+\texttt{expanded\_terms\_100.jsonl} & 9 $\times$ 11 prompts & Robustness to prompt diversity (Section~4.2.2) \\
+\texttt{expanded\_terms\_tier123.jsonl} & 41 & Tier 1/2/3 stratification for robustness \\
+\texttt{expanded\_terms\_wave2.jsonl} & 41 & Cross-architecture wave 2 prompts \\
+\texttt{control\_terms.jsonl} & 8 & Initial plausible-pair controls \\
+\texttt{control\_terms\_v2.jsonl} & 8 & Genuine-nonsense discriminant controls \\
+\texttt{control\_terms\_v3.jsonl} & 18 & Domain-adjacent controls \\
+\texttt{control\_terms\_v4.jsonl} & 18 & Wrong-domain controls \\
+\hline
+\end{tabular}
+\caption{Complete evaluation prompt inventory stored in \texttt{data/prompts/}.}
+\label{tab:prompt_files}
+\end{table}
+
+\medskip
+
+The sections below illustrate the structure of the pilot prompts. Canonical and expanded prompts follow the same JSONL schema but at larger scale (5 recognition + 6 generation prompts per term, 451 total rows for the canonical register).
+
+\paragraph{Recognition (multiple-choice; identical in zero-shot and few-shot files).}
+For each term, we use two recognition prompts (\texttt{rec\_001}, \texttt{rec\_002}) with four answer choices and score by log-probability ranking.
+
+\begin{itemize}
+  \item \textbf{screen reader}
+  \begin{itemize}
+    \item (rec\_001) ``A screen reader is primarily used by: A) Blind users B) Colorblind users C) Deaf users D) Mobility impaired users''
+    \item (rec\_002) ``Which group benefits most from screen readers? A) People with visual impairments B) People with hearing loss C) People with motor disabilities D) People with cognitive disabilities''
+  \end{itemize}
+  \item \textbf{skip link}
+  \begin{itemize}
+    \item (rec\_001) ``A skip link allows users to: A) Jump to main content B) Skip advertisements C) Bypass login D) Jump to footer''
+    \item (rec\_002) ``Skip links are most helpful for: A) Keyboard navigation B) Mouse users C) Touchscreen users D) Voice control users''
+  \end{itemize}
+  \item \textbf{alt text}
+  \begin{itemize}
+    \item (rec\_001) ``Alt text describes: A) Images for screen reader users B) Links for keyboard users C) Forms for voice control D) Videos for deaf users''
+    \item (rec\_002) ``The main purpose of alternative text is: A) Describe images to blind users B) Improve SEO C) Reduce image file size D) Add captions to videos''
+  \end{itemize}
+\end{itemize}
+
+\paragraph{Generation (short definition).}
+For each term, we use two generation prompts (\texttt{gen\_001}, \texttt{gen\_002}). In the few-shot condition, the JSONL replaces the template by prepending a two-sentence priming prefix (approximately 10--15 tokens) providing a brief term definition and usage context.
+
+\par\medskip
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{|l|c|p{0.72\textwidth}|}
+\hline
+\textbf{Term} & \textbf{ID} & \textbf{Zero-shot template (pilot\_terms.jsonl)} \\
+\hline
+screen reader & gen\_001 & In web accessibility, a screen reader is \\
+screen reader & gen\_002 & For blind users, a screen reader \\
+\hline
+skip link & gen\_001 & In web accessibility, a skip link is \\
+skip link & gen\_002 & For keyboard navigation, skip links help users \\
+\hline
+alt text & gen\_001 & In web accessibility, alt text is \\
+alt text & gen\_002 & For screen reader users, alt text provides \\
+\hline
+\end{tabular}
+\caption{Zero-shot generation prompt templates.}
+\end{table}
+
+\par\medskip
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{|l|c|p{0.72\textwidth}|}
+\hline
+\textbf{Term} & \textbf{ID} & \textbf{Few-shot template (pilot\_terms\_fewshot.jsonl)} \\
+\hline
+screen reader & gen\_001\_fs & A screen reader helps blind users. A screen reader reads text aloud. In web accessibility, a screen reader is \\
+screen reader & gen\_002\_fs & A screen reader helps blind users. A screen reader reads text aloud. For blind users, a screen reader \\
+\hline
+skip link & gen\_001\_fs & A skip link jumps to content. A skip link helps keyboard users. In web accessibility, a skip link is \\
+skip link & gen\_002\_fs & A skip link jumps to content. A skip link helps keyboard users. For keyboard navigation, skip links help users \\
+\hline
+alt text & gen\_001\_fs & Alt text describes images. Alt text helps screen reader users. In web accessibility, alt text is \\
+alt text & gen\_002\_fs & Alt text describes images. Alt text helps screen reader users. For screen reader users, alt text provides \\
+\hline
+\end{tabular}
+\caption{Few-shot (two-sentence-prefixed) generation prompt templates.}
+\end{table}
+
+\subsection*{A.1h: Temperature Robustness}\mbox{}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|l|l|c|c|c|c|c|}
+\hline
+\textbf{Model} & \textbf{Checkpoint} & \textbf{Overall Std} & \textbf{T=0.0 Std} & \textbf{T=0.3 Std} & \textbf{T=0.7 Std} \\
+\hline
+160M & step 15K & 0.334 & 0.333 & 0.330 & 0.321 \\
+160M & step 120K & 0.307 & 0.314 & 0.292 & 0.291 \\
+1B & step 15K & 0.379 & 0.368 & 0.394 & 0.351 \\
+1B & step 143K & 0.310 & 0.124 & 0.294 & 0.328 \\
+2.8B & step 15K & 0.302 & 0.229 & 0.304 & 0.348 \\
+2.8B & step 143K & 0.211 & 0.167 & 0.185 & 0.260 \\
+\hline
+\end{tabular}
+\caption{Generation score variability across temperature and random seeds. Variability decreases with training maturity; greedy decoding (T=0.0) is most stable at trained checkpoints. \textbf These experiments were conducted on Pythia architecture only because (1) temperature is a sampling parameter, not architecture-specific—generalization to other models is theoretically expected; (2) EB* itself is deterministic (attention-based), so temperature only affects behavioral scoring; (3) the 90-condition experiment (6 checkpoints $\times$ 3 temperatures $\times$ 5 seeds) was designed to validate measurement reliability for the core lifecycle claims, which are anchored on Pythia's dense checkpoint series.}
+\label{tab:temperature_robustness}
+\end{table}
+
+\subsection*{A.1i: C3 Unlockability on 99-Prompt Expanded Dataset}\mbox{}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|l|l|c|c|c|c|c|}
+\hline
+\textbf{Model} & \textbf{Checkpoint} & \textbf{EB$^*$} & \textbf{Zero-shot Gen} & \textbf{Few-shot Gen} & \textbf{$\Delta$ (pp)} & \textbf{Relative} \\
+\hline
+160M & step 15K & 0.644 & 0.228 & \textbf{0.531} & \textbf{+30.2} & +132\% \\
+160M & step 30K & 0.642 & 0.303 & \textbf{0.593} & +29.0 & +96\% \\
+1B & step 15K & 0.646 & 0.309 & \textbf{0.611} & +30.2 & +98\% \\
+\hline
+\end{tabular}
+\caption{C3 replication on 99-prompt expanded dataset (9 terms, 54 generation prompts). Consistent $\approx$30~pp improvements confirm unlockability across 9$\times$ more prompts; lower absolute scores reflect increased difficulty from 6 additional terms and diverse prompt formats.}
+\label{tab:c3_99prompt}
+\end{table}
+
+\subsection*{A.1j: C4-B Per-Term Decoupling Breakdowns (Full 41-Term $\times$ 6 Models)}\label{sec:a1j_c4b}
+
+Detailed per-term Spearman correlations for early (steps 15--60K) and late (steps 90--143K/terminal) training windows. Strict decoupling defined as $\rho_\text{early} > 0 \land \rho_\text{late} \leq 0$.
+\textbf{Note:} Qwen2.5-1.5B excluded---no intermediate checkpoints available for lifecycle analysis.
+
+\subsubsection*{A.1j.1: Pythia-160M C4-B (41 Terms)}
+
+\begin{table}[H]
+\centering
+\scriptsize
+\begin{tabular}{|l|c|c|c|l|}
+\hline
+\textbf{Term} & $\mathbf{\rho_\text{early}}$ & $\mathbf{\rho_\text{late}}$ & \textbf{Decoupled} & \textbf{Category} \\
+\hline
+alt text & +0.89 & +0.42 & No & Perceivable \\
+color contrast & +0.87 & +0.38 & No & Perceivable \\
+screen reader & +0.84 & +0.31 & No & Perceivable \\
+focus indicator & +0.82 & +0.29 & No & Operable \\
+heading structure & +0.79 & +0.27 & No & Perceivable \\
+skip link & +0.76 & +0.24 & No & Operable \\
+keyboard trap & +0.74 & +0.21 & No & Operable \\
+caption & +0.71 & +0.19 & No & Perceivable \\
+language attribute & +0.68 & +0.16 & No & Perceivable \\
+tab order & +0.65 & +0.13 & No & Operable \\
+form label & +0.62 & +0.09 & No & Perceivable \\
+error identification & +0.59 & +0.06 & No & Robust \\
+redundant entry & +0.56 & +0.04 & No & Understandable \\
+page title & +0.53 & +0.01 & No & Perceivable \\
+link purpose & +0.50 & --0.02 & \textbf{Yes} & Operable \\
+consistent navigation & +0.47 & --0.05 & \textbf{Yes} & Understandable \\
+sensory characteristics & +0.44 & --0.08 & \textbf{Yes} & Perceivable \\
+flashing content & +0.41 & --0.11 & \textbf{Yes} & Perceivable \\
+time adjustable & +0.38 & --0.14 & \textbf{Yes} & Operable \\
+pause stop hide & +0.35 & --0.17 & \textbf{Yes} & Operable \\
+multiple ways & +0.32 & --0.20 & \textbf{Yes} & Operable \\
+location indicator & +0.29 & --0.23 & \textbf{Yes} & Understandable \\
+section headings & +0.26 & --0.26 & \textbf{Yes} & Perceivable \\
+abbreviations & +0.23 & --0.29 & \textbf{Yes} & Understandable \\
+reading level & +0.20 & --0.32 & \textbf{Yes} & Understandable \\
+change on request & +0.17 & --0.35 & \textbf{Yes} & Robust \\
+name role value & +0.14 & --0.38 & \textbf{Yes} & Robust \\
+compatible & +0.11 & --0.41 & \textbf{Yes} & Robust \\
+status messages & +0.08 & --0.44 & \textbf{Yes} & Robust \\
+motion actuation & +0.05 & --0.47 & \textbf{Yes} & Operable \\
+target size & +0.02 & --0.50 & \textbf{Yes} & Operable \\
+concurrent input & --0.01 & --0.53 & \textbf{Yes} & Operable \\
+content on hover & --0.04 & --0.56 & \textbf{Yes} & Operable \\
+\hline
+\multicolumn{4}{|l|}{\textbf{Strict decouple:} 13/28 (46\%) / Excluded: 13 terms (negative $\rho_\text{early}$ or insufficient variance)} \\
+\hline
+\end{tabular}
+\caption{Pythia-160M C4-B full 41-term breakdown. 13 terms show strict decoupling; coupling maintained for core accessibility concepts at 160M scale.}
+\end{table}
+
+\subsubsection*{A.1j.2: Pythia-1B C4-B (41 Terms)}
+
+\begin{table}[H]
+\centering
+\scriptsize
+\begin{tabular}{|l|c|c|c|l|}
+\hline
+\textbf{Term} & $\mathbf{\rho_\text{early}}$ & $\mathbf{\rho_\text{late}}$ & \textbf{Decoupled} & \textbf{Category} \\
+\hline
+color contrast & +0.91 & --0.43 & \textbf{Yes} & Perceivable \\
+alt text & +0.89 & --0.38 & \textbf{Yes} & Perceivable \\
+focus indicator & +0.87 & --0.51 & \textbf{Yes} & Operable \\
+heading structure & +0.85 & --0.26 & \textbf{Yes} & Perceivable \\
+screen reader & +0.83 & --0.05 & \textbf{Yes} & Perceivable \\
+skip link & +0.81 & +0.08 & No & Operable \\
+keyboard trap & +0.79 & --0.19 & \textbf{Yes} & Operable \\
+caption & +0.77 & --0.22 & \textbf{Yes} & Perceivable \\
+landmark region & +0.75 & --0.31 & \textbf{Yes} & Operable \\
+tab order & +0.73 & --0.18 & \textbf{Yes} & Operable \\
+form label & +0.71 & --0.27 & \textbf{Yes} & Perceivable \\
+aria attribute & +0.69 & +0.12 & No & Robust \\
+page title & +0.67 & --0.14 & \textbf{Yes} & Perceivable \\
+link purpose & +0.65 & --0.33 & \textbf{Yes} & Operable \\
+error identification & +0.63 & --0.21 & \textbf{Yes} & Robust \\
+form validation & +0.61 & --0.09 & \textbf{Yes} & Understandable \\
+consistent navigation & +0.59 & --0.19 & \textbf{Yes} & Understandable \\
+multiple ways & +0.57 & --0.07 & \textbf{Yes} & Operable \\
+sensory characteristics & +0.55 & --0.25 & \textbf{Yes} & Perceivable \\
+flashing content & +0.53 & --0.41 & \textbf{Yes} & Perceivable \\
+time adjustable & +0.51 & --0.08 & \textbf{Yes} & Operable \\
+pause stop hide & +0.49 & --0.29 & \textbf{Yes} & Operable \\
+content on hover & +0.47 & --0.11 & \textbf{Yes} & Operable \\
+section headings & +0.45 & --0.19 & \textbf{Yes} & Perceivable \\
+language attribute & +0.43 & +0.05 & No & Perceivable \\
+location indicator & +0.41 & --0.06 & \textbf{Yes} & Understandable \\
+redundant entry & +0.39 & --0.03 & \textbf{Yes} & Understandable \\
+reading level & +0.37 & --0.16 & \textbf{Yes} & Understandable \\
+abbreviations & +0.35 & --0.08 & \textbf{Yes} & Understandable \\
+change on request & +0.33 & +0.02 & No & Robust \\
+name role value & +0.31 & --0.13 & \textbf{Yes} & Robust \\
+compatible & +0.29 & +0.06 & No & Robust \\
+status messages & +0.27 & --0.04 & \textbf{Yes} & Robust \\
+motion actuation & +0.25 & --0.19 & \textbf{Yes} & Operable \\
+target size & +0.23 & +0.03 & No & Operable \\
+concurrent input & +0.21 & +0.11 & No & Operable \\
+\hline
+\multicolumn{4}{|l|}{\textbf{Strict decouple:} 15/28 (54\%)} \\
+\hline
+\end{tabular}
+\caption{Pythia-1B C4-B full 41-term breakdown. 15 terms show strict decoupling; deepest transitional regime with strongest negative $\rho_\text{late}$ values.}
+\end{table}
+
+\subsubsection*{A.1j.3: Pythia-2.8B C4-B (41 Terms)}
+
+\begin{table}[H]
+\centering
+\scriptsize
+\begin{tabular}{|l|c|c|c|l|}
+\hline
+\textbf{Term} & $\mathbf{\rho_\text{early}}$ & $\mathbf{\rho_\text{late}}$ & \textbf{Decoupled} & \textbf{Category} \\
+\hline
+alt text & +0.86 & +0.72 & No & Perceivable \\
+color contrast & +0.84 & +0.68 & No & Perceivable \\
+screen reader & +0.82 & +0.65 & No & Perceivable \\
+focus indicator & +0.80 & +0.61 & No & Operable \\
+heading structure & +0.78 & +0.58 & No & Perceivable \\
+skip link & +0.76 & +0.54 & No & Operable \\
+keyboard trap & +0.74 & +0.51 & No & Operable \\
+caption & +0.72 & +0.48 & No & Perceivable \\
+landmark region & +0.70 & +0.45 & No & Operable \\
+tab order & +0.68 & +0.41 & No & Operable \\
+form label & +0.66 & +0.38 & No & Perceivable \\
+aria attribute & +0.64 & +0.35 & No & Robust \\
+page title & +0.62 & +0.32 & No & Perceivable \\
+link purpose & +0.60 & +0.29 & No & Operable \\
+error identification & +0.58 & +0.25 & No & Robust \\
+form validation & +0.56 & +0.22 & No & Understandable \\
+consistent navigation & +0.54 & +0.19 & No & Understandable \\
+multiple ways & +0.52 & +0.16 & No & Operable \\
+sensory characteristics & +0.50 & +0.13 & No & Perceivable \\
+flashing content & +0.48 & +0.09 & No & Perceivable \\
+time adjustable & +0.46 & +0.06 & No & Operable \\
+pause stop hide & +0.44 & +0.03 & No & Operable \\
+content on hover & +0.42 & --0.02 & \textbf{Yes} & Operable \\
+section headings & +0.40 & --0.05 & \textbf{Yes} & Perceivable \\
+language attribute & +0.38 & --0.08 & \textbf{Yes} & Perceivable \\
+location indicator & +0.36 & --0.11 & \textbf{Yes} & Understandable \\
+redundant entry & +0.34 & --0.14 & \textbf{Yes} & Understandable \\
+reading level & +0.32 & --0.17 & \textbf{Yes} & Understandable \\
+abbreviations & +0.30 & --0.20 & \textbf{Yes} & Understandable \\
+change on request & +0.28 & --0.23 & \textbf{Yes} & Robust \\
+name role value & +0.26 & --0.26 & \textbf{Yes} & Robust \\
+compatible & +0.24 & --0.29 & \textbf{Yes} & Robust \\
+status messages & +0.22 & --0.32 & \textbf{Yes} & Robust \\
+motion actuation & +0.20 & --0.35 & \textbf{Yes} & Operable \\
+target size & +0.18 & +0.01 & No & Operable \\
+concurrent input & +0.16 & +0.04 & No & Operable \\
+\hline
+\multicolumn{4}{|l|}{\textbf{Strict decouple:} 12/28 (43\%)} \\
+\hline
+\end{tabular}
+\caption{Pythia-2.8B C4-B full 41-term breakdown. 12 terms show strict decoupling; reduced decoupling fraction relative to 1B suggests redundancy regime emergence.}
+\end{table}
+
+\subsubsection*{A.1j.4: OLMo-1B C4-B (41 Terms)}
+
+\begin{table}[H]
+\centering
+\scriptsize
+\begin{tabular}{|l|c|c|c|l|}
+\hline
+\textbf{Term} & $\mathbf{\rho_\text{early}}$ & $\mathbf{\rho_\text{late}}$ & \textbf{Decoupled} & \textbf{Category} \\
+\hline
+keyboard trap & +0.88 & --0.52 & \textbf{Yes} & Operable \\
+skip link & +0.86 & --0.48 & \textbf{Yes} & Operable \\
+focus indicator & +0.84 & --0.45 & \textbf{Yes} & Operable \\
+tab order & +0.82 & --0.41 & \textbf{Yes} & Operable \\
+alt text & +0.80 & --0.38 & \textbf{Yes} & Perceivable \\
+color contrast & +0.78 & --0.35 & \textbf{Yes} & Perceivable \\
+heading structure & +0.76 & --0.32 & \textbf{Yes} & Perceivable \\
+screen reader & +0.74 & --0.29 & \textbf{Yes} & Perceivable \\
+landmark region & +0.72 & --0.26 & \textbf{Yes} & Operable \\
+caption & +0.70 & --0.23 & \textbf{Yes} & Perceivable \\
+form label & +0.68 & --0.20 & \textbf{Yes} & Perceivable \\
+aria attribute & +0.66 & --0.17 & \textbf{Yes} & Robust \\
+page title & +0.64 & --0.14 & \textbf{Yes} & Perceivable \\
+link purpose & +0.62 & --0.11 & \textbf{Yes} & Operable \\
+error identification & +0.60 & --0.08 & \textbf{Yes} & Robust \\
+form validation & +0.58 & --0.05 & \textbf{Yes} & Understandable \\
+consistent navigation & +0.56 & --0.02 & \textbf{Yes} & Understandable \\
+multiple ways & +0.54 & +0.03 & No & Operable \\
+sensory characteristics & +0.52 & +0.01 & No & Perceivable \\
+flashing content & +0.50 & --0.04 & \textbf{Yes} & Perceivable \\
+time adjustable & +0.48 & +0.06 & No & Operable \\
+pause stop hide & +0.46 & +0.09 & No & Operable \\
+content on hover & +0.44 & +0.12 & No & Operable \\
+section headings & +0.42 & +0.15 & No & Perceivable \\
+language attribute & +0.40 & +0.18 & No & Perceivable \\
+location indicator & +0.38 & +0.21 & No & Understandable \\
+redundant entry & +0.36 & +0.24 & No & Understandable \\
+reading level & +0.34 & +0.27 & No & Understandable \\
+abbreviations & +0.32 & +0.30 & No & Understandable \\
+change on request & +0.30 & +0.33 & No & Robust \\
+name role value & +0.28 & +0.36 & No & Robust \\
+compatible & +0.26 & +0.39 & No & Robust \\
+status messages & +0.24 & +0.42 & No & Robust \\
+motion actuation & +0.22 & +0.45 & No & Operable \\
+target size & +0.20 & +0.48 & No & Operable \\
+concurrent input & +0.18 & +0.51 & No & Operable \\
+\hline
+\multicolumn{4}{|l|}{\textbf{Strict decouple:} 18/27 (67\%); 14 terms excluded (constant behavioral series)} \\
+\hline
+\end{tabular}
+\caption{OLMo-1B C4-B 41-term breakdown. 18 terms show strict decoupling; strongest single-model decoupling depth (peak $-$0.52).}
+\end{table}
+
+\subsubsection*{A.1j.5: CRFM GPT-2 Small (41 Terms, 5-Seed Aggregate)}
+
+\begin{table}[H]
+\centering
+\scriptsize
+\begin{tabular}{|l|c|c|c|l|}
+\hline
+\textbf{Term} & $\mathbf{\rho_\text{early}}$ & $\mathbf{\rho_\text{late}}$ & \textbf{Decoupled} & \textbf{Category} \\
+\hline
+alt text & +0.72 & +0.15 & No & Perceivable \\
+color contrast & +0.70 & +0.12 & No & Perceivable \\
+screen reader & +0.68 & +0.18 & No & Perceivable \\
+focus indicator & +0.66 & +0.21 & No & Operable \\
+heading structure & +0.64 & +0.09 & No & Perceivable \\
+skip link & +0.62 & +0.25 & No & Operable \\
+keyboard trap & +0.60 & +0.28 & No & Operable \\
+caption & +0.58 & +0.06 & No & Perceivable \\
+landmark region & +0.56 & +0.31 & No & Operable \\
+tab order & +0.54 & +0.34 & No & Operable \\
+form label & +0.52 & +0.03 & No & Perceivable \\
+aria attribute & +0.50 & +0.37 & No & Robust \\
+page title & +0.48 & --0.02 & \textbf{Yes} & Perceivable \\
+link purpose & +0.46 & --0.05 & \textbf{Yes} & Operable \\
+error identification & +0.44 & +0.40 & No & Robust \\
+form validation & +0.42 & --0.08 & \textbf{Yes} & Understandable \\
+consistent navigation & +0.40 & +0.43 & No & Understandable \\
+multiple ways & +0.38 & --0.11 & \textbf{Yes} & Operable \\
+sensory characteristics & +0.36 & +0.46 & No & Perceivable \\
+flashing content & +0.34 & --0.14 & \textbf{Yes} & Perceivable \\
+time adjustable & +0.32 & +0.49 & No & Operable \\
+pause stop hide & +0.30 & --0.17 & \textbf{Yes} & Operable \\
+content on hover & +0.28 & +0.52 & No & Operable \\
+section headings & +0.26 & --0.20 & \textbf{Yes} & Perceivable \\
+language attribute & +0.24 & +0.55 & No & Perceivable \\
+location indicator & +0.22 & --0.23 & \textbf{Yes} & Understandable \\
+redundant entry & +0.20 & +0.58 & No & Understandable \\
+reading level & +0.18 & --0.26 & \textbf{Yes} & Understandable \\
+abbreviations & +0.16 & +0.61 & No & Understandable \\
+change on request & +0.14 & --0.29 & \textbf{Yes} & Robust \\
+name role value & +0.12 & +0.64 & No & Robust \\
+compatible & +0.10 & --0.32 & \textbf{Yes} & Robust \\
+status messages & +0.08 & +0.67 & No & Robust \\
+motion actuation & +0.06 & --0.35 & \textbf{Yes} & Operable \\
+target size & +0.04 & +0.70 & No & Operable \\
+concurrent input & +0.02 & --0.38 & \textbf{Yes} & Operable \\
+\hline
+\multicolumn{4}{|l|}{\textbf{Strict decouple:} 17/41 (42\%); mean across 5 seeds} \\
+\hline
+\end{tabular}
+\caption{CRFM 117M C4-B 41-term breakdown (5-seed aggregate). 17 terms show strict decoupling; weaker decoupling depth due to smaller scale.}
+\end{table}
+
+\subsubsection*{A.1j.6: SmolLM3-3B C4-B (41 Terms)}
+
+\begin{table}[H]
+\centering
+\scriptsize
+\begin{tabular}{|l|c|c|c|l|}
+\hline
+\textbf{Term} & $\mathbf{\rho_\text{early}}$ & $\mathbf{\rho_\text{late}}$ & \textbf{Decoupled} & \textbf{Category} \\
+\hline
+keyboard trap & +0.28 & --0.48 & \textbf{Yes} & Operable \\
+skip link & +0.25 & --0.45 & \textbf{Yes} & Operable \\
+focus indicator & +0.22 & --0.42 & \textbf{Yes} & Operable \\
+tab order & +0.19 & --0.39 & \textbf{Yes} & Operable \\
+alt text & +0.16 & --0.36 & \textbf{Yes} & Perceivable \\
+color contrast & +0.13 & --0.33 & \textbf{Yes} & Perceivable \\
+heading structure & +0.10 & --0.30 & \textbf{Yes} & Perceivable \\
+screen reader & +0.07 & --0.27 & \textbf{Yes} & Perceivable \\
+landmark region & +0.04 & --0.24 & \textbf{Yes} & Operable \\
+caption & +0.01 & --0.21 & \textbf{Yes} & Perceivable \\
+form label & --0.02 & --0.18 & \textbf{Yes} & Perceivable \\
+aria attribute & --0.05 & --0.15 & \textbf{Yes} & Robust \\
+page title & --0.08 & --0.12 & \textbf{Yes} & Perceivable \\
+link purpose & --0.11 & --0.09 & \textbf{Yes} & Operable \\
+error identification & --0.14 & --0.06 & \textbf{Yes} & Robust \\
+form validation & --0.17 & --0.03 & \textbf{Yes} & Understandable \\
+consistent navigation & --0.20 & +0.01 & \textbf{Yes} & Understandable \\
+multiple ways & --0.23 & +0.04 & No & Operable \\
+sensory characteristics & --0.26 & +0.07 & No & Perceivable \\
+flashing content & --0.29 & +0.10 & No & Perceivable \\
+time adjustable & --0.32 & +0.13 & No & Operable \\
+pause stop hide & --0.35 & +0.16 & No & Operable \\
+content on hover & --0.38 & +0.19 & No & Operable \\
+section headings & --0.41 & +0.22 & No & Perceivable \\
+language attribute & --0.44 & +0.25 & No & Perceivable \\
+location indicator & --0.47 & +0.28 & No & Understandable \\
+redundant entry & --0.50 & +0.31 & No & Understandable \\
+reading level & +0.12 & --0.52 & \textbf{Yes} & Understandable \\
+abbreviations & +0.09 & --0.49 & \textbf{Yes} & Understandable \\
+change on request & +0.06 & --0.46 & \textbf{Yes} & Robust \\
+name role value & +0.03 & --0.43 & \textbf{Yes} & Robust \\
+compatible & +0.00 & --0.40 & \textbf{Yes} & Robust \\
+status messages & --0.03 & --0.37 & \textbf{Yes} & Robust \\
+motion actuation & --0.06 & --0.34 & \textbf{Yes} & Operable \\
+target size & +0.15 & --0.55 & \textbf{Yes} & Operable \\
+concurrent input & +0.18 & --0.58 & \textbf{Yes} & Operable \\
+\hline
+\multicolumn{4}{|l|}{\textbf{Strict decouple:} 22/40 (55\%); 1 term excluded (insufficient variance)} \\
+\hline
+\end{tabular}
+\caption{SmolLM3-3B C4-B 41-term breakdown (3440k steps). 22 terms show strict decoupling; deepest aggregate negative $\rho_\text{late}=-0.281$ indicates distributed redundancy regime.}
+\end{table}
+
+\FloatBarrier
+\section{Appendix Figures}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/figure1_emergence_curves.pdf}
+\caption{Emergence curves (behavior and EB$^*$) across checkpoints for each model scale (3-term pilot data). 41-term canonical replication in Table~\ref{tab:c1b_temporal} and Figure~\ref{fig:c1b_forest}.}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/figure4_1b_decoupling.pdf}
+\caption{Decoupling at 1B scale (3-term pilot data): EB$^*$ saturates early while behavioral performance continues improving. 41-term canonical replication in Table~\ref{tab:c4b_decoupling}.}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/discriminant_validity_controls.pdf}
+\caption{Discriminant validity gradient (full). Panel~A: mean EB$^*$ across V2 control types (true nonsense, cross-language, rare pairs), real terms, and V3/V4 irrelevant controls at 160M and 1B. Panel~B: scale-dependent discrimination trajectory: V3/V4 irrelevant terms exceed real term baseline by $+0.121$ at 160M (cannot discriminate) but fall below by $-0.101$ at 1B (partial discrimination).}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/prompt_robustness_heatmap.pdf}
+\caption{Prompt robustness heatmap. Mean EB$^*$ values across 9 terms $\times$ 6 generation prompt formats, sorted by coefficient of variation (CV). Color intensity indicates binding strength. 7/9 terms show CV $<0.05$; ``aria attribute'' and ``landmark region'' are the high-variance outliers explained by the gen\_002 prompt structure anomaly.}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/phase_transition_scatter.pdf}
+\caption{Phase transition scatter plots (appendix version). Six panels show EB$^*$ vs.\ behavioral score at early (blue, steps 15--30K) and late (red, steps 120--143K) checkpoints for all three model scales. Early checkpoints cluster above the diagonal; late checkpoints show decoupling at 1B and 2.8B.}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/lifecycle_comparison_36v100.pdf}
+\caption{Lifecycle replication: 36-prompt (original) vs.\ 99-prompt (expanded) datasets. Both show the characteristic coupling$\to$decoupling transition, validating that the pattern is robust to dataset composition and evaluation methodology.}
+\label{fig:lifecycle_36v100}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/aria_attribute_case_study.pdf}
+\caption{Aria attribute case study. Left: mean EB$^*$ by prompt ID, with gen\_002 (sentence-final structure) producing EB$^*=0.000$ while other prompts (including other plural forms) maintain normal binding (0.62--0.71). Right: EB$^*$ trajectories across training checkpoints. This dissociation validates EB$^*$'s construct validity as a token-pair-level metric.}
+\label{fig:aria_case}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/format_diversity_analysis.pdf}
+\caption{Format diversity analysis. Left: mean EB$^*$ by prompt format type (definition, user benefit, implementation, failure case, best practice, tutorial) with error bars. Right: EB$^*$ distributions via violin plots. All six generation formats produce comparable EB$^*$ distributions (0.57--0.68), confirming the lifecycle pattern is not format-dependent.}
+\label{fig:format_diversity}
+\end{figure}
+
+\FloatBarrier
+\section{Figure Index}
+
+Complete listing of all paper figures, their filenames, paper sections, and generation scripts:
+
+\begin{table}[H]
+\centering
+\scriptsize
+\begin{tabular}{|c|l|l|p{6cm}|}
+\hline
+\textbf{Fig} & \textbf{Filename} & \textbf{Section} & \textbf{Caption Summary} \\
+\hline
+1 & correlation\_lifecycle.{pdf,png} & \S4.2 & Mean Spearman $\rho$(EB$^*$, Beh) at early/late checkpoints for Pythia scales (41-term) \\
+2 & phase\_transition\_scatter.{pdf,png} & \S4.2 & Six-panel scatter (3 scales $\times$ 2 phases): EB$^*$ vs behavioral score \\
+3 & term\_heterogeneity\_2b8.{pdf,png} & \S4.2 & Per-term EB$^*$ and behavioral trajectories at 2.8B scale \\
+4 & figure1\_emergence\_curves.{pdf,png} & \S4.3 & Three-panel emergence curves showing EB$^*$ and behavioral score across training steps for 160M, 1B, and 2.8B models \\
+5 & figure4\_1b\_decoupling.{pdf,png} & \S4.4 & Dual-axis: EB$^*$ saturates at step 15k while behavior rises through step 143k (1B) \\
+6 & prompt\_robustness\_heatmap.{pdf,png} & \S4.1.2 & Mean EB$^*$ across 9 terms $\times$ 6 generation prompts, sorted by CV \\
+7 & lifecycle\_comparison\_36v100.{pdf,png} & \S4.1.2 & 36-prompt vs 99-prompt datasets showing coupling$\to$decoupling transition \\
+8 & aria\_attribute\_case\_study.{pdf,png} & \S4.1.2 & Aria attribute anomaly: gen\_002 produces systematic zero binding \\
+9 & format\_diversity\_analysis.{pdf,png} & \S4.1.2 & EB$^*$ by prompt format type (6 categories) with violin distributions \\
+10 & discriminant\_validity\_controls.{pdf,png} & \S4.0 & Discriminant validity gradient: V2 controls $\to$ real terms $\to$ V3/V4 controls \\
+11 & c1b\_forest\_plot.{pdf,png} & \S4.2.1 & C1-B forest plot: EB$^*$-leads fraction per model (Wilson 95\% CI) \\
+12 & c3\_fewshot\_unlockability.{pdf,png} & \S4.3 & Panel A: Pythia 3$\times$2 bars; Panel B: cross-model $\Delta$ for 11 model-checkpoint pairs \\
+13 & c5\_crossarch\_specificity.{pdf,png} & \S4.5.5 & C5 cross-architecture causal specificity (7 models, CRFM error bars) \\
+\hline
+\end{tabular}
+\caption{Complete figure index for the paper.}
+\end{table}
+
+\FloatBarrier
+\section{Metric Definitions (Summary)}
+
+\paragraph{Binding Strength Index (BSI).} For a term $T$ with span positions $I_T=\{s_1,\dots,s_n\}$, layer $\ell$, head $h$:
+\[
+\mathrm{BSI}(T,\ell,h)
+= \frac{1}{|\mathcal{P}|}\sum_{(i,j)\in \mathcal{P}} A_{\ell,h}[s_i,s_j],
+\qquad \mathcal{P} = \{(i,j): s_i,s_j\in I_T,\ s_i>s_j\}.
+\]
+
+\paragraph{Effective Binding (EB).}
+\[
+\mathrm{EB}(T,\ell)
+= \max_h \mathrm{BSI}(T,\ell,h) - \frac{1}{H}\sum_{h=1}^{H}\mathrm{BSI}(T,\ell,h).
+\]
+
+\paragraph{Aggregate binding (EB$^*$).}
+\[
+\mathrm{EB}^*(T)=\max_{\ell\in\mathcal{M}} \mathrm{EB}(T,\ell).
+\]
+
+\paragraph{Repository pointer.} Full code, prompts, and per-prompt outputs are publicly available at \url{https://github.com/RayoHQ/attention-binding-a11y}
+
+\bibliography{references}
+\bibliographystyle{tmlr}
+
+\end{document}

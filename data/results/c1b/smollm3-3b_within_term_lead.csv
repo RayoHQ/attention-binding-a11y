@@ -1,0 +1,10 @@
+model,term,r_forward,r_backward,lead_diff,lead_indicator
+smollm3-3b,alt text,-0.17,0.2203,-0.3904,0
+smollm3-3b,aria attribute,-0.4971,0.2863,-0.7834,0
+smollm3-3b,color contrast,0.5731,0.4897,0.0834,1
+smollm3-3b,focus indicator,-0.2254,0.4974,-0.7228,0
+smollm3-3b,heading structure,-0.0723,-0.4557,0.3834,1
+smollm3-3b,keyboard navigation,-0.4735,0.3366,-0.81,0
+smollm3-3b,landmark region,0.5829,-0.7424,1.3253,1
+smollm3-3b,screen reader,-0.5312,-0.124,-0.4072,0
+smollm3-3b,skip link,0.1357,0.607,-0.4712,0

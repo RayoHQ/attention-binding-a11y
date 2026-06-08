@@ -1,0 +1,130 @@
+{
+  "model": "pythia-160m-deduped",
+  "checkpoint": "step120000",
+  "prompts_file": "data/prompts/expanded_terms_tier123.jsonl",
+  "n_rec_prompts": 105,
+  "n_gen_prompts": 126,
+  "n_heads_ablated": 4,
+  "n_random_trials": 5,
+  "top_heads": [
+    {
+      "layer": 3,
+      "head": 0,
+      "avg_bsi": 0.8722025363221138
+    },
+    {
+      "layer": 3,
+      "head": 2,
+      "avg_bsi": 0.7583356498819399
+    },
+    {
+      "layer": 2,
+      "head": 8,
+      "avg_bsi": 0.7066593953007818
+    },
+    {
+      "layer": 1,
+      "head": 1,
+      "avg_bsi": 0.6356080415662685
+    }
+  ],
+  "bottom_heads": [
+    {
+      "layer": 8,
+      "head": 5,
+      "avg_bsi": 4.266306139479094e-29
+    },
+    {
+      "layer": 9,
+      "head": 0,
+      "avg_bsi": 0.0
+    },
+    {
+      "layer": 9,
+      "head": 2,
+      "avg_bsi": 0.0
+    },
+    {
+      "layer": 9,
+      "head": 5,
+      "avg_bsi": 0.0
+    }
+  ],
+  "recognition": {
+    "BASELINE": {
+      "accuracy": 1.0,
+      "correct": 105,
+      "total": 105
+    },
+    "TOP-4 ablated": {
+      "accuracy": 0.7333333333333333,
+      "correct": 77,
+      "total": 105
+    },
+    "RANDOM trial 1": {
+      "accuracy": 1.0,
+      "correct": 105,
+      "total": 105
+    },
+    "RANDOM trial 2": {
+      "accuracy": 0.9904761904761905,
+      "correct": 104,
+      "total": 105
+    },
+    "RANDOM trial 3": {
+      "accuracy": 1.0,
+      "correct": 105,
+      "total": 105
+    },
+    "RANDOM trial 4": {
+      "accuracy": 0.9809523809523809,
+      "correct": 103,
+      "total": 105
+    },
+    "RANDOM trial 5": {
+      "accuracy": 1.0,
+      "correct": 105,
+      "total": 105
+    },
+    "BOTTOM-4 ablated": {
+      "accuracy": 1.0,
+      "correct": 105,
+      "total": 105
+    }
+  },
+  "generation": {
+    "BASELINE": {
+      "mean_score": 0.365079365079365
+    },
+    "TOP-4 ablated": {
+      "mean_score": 0.2169312169312169
+    },
+    "RANDOM trial 1": {
+      "mean_score": 0.36772486772486773
+    },
+    "RANDOM trial 2": {
+      "mean_score": 0.32539682539682546
+    },
+    "RANDOM trial 3": {
+      "mean_score": 0.2698412698412698
+    },
+    "RANDOM trial 4": {
+      "mean_score": 0.39682539682539675
+    },
+    "RANDOM trial 5": {
+      "mean_score": 0.33862433862433866
+    },
+    "BOTTOM-4 ablated": {
+      "mean_score": 0.3544973544973545
+    }
+  },
+  "drops": {
+    "top_rec_drop": 0.2666666666666667,
+    "top_gen_drop": 0.1481481481481481,
+    "mean_random_rec_drop": 0.005714285714285716,
+    "mean_random_gen_drop": 0.025396825396825317,
+    "bottom_rec_drop": 0.0,
+    "bottom_gen_drop": 0.010582010582010526,
+    "specificity": 0.1918518518518519
+  }
+}

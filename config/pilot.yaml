@@ -1,0 +1,42 @@
+pilot:
+  models:
+    - name: "pythia-160m-deduped"
+      size: "160m"
+    - name: "pythia-1b-deduped"
+      size: "1b"
+    - name: "pythia-2.8b-deduped"
+      size: "2.8b"
+
+  terms:
+    - "screen reader"
+    - "skip link"
+    - "alt text"
+
+  # Verified available checkpoints (8 instead of 10)
+  # Missing step150k, step152k, step153k; using step143k as final
+  checkpoints:
+    - index: 0
+      step: "step0"
+    - index: 15
+      step: "step15000"
+    - index: 30
+      step: "step30000"
+    - index: 60
+      step: "step60000"
+    - index: 90
+      step: "step90000"
+    - index: 120
+      step: "step120000"
+    - index: 140
+      step: "step140000"
+    - index: 143
+      step: "step143000"
+
+  decoding:
+    temperature: 0.0
+    max_new_tokens: 50
+    do_sample: false
+
+  aggregation:
+    eb_star: "max_over_layers"
+    layer_window: "all"

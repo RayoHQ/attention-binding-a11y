@@ -1,0 +1,10 @@
+model,term,rho_early,rho_late,decouple_strict,decouple_attenuate
+smollm3-3b,alt text,0.8,0.1054,0,1
+smollm3-3b,aria attribute,0.4,-0.1054,1,1
+smollm3-3b,color contrast,0.6,-0.4,1,1
+smollm3-3b,focus indicator,-0.9487,0.2108,0,0
+smollm3-3b,heading structure,0.3162,-0.6325,1,1
+smollm3-3b,keyboard navigation,-0.3162,-0.1054,0,0
+smollm3-3b,landmark region,0.2582,-0.7746,1,1
+smollm3-3b,screen reader,0.3162,0.0,1,1
+smollm3-3b,skip link,0.8,0.0,1,1

@@ -1,0 +1,293 @@
+{
+  "model": "crfm-gpt2-small-x1",
+  "checkpoint": "checkpoint-400000",
+  "per_term": {
+    "alert dialog": {
+      "baseline": 0.6,
+      "top_ablated": 0.8,
+      "rand_ablated": 0.64,
+      "bot_ablated": 0.6,
+      "specificity": -0.16
+    },
+    "alt text": {
+      "baseline": 1.0,
+      "top_ablated": 0.8,
+      "rand_ablated": 1.0,
+      "bot_ablated": 1.0,
+      "specificity": 0.2
+    },
+    "aria attribute": {
+      "baseline": 0.6,
+      "top_ablated": 0.2,
+      "rand_ablated": 0.6,
+      "bot_ablated": 0.4,
+      "specificity": 0.4
+    },
+    "audio description": {
+      "baseline": 0.6,
+      "top_ablated": 1.0,
+      "rand_ablated": 0.64,
+      "bot_ablated": 0.6,
+      "specificity": -0.36
+    },
+    "braille display": {
+      "baseline": 0.6,
+      "top_ablated": 0.8,
+      "rand_ablated": 0.6,
+      "bot_ablated": 0.6,
+      "specificity": -0.2
+    },
+    "captions closed": {
+      "baseline": 0.6,
+      "top_ablated": 0.8,
+      "rand_ablated": 0.6,
+      "bot_ablated": 0.6,
+      "specificity": -0.2
+    },
+    "cognitive load": {
+      "baseline": 0.6,
+      "top_ablated": 0.8,
+      "rand_ablated": 0.6,
+      "bot_ablated": 0.6,
+      "specificity": -0.2
+    },
+    "color contrast": {
+      "baseline": 0.6,
+      "top_ablated": 0.6,
+      "rand_ablated": 0.64,
+      "bot_ablated": 0.6,
+      "specificity": 0.04
+    },
+    "contrast ratio": {
+      "baseline": 0.6,
+      "top_ablated": 1.0,
+      "rand_ablated": 0.68,
+      "bot_ablated": 0.6,
+      "specificity": -0.32
+    },
+    "error identification": {
+      "baseline": 0.8,
+      "top_ablated": 1.0,
+      "rand_ablated": 0.6,
+      "bot_ablated": 0.6,
+      "specificity": -0.4
+    },
+    "eye tracking": {
+      "baseline": 0.6,
+      "top_ablated": 0.8,
+      "rand_ablated": 0.6,
+      "bot_ablated": 0.6,
+      "specificity": -0.2
+    },
+    "focus indicator": {
+      "baseline": 0.6,
+      "top_ablated": 0.2,
+      "rand_ablated": 0.44,
+      "bot_ablated": 0.4,
+      "specificity": 0.24
+    },
+    "focus management": {
+      "baseline": 0.6,
+      "top_ablated": 1.0,
+      "rand_ablated": 0.64,
+      "bot_ablated": 0.6,
+      "specificity": -0.36
+    },
+    "focus trap": {
+      "baseline": 0.6,
+      "top_ablated": 1.0,
+      "rand_ablated": 0.64,
+      "bot_ablated": 0.6,
+      "specificity": -0.36
+    },
+    "haptic feedback": {
+      "baseline": 0.6,
+      "top_ablated": 0.8,
+      "rand_ablated": 0.56,
+      "bot_ablated": 0.6,
+      "specificity": -0.24
+    },
+    "heading structure": {
+      "baseline": 1.0,
+      "top_ablated": 0.4,
+      "rand_ablated": 0.84,
+      "bot_ablated": 0.8,
+      "specificity": 0.44
+    },
+    "high contrast": {
+      "baseline": 0.4,
+      "top_ablated": 0.8,
+      "rand_ablated": 0.56,
+      "bot_ablated": 0.4,
+      "specificity": -0.24
+    },
+    "input purpose": {
+      "baseline": 0.6,
+      "top_ablated": 1.0,
+      "rand_ablated": 0.68,
+      "bot_ablated": 0.6,
+      "specificity": -0.32
+    },
+    "keyboard navigation": {
+      "baseline": 0.6,
+      "top_ablated": 0.6,
+      "rand_ablated": 0.68,
+      "bot_ablated": 0.6,
+      "specificity": 0.08
+    },
+    "keyboard shortcut": {
+      "baseline": 0.6,
+      "top_ablated": 0.8,
+      "rand_ablated": 0.64,
+      "bot_ablated": 0.6,
+      "specificity": -0.16
+    },
+    "landmark region": {
+      "baseline": 1.0,
+      "top_ablated": 0.8,
+      "rand_ablated": 0.96,
+      "bot_ablated": 0.8,
+      "specificity": 0.16
+    },
+    "live region": {
+      "baseline": 0.6,
+      "top_ablated": 0.8,
+      "rand_ablated": 0.64,
+      "bot_ablated": 0.6,
+      "specificity": -0.16
+    },
+    "motion sensitivity": {
+      "baseline": 0.6,
+      "top_ablated": 1.0,
+      "rand_ablated": 0.6,
+      "bot_ablated": 0.6,
+      "specificity": -0.4
+    },
+    "non-text content": {
+      "baseline": 0.6,
+      "top_ablated": 1.0,
+      "rand_ablated": 0.68,
+      "bot_ablated": 0.6,
+      "specificity": -0.32
+    },
+    "orientation support": {
+      "baseline": 0.6,
+      "top_ablated": 1.0,
+      "rand_ablated": 0.64,
+      "bot_ablated": 0.6,
+      "specificity": -0.36
+    },
+    "plain language": {
+      "baseline": 0.4,
+      "top_ablated": 0.8,
+      "rand_ablated": 0.6,
+      "bot_ablated": 0.4,
+      "specificity": -0.2
+    },
+    "reduced motion": {
+      "baseline": 0.6,
+      "top_ablated": 1.0,
+      "rand_ablated": 0.64,
+      "bot_ablated": 0.6,
+      "specificity": -0.36
+    },
+    "reflow content": {
+      "baseline": 0.6,
+      "top_ablated": 1.0,
+      "rand_ablated": 0.64,
+      "bot_ablated": 0.6,
+      "specificity": -0.36
+    },
+    "screen magnifier": {
+      "baseline": 0.6,
+      "top_ablated": 1.0,
+      "rand_ablated": 0.68,
+      "bot_ablated": 0.6,
+      "specificity": -0.32
+    },
+    "screen reader": {
+      "baseline": 0.8,
+      "top_ablated": 0.4,
+      "rand_ablated": 0.84,
+      "bot_ablated": 1.0,
+      "specificity": 0.44
+    },
+    "semantic html": {
+      "baseline": 0.6,
+      "top_ablated": 1.0,
+      "rand_ablated": 0.64,
+      "bot_ablated": 0.6,
+      "specificity": -0.36
+    },
+    "sign language": {
+      "baseline": 0.6,
+      "top_ablated": 0.8,
+      "rand_ablated": 0.6,
+      "bot_ablated": 0.6,
+      "specificity": -0.2
+    },
+    "skip link": {
+      "baseline": 0.4,
+      "top_ablated": 0.6,
+      "rand_ablated": 0.68,
+      "bot_ablated": 0.4,
+      "specificity": 0.08
+    },
+    "skip navigation": {
+      "baseline": 0.4,
+      "top_ablated": 0.8,
+      "rand_ablated": 0.56,
+      "bot_ablated": 0.6,
+      "specificity": -0.24
+    },
+    "switch access": {
+      "baseline": 0.6,
+      "top_ablated": 1.0,
+      "rand_ablated": 0.64,
+      "bot_ablated": 0.6,
+      "specificity": -0.36
+    },
+    "text resize": {
+      "baseline": 0.6,
+      "top_ablated": 1.0,
+      "rand_ablated": 0.68,
+      "bot_ablated": 0.6,
+      "specificity": -0.32
+    },
+    "text spacing": {
+      "baseline": 0.6,
+      "top_ablated": 1.0,
+      "rand_ablated": 0.68,
+      "bot_ablated": 0.6,
+      "specificity": -0.32
+    },
+    "time limits": {
+      "baseline": 0.6,
+      "top_ablated": 1.0,
+      "rand_ablated": 0.6,
+      "bot_ablated": 0.6,
+      "specificity": -0.4
+    },
+    "touch target size": {
+      "baseline": 0.6,
+      "top_ablated": 1.0,
+      "rand_ablated": 0.6,
+      "bot_ablated": 0.6,
+      "specificity": -0.4
+    },
+    "tree grid": {
+      "baseline": 0.6,
+      "top_ablated": 0.8,
+      "rand_ablated": 0.68,
+      "bot_ablated": 0.6,
+      "specificity": -0.12
+    },
+    "voice control": {
+      "baseline": 0.6,
+      "top_ablated": 1.0,
+      "rand_ablated": 0.68,
+      "bot_ablated": 0.6,
+      "specificity": -0.32
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "model": "olmo-1b",
+  "checkpoint": "step143k",
+  "n_prompts": 205,
+  "baseline_rec": 0.9902,
+  "top_ablated_rec": 0.9805,
+  "rand_ablated_rec": 0.9746,
+  "bot_ablated_rec": 0.9951,
+  "rec_drop_top": 0.0098,
+  "rec_drop_rand": 0.0156,
+  "specificity": -0.0059,
+  "top_heads": [
+    [
+      0,
+      7
+    ],
+    [
+      1,
+      10
+    ],
+    [
+      0,
+      13
+    ],
+    [
+      1,
+      8
+    ]
+  ]
+}

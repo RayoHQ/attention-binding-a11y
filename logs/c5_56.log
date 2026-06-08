@@ -1,0 +1,66 @@
+=== C5 jobs 5+6 ===
+Tue Apr 14 04:50:01 UTC 2026
+[5/6] OLMo-1B | 9 terms | step143k
+
+=================================================================
+  C5 Causal Ablation (OLMo-1B)  |  step143k
+  Prompts: data/prompts/expanded_terms_100.jsonl
+=================================================================
+
+  16L × 16H = 256 total heads
+
+  45 recognition  |  54 generation prompts
+
+BSI per head (OLMo):   0%|          | 0/99 [00:00<?, ?it/s]BSI per head (OLMo):   1%|          | 1/99 [00:00<00:20,  4.67it/s]BSI per head (OLMo):   4%|▍         | 4/99 [00:00<00:06, 14.42it/s]BSI per head (OLMo):   6%|▌         | 6/99 [00:00<00:06, 14.36it/s]BSI per head (OLMo):   9%|▉         | 9/99 [00:00<00:04, 19.04it/s]BSI per head (OLMo):  12%|█▏        | 12/99 [00:00<00:03, 21.83it/s]BSI per head (OLMo):  15%|█▌        | 15/99 [00:00<00:03, 23.63it/s]BSI per head (OLMo):  18%|█▊        | 18/99 [00:00<00:03, 24.55it/s]BSI per head (OLMo):  21%|██        | 21/99 [00:01<00:03, 25.63it/s]BSI per head (OLMo):  24%|██▍       | 24/99 [00:01<00:02, 26.49it/s]BSI per head (OLMo):  27%|██▋       | 27/99 [00:01<00:02, 27.32it/s]BSI per head (OLMo):  31%|███▏      | 31/99 [00:01<00:02, 28.34it/s]BSI per head (OLMo):  34%|███▍      | 34/99 [00:01<00:02, 28.68it/s]BSI per head (OLMo):  37%|███▋      | 37/99 [00:01<00:02, 28.88it/s]BSI per head (OLMo):  41%|████▏     | 41/99 [00:01<00:01, 29.09it/s]BSI per head (OLMo):  44%|████▍     | 44/99 [00:01<00:01, 29.09it/s]BSI per head (OLMo):  47%|████▋     | 47/99 [00:01<00:01, 29.00it/s]BSI per head (OLMo):  51%|█████     | 50/99 [00:01<00:01, 28.73it/s]BSI per head (OLMo):  54%|█████▎    | 53/99 [00:02<00:01, 27.68it/s]BSI per head (OLMo):  57%|█████▋    | 56/99 [00:02<00:01, 24.99it/s]BSI per head (OLMo):  60%|█████▉    | 59/99 [00:02<00:01, 25.51it/s]BSI per head (OLMo):  63%|██████▎   | 62/99 [00:02<00:01, 25.63it/s]BSI per head (OLMo):  66%|██████▌   | 65/99 [00:02<00:01, 26.44it/s]BSI per head (OLMo):  69%|██████▊   | 68/99 [00:02<00:01, 25.54it/s]BSI per head (OLMo):  72%|███████▏  | 71/99 [00:02<00:01, 25.82it/s]BSI per head (OLMo):  75%|███████▍  | 74/99 [00:02<00:00, 26.60it/s]BSI per head (OLMo):  78%|███████▊  | 77/99 [00:03<00:00, 26.95it/s]BSI per head (OLMo):  81%|████████  | 80/99 [00:03<00:00, 25.56it/s]BSI per head (OLMo):  84%|████████▍ | 83/99 [00:03<00:00, 26.58it/s]BSI per head (OLMo):  87%|████████▋ | 86/99 [00:03<00:00, 26.59it/s]BSI per head (OLMo):  90%|████████▉ | 89/99 [00:03<00:00, 26.77it/s]BSI per head (OLMo):  93%|█████████▎| 92/99 [00:03<00:00, 27.62it/s]BSI per head (OLMo):  97%|█████████▋| 96/99 [00:03<00:00, 28.37it/s]BSI per head (OLMo): 100%|██████████| 99/99 [00:03<00:00, 28.69it/s]BSI per head (OLMo): 100%|██████████| 99/99 [00:03<00:00, 25.79it/s]
+
+Top-4 heads:
+  L 0 H 7  BSI=0.6240
+  L 1 H10  BSI=0.6093
+  L 0 H13  BSI=0.6018
+  L 1 H 8  BSI=0.5127
+
+Condition                             RecAcc  GenScore
+───────────────────────────────────────────────────────
+  BASELINE                             0.956     0.525
+  TOP-4 ablated                        0.911     0.525
+  RANDOM trial 1                       0.956     0.531
+  RANDOM trial 2                       0.933     0.515
+  RANDOM trial 3                       0.956     0.506
+  RANDOM trial 4                       0.956     0.521
+  RANDOM trial 5                       0.956     0.502
+  BOTTOM-4 ablated                     0.956     0.500
+
+  Top drop:   Rec +0.044  Gen +0.000
+  Random:     Rec +0.004  Gen +0.010
+  Specificity: +0.0152
+  → ⚠ WEAKLY SUPPORTED
+
+  Saved → data/results/causal/olmo_1b_step143k_c5_9terms.json
+[6/6] Pythia-1b | 9 terms | step143000
+
+=================================================================
+  C5 Causal Ablation  |  pythia-1b  |  step143000
+  Prompts: data/prompts/expanded_terms_100.jsonl
+=================================================================
+
+Loaded pretrained model EleutherAI/pythia-1b-deduped into HookedTransformer
+  16L × 8H = 128 total heads
+
+  45 recognition  |  54 generation prompts
+
+Computing BSI per head:   0%|          | 0/99 [00:00<?, ?it/s]Computing BSI per head:   1%|          | 1/99 [00:00<01:01,  1.59it/s]Computing BSI per head:   2%|▏         | 2/99 [00:01<00:48,  2.01it/s]Computing BSI per head:   3%|▎         | 3/99 [00:01<00:42,  2.27it/s]Computing BSI per head:   4%|▍         | 4/99 [00:01<00:40,  2.36it/s]Computing BSI per head:   5%|▌         | 5/99 [00:02<00:42,  2.23it/s]Computing BSI per head:   6%|▌         | 6/99 [00:02<00:39,  2.35it/s]Computing BSI per head:   7%|▋         | 7/99 [00:03<00:37,  2.48it/s]Computing BSI per head:   8%|▊         | 8/99 [00:03<00:36,  2.50it/s]Computing BSI per head:   9%|▉         | 9/99 [00:03<00:34,  2.58it/s]Computing BSI per head:  10%|█         | 10/99 [00:04<00:34,  2.61it/s]Computing BSI per head:  11%|█         | 11/99 [00:04<00:33,  2.62it/s]Computing BSI per head:  12%|█▏        | 12/99 [00:04<00:33,  2.59it/s]Computing BSI per head:  13%|█▎        | 13/99 [00:05<00:33,  2.58it/s]Computing BSI per head:  14%|█▍        | 14/99 [00:05<00:32,  2.58it/s]Computing BSI per head:  15%|█▌        | 15/99 [00:06<00:35,  2.39it/s]Computing BSI per head:  16%|█▌        | 16/99 [00:06<00:36,  2.28it/s]Computing BSI per head:  17%|█▋        | 17/99 [00:07<00:34,  2.37it/s]Computing BSI per head:  18%|█▊        | 18/99 [00:07<00:32,  2.46it/s]Computing BSI per head:  19%|█▉        | 19/99 [00:07<00:31,  2.51it/s]Computing BSI per head:  20%|██        | 20/99 [00:08<00:30,  2.55it/s]Computing BSI per head:  21%|██        | 21/99 [00:08<00:30,  2.52it/s]Computing BSI per head:  22%|██▏       | 22/99 [00:08<00:30,  2.53it/s]Computing BSI per head:  23%|██▎       | 23/99 [00:09<00:30,  2.50it/s]Computing BSI per head:  24%|██▍       | 24/99 [00:09<00:32,  2.32it/s]Computing BSI per head:  25%|██▌       | 25/99 [00:10<00:30,  2.40it/s]Computing BSI per head:  26%|██▋       | 26/99 [00:10<00:32,  2.27it/s]Computing BSI per head:  27%|██▋       | 27/99 [00:11<00:33,  2.16it/s]Computing BSI per head:  28%|██▊       | 28/99 [00:11<00:31,  2.29it/s]Computing BSI per head:  29%|██▉       | 29/99 [00:12<00:29,  2.40it/s]Computing BSI per head:  30%|███       | 30/99 [00:12<00:28,  2.45it/s]Computing BSI per head:  31%|███▏      | 31/99 [00:12<00:27,  2.47it/s]Computing BSI per head:  32%|███▏      | 32/99 [00:13<00:26,  2.49it/s]Computing BSI per head:  33%|███▎      | 33/99 [00:13<00:27,  2.43it/s]Computing BSI per head:  34%|███▍      | 34/99 [00:14<00:28,  2.27it/s]Computing BSI per head:  35%|███▌      | 35/99 [00:14<00:27,  2.30it/s]Computing BSI per head:  36%|███▋      | 36/99 [00:14<00:26,  2.35it/s]Computing BSI per head:  37%|███▋      | 37/99 [00:15<00:28,  2.20it/s]Computing BSI per head:  38%|███▊      | 38/99 [00:16<00:28,  2.10it/s]Computing BSI per head:  39%|███▉      | 39/99 [00:16<00:26,  2.24it/s]Computing BSI per head:  40%|████      | 40/99 [00:16<00:25,  2.30it/s]Computing BSI per head:  41%|████▏     | 41/99 [00:17<00:24,  2.35it/s]Computing BSI per head:  42%|████▏     | 42/99 [00:17<00:23,  2.40it/s]Computing BSI per head:  43%|████▎     | 43/99 [00:18<00:22,  2.44it/s]Computing BSI per head:  44%|████▍     | 44/99 [00:18<00:22,  2.42it/s]Computing BSI per head:  45%|████▌     | 45/99 [00:18<00:22,  2.37it/s]Computing BSI per head:  46%|████▋     | 46/99 [00:19<00:22,  2.34it/s]Computing BSI per head:  47%|████▋     | 47/99 [00:19<00:22,  2.36it/s]Computing BSI per head:  48%|████▊     | 48/99 [00:20<00:23,  2.19it/s]Computing BSI per head:  49%|████▉     | 49/99 [00:20<00:24,  2.05it/s]Computing BSI per head:  51%|█████     | 50/99 [00:21<00:22,  2.14it/s]Computing BSI per head:  52%|█████▏    | 51/99 [00:21<00:21,  2.25it/s]Computing BSI per head:  53%|█████▎    | 52/99 [00:22<00:20,  2.27it/s]Computing BSI per head:  54%|█████▎    | 53/99 [00:22<00:19,  2.32it/s]Computing BSI per head:  55%|█████▍    | 54/99 [00:22<00:19,  2.36it/s]Computing BSI per head:  56%|█████▌    | 55/99 [00:23<00:19,  2.31it/s]Computing BSI per head:  57%|█████▋    | 56/99 [00:23<00:18,  2.26it/s]Computing BSI per head:  58%|█████▊    | 57/99 [00:24<00:19,  2.12it/s]Computing BSI per head:  59%|█████▊    | 58/99 [00:24<00:19,  2.15it/s]Computing BSI per head:  60%|█████▉    | 59/99 [00:25<00:20,  2.00it/s]Computing BSI per head:  61%|██████    | 60/99 [00:25<00:20,  1.92it/s]Computing BSI per head:  62%|██████▏   | 61/99 [00:26<00:18,  2.04it/s]Computing BSI per head:  63%|██████▎   | 62/99 [00:26<00:17,  2.13it/s]Computing BSI per head:  64%|██████▎   | 63/99 [00:27<00:16,  2.15it/s]Computing BSI per head:  65%|██████▍   | 64/99 [00:27<00:16,  2.17it/s]Computing BSI per head:  66%|██████▌   | 65/99 [00:28<00:15,  2.20it/s]Computing BSI per head:  67%|██████▋   | 66/99 [00:28<00:14,  2.22it/s]Computing BSI per head:  68%|██████▊   | 67/99 [00:29<00:14,  2.19it/s]Computing BSI per head:  69%|██████▊   | 68/99 [00:29<00:14,  2.17it/s]Computing BSI per head:  70%|██████▉   | 69/99 [00:29<00:13,  2.19it/s]Computing BSI per head:  71%|███████   | 70/99 [00:30<00:14,  2.03it/s]Computing BSI per head:  72%|███████▏  | 71/99 [00:31<00:14,  1.90it/s]Computing BSI per head:  73%|███████▎  | 72/99 [00:31<00:13,  2.01it/s]Computing BSI per head:  74%|███████▎  | 73/99 [00:32<00:12,  2.05it/s]Computing BSI per head:  75%|███████▍  | 74/99 [00:32<00:11,  2.13it/s]Computing BSI per head:  76%|███████▌  | 75/99 [00:32<00:11,  2.16it/s]Computing BSI per head:  77%|███████▋  | 76/99 [00:33<00:10,  2.18it/s]Computing BSI per head:  78%|███████▊  | 77/99 [00:33<00:10,  2.16it/s]Computing BSI per head:  79%|███████▉  | 78/99 [00:34<00:09,  2.11it/s]Computing BSI per head:  80%|███████▉  | 79/99 [00:34<00:10,  1.97it/s]Computing BSI per head:  81%|████████  | 80/99 [00:35<00:09,  2.02it/s]Computing BSI per head:  82%|████████▏ | 81/99 [00:36<00:09,  1.88it/s]Computing BSI per head:  83%|████████▎ | 82/99 [00:36<00:09,  1.81it/s]Computing BSI per head:  84%|████████▍ | 83/99 [00:37<00:08,  1.89it/s]Computing BSI per head:  84%|████████▍ | 83/99 [00:37<00:07,  2.24it/s]
+Traceback (most recent call last):
+  File "/teamspace/studios/this_studio/attention-binding-a11y/src/run_causal_c5.py", line 257, in <module>
+    run(args.model, args.checkpoint, args.prompts, args.output)
+  File "/teamspace/studios/this_studio/attention-binding-a11y/src/run_causal_c5.py", line 171, in run
+    top_data, bot_data = find_top_binding_heads(model, prompts)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/teamspace/studios/this_studio/attention-binding-a11y/src/run_causal_c5.py", line 93, in find_top_binding_heads
+    for k, v in compute_per_head_bsi(model, p["template"], p["term"]).items():
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/teamspace/studios/this_studio/attention-binding-a11y/src/run_causal_c5.py", line 84, in compute_per_head_bsi
+    pairs = [ha[d, s].item() for d in span_indices for s in span_indices if d > s]
+             ~~^^^^^^
+IndexError: index 8 is out of bounds for dimension 0 with size 8
+=== DONE ===
+Tue Apr 14 04:56:13 UTC 2026

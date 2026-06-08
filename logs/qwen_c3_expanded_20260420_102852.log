@@ -1,0 +1,13 @@
+
+=================================================================
+  C3 Expanded (41 terms)  |  qwen  |  final
+=================================================================
+Traceback (most recent call last):
+  File "/teamspace/studios/this_studio/attention-binding-a11y/src/eval_few_shot_c3_expanded.py", line 402, in <module>
+    evaluate_checkpoint(args.model, args.checkpoint)
+  File "/teamspace/studios/this_studio/attention-binding-a11y/src/eval_few_shot_c3_expanded.py", line 324, in evaluate_checkpoint
+    model = load_pythia_with_checkpoint(model_size, checkpoint, DEVICE)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/teamspace/studios/this_studio/attention-binding-a11y/src/utils_model.py", line 50, in load_pythia_with_checkpoint
+    raise ValueError(f"Invalid size '{size}'. Choose from {VALID_SIZES}")
+ValueError: Invalid size 'qwen'. Choose from ('160m', '1b', '2.8b', '6.9b')

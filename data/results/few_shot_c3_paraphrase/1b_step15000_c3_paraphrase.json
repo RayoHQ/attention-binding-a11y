@@ -1,0 +1,60 @@
+{
+  "model": "1b",
+  "checkpoint": "step15000",
+  "n_prompts": 54,
+  "n_terms": 9,
+  "zero_shot_mean": 0.3395,
+  "fs_original_mean": 0.7037,
+  "fs_paraphrase_mean": 0.6506,
+  "delta_orig_pp": 36.42,
+  "delta_para_pp": 31.11,
+  "orig_minus_para_pp": 5.31,
+  "verdict": "~  MIXED: moderate copying signal",
+  "per_term": {
+    "alt text": {
+      "zs": 0.4444,
+      "orig": 0.8889,
+      "para": 0.6333
+    },
+    "aria attribute": {
+      "zs": 0.5,
+      "orig": 0.7778,
+      "para": 0.7667
+    },
+    "color contrast": {
+      "zs": 0.0,
+      "orig": 0.8889,
+      "para": 0.8333
+    },
+    "focus indicator": {
+      "zs": 0.3333,
+      "orig": 0.8333,
+      "para": 0.4889
+    },
+    "heading structure": {
+      "zs": 0.2778,
+      "orig": 0.5,
+      "para": 0.5556
+    },
+    "keyboard navigation": {
+      "zs": 0.2778,
+      "orig": 0.7222,
+      "para": 0.8333
+    },
+    "landmark region": {
+      "zs": 0.0,
+      "orig": 0.0,
+      "para": 0.0
+    },
+    "screen reader": {
+      "zs": 0.7222,
+      "orig": 0.8333,
+      "para": 0.8
+    },
+    "skip link": {
+      "zs": 0.5,
+      "orig": 0.8889,
+      "para": 0.9444
+    }
+  }
+}

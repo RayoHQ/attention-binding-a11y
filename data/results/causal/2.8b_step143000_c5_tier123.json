@@ -1,0 +1,130 @@
+{
+  "model": "pythia-2.8b-deduped",
+  "checkpoint": "step143000",
+  "prompts_file": "data/prompts/expanded_terms_tier123.jsonl",
+  "n_rec_prompts": 105,
+  "n_gen_prompts": 126,
+  "n_heads_ablated": 4,
+  "n_random_trials": 5,
+  "top_heads": [
+    {
+      "layer": 1,
+      "head": 12,
+      "avg_bsi": 0.8856921017252114
+    },
+    {
+      "layer": 1,
+      "head": 11,
+      "avg_bsi": 0.8149686378602476
+    },
+    {
+      "layer": 1,
+      "head": 6,
+      "avg_bsi": 0.7963362455839751
+    },
+    {
+      "layer": 4,
+      "head": 16,
+      "avg_bsi": 0.777324421051931
+    }
+  ],
+  "bottom_heads": [
+    {
+      "layer": 30,
+      "head": 12,
+      "avg_bsi": 1.809459454624913e-05
+    },
+    {
+      "layer": 30,
+      "head": 10,
+      "avg_bsi": 1.4745450652855856e-05
+    },
+    {
+      "layer": 30,
+      "head": 0,
+      "avg_bsi": 2.0901050927641528e-08
+    },
+    {
+      "layer": 31,
+      "head": 16,
+      "avg_bsi": 4.5318286985095163e-13
+    }
+  ],
+  "recognition": {
+    "BASELINE": {
+      "accuracy": 0.9238095238095239,
+      "correct": 97,
+      "total": 105
+    },
+    "TOP-4 ablated": {
+      "accuracy": 0.8761904761904762,
+      "correct": 92,
+      "total": 105
+    },
+    "RANDOM trial 1": {
+      "accuracy": 0.9619047619047619,
+      "correct": 101,
+      "total": 105
+    },
+    "RANDOM trial 2": {
+      "accuracy": 1.0,
+      "correct": 105,
+      "total": 105
+    },
+    "RANDOM trial 3": {
+      "accuracy": 0.9333333333333333,
+      "correct": 98,
+      "total": 105
+    },
+    "RANDOM trial 4": {
+      "accuracy": 0.9619047619047619,
+      "correct": 101,
+      "total": 105
+    },
+    "RANDOM trial 5": {
+      "accuracy": 0.9809523809523809,
+      "correct": 103,
+      "total": 105
+    },
+    "BOTTOM-4 ablated": {
+      "accuracy": 0.9333333333333333,
+      "correct": 98,
+      "total": 105
+    }
+  },
+  "generation": {
+    "BASELINE": {
+      "mean_score": 0.5291005291005292
+    },
+    "TOP-4 ablated": {
+      "mean_score": 0.4391534391534392
+    },
+    "RANDOM trial 1": {
+      "mean_score": 0.5291005291005292
+    },
+    "RANDOM trial 2": {
+      "mean_score": 0.5291005291005292
+    },
+    "RANDOM trial 3": {
+      "mean_score": 0.5370370370370371
+    },
+    "RANDOM trial 4": {
+      "mean_score": 0.5238095238095238
+    },
+    "RANDOM trial 5": {
+      "mean_score": 0.5185185185185185
+    },
+    "BOTTOM-4 ablated": {
+      "mean_score": 0.5026455026455027
+    }
+  },
+  "drops": {
+    "top_rec_drop": 0.04761904761904767,
+    "top_gen_drop": 0.08994708994709,
+    "mean_random_rec_drop": -0.043809523809523764,
+    "mean_random_gen_drop": 0.0015873015873016261,
+    "bottom_rec_drop": -0.00952380952380949,
+    "bottom_gen_drop": 0.02645502645502651,
+    "specificity": 0.0898941798941799
+  }
+}

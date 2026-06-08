@@ -1,0 +1,11 @@
+{
+  "model": "crfm-gpt2-sm-x3",
+  "n_terms": 9,
+  "n_early_coupled": 9,
+  "n_decouple_strict": 4,
+  "n_decouple_attenuate": 4,
+  "frac_decouple_strict": 0.4444,
+  "frac_decouple_attenuate": 0.4444,
+  "mean_rho_early": 0.6347,
+  "mean_rho_late": 0.2598
+}

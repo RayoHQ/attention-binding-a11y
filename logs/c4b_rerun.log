@@ -1,0 +1,53 @@
+
+=== C4-B: Within-Term Decoupling Analysis ===
+H: decoupling fraction increases with model scale
+
+
+============================================================
+C4-B: pythia-160m
+============================================================
+  Term                            rho_early  rho_late   decouple
+  ------------------------------------------------------------
+  alert dialog                    +0.632     +0.200       coupled 
+  alt text                        +0.316     +0.316       coupled 
+  aria attribute                  +1.000     +0.316       coupled 
+  audio description               +0.400     +0.800       coupled 
+  braille display                 +0.400     +0.000     ✓ DECOUPLE
+  captions closed                 +0.800     +0.738       coupled 
+  cognitive load                  +0.400     -0.400     ✓ DECOUPLE
+  color contrast                  +0.949     -0.316     ✓ DECOUPLE
+  error identification            +0.200     -0.600     ✓ DECOUPLE
+  focus indicator                 +0.400     -0.632     ✓ DECOUPLE
+  focus management                +0.775     -0.400     ✓ DECOUPLE
+  heading structure               +0.200     +0.949       coupled 
+  high contrast                   +0.400     +0.400       coupled 
+  input purpose                   +0.316     -0.316     ✓ DECOUPLE
+  keyboard navigation             +0.200     -0.738     ✓ DECOUPLE
+  keyboard shortcut               +0.400     +0.400       coupled 
+  (skip constant)                 landmark region
+  live region                     +0.632     -0.949     ✓ DECOUPLE
+  non-text content                +0.400     -0.600     ✓ DECOUPLE
+  reflow content                  +0.316     -0.738     ✓ DECOUPLE
+  screen magnifier                +0.316     +0.200       coupled 
+  screen reader                   +0.800     +0.738       coupled 
+  skip link                       +0.800     +0.400       coupled 
+  skip navigation                 +0.200     +0.211       coupled 
+  switch access                   +0.316     +0.200       coupled 
+  text resize                     +0.316     -0.200     ✓ DECOUPLE
+  text spacing                    +0.400     +0.949       coupled 
+  tree grid                       +0.800     +0.000     ✓ DECOUPLE
+  voice control                   +0.316     +0.316       coupled 
+
+  Early coupling     (rho_e > 0):          28/28 (100.0%)
+  Strict decouple    (e>0, l≤0):           13/28 (46.4%)
+  Attenuation        (e>0, l<0.5×e):       15/28 (53.6%)
+  Mean rho_early=+0.479   mean rho_late=+0.044
+  ✅ Saved: pythia-160m_within_term_decoupling.csv
+Traceback (most recent call last):
+  File "/teamspace/studios/this_studio/attention-binding-a11y/src/analyze_c4b_decoupling.py", line 206, in <module>
+    n_dec = sum(r["decouple"] for r in rows)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/teamspace/studios/this_studio/attention-binding-a11y/src/analyze_c4b_decoupling.py", line 206, in <genexpr>
+    n_dec = sum(r["decouple"] for r in rows)
+                ~^^^^^^^^^^^^
+KeyError: 'decouple'

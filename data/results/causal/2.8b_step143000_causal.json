@@ -1,0 +1,127 @@
+{
+  "model": "pythia-2.8b-deduped",
+  "checkpoint": "step143000",
+  "n_heads_ablated": 4,
+  "n_random_trials": 5,
+  "top_heads": [
+    {
+      "layer": 1,
+      "head": 12,
+      "avg_bsi": 0.9369408984978994
+    },
+    {
+      "layer": 1,
+      "head": 11,
+      "avg_bsi": 0.8652374148368835
+    },
+    {
+      "layer": 4,
+      "head": 16,
+      "avg_bsi": 0.8496523797512054
+    },
+    {
+      "layer": 1,
+      "head": 6,
+      "avg_bsi": 0.7799661550670862
+    }
+  ],
+  "bottom_heads": [
+    {
+      "layer": 30,
+      "head": 0,
+      "avg_bsi": 1.0561374328021926e-08
+    },
+    {
+      "layer": 2,
+      "head": 15,
+      "avg_bsi": 7.075252470717849e-07
+    },
+    {
+      "layer": 31,
+      "head": 16,
+      "avg_bsi": 5.489676453006786e-06
+    },
+    {
+      "layer": 27,
+      "head": 3,
+      "avg_bsi": 1.4322209832033176e-05
+    }
+  ],
+  "recognition": {
+    "BASELINE (no ablation)": {
+      "accuracy": 0.5,
+      "correct": 3,
+      "total": 6
+    },
+    "TOP-4 BINDING HEADS ablated": {
+      "accuracy": 0.8333333333333334,
+      "correct": 5,
+      "total": 6
+    },
+    "RANDOM heads ablated (trial 1)": {
+      "accuracy": 0.5,
+      "correct": 3,
+      "total": 6
+    },
+    "RANDOM heads ablated (trial 2)": {
+      "accuracy": 0.5,
+      "correct": 3,
+      "total": 6
+    },
+    "RANDOM heads ablated (trial 3)": {
+      "accuracy": 0.5,
+      "correct": 3,
+      "total": 6
+    },
+    "RANDOM heads ablated (trial 4)": {
+      "accuracy": 0.5,
+      "correct": 3,
+      "total": 6
+    },
+    "RANDOM heads ablated (trial 5)": {
+      "accuracy": 0.5,
+      "correct": 3,
+      "total": 6
+    },
+    "BOTTOM-4 BINDING HEADS ablated": {
+      "accuracy": 0.5,
+      "correct": 3,
+      "total": 6
+    }
+  },
+  "generation": {
+    "BASELINE (no ablation)": {
+      "mean_score": 0.8333333333333334
+    },
+    "TOP-4 BINDING HEADS ablated": {
+      "mean_score": 0.7777777777777777
+    },
+    "RANDOM heads ablated (trial 1)": {
+      "mean_score": 0.8333333333333334
+    },
+    "RANDOM heads ablated (trial 2)": {
+      "mean_score": 0.7777777777777778
+    },
+    "RANDOM heads ablated (trial 3)": {
+      "mean_score": 0.8333333333333334
+    },
+    "RANDOM heads ablated (trial 4)": {
+      "mean_score": 0.8333333333333334
+    },
+    "RANDOM heads ablated (trial 5)": {
+      "mean_score": 0.8333333333333335
+    },
+    "BOTTOM-4 BINDING HEADS ablated": {
+      "mean_score": 0.8333333333333334
+    }
+  },
+  "drops": {
+    "top_rec_drop": -0.33333333333333337,
+    "top_gen_drop": 0.05555555555555569,
+    "mean_random_rec_drop": 0.0,
+    "mean_random_gen_drop": 0.011111111111111094,
+    "bottom_rec_drop": 0.0,
+    "bottom_gen_drop": 0.0,
+    "specificity": -0.14444444444444438
+  }
+}

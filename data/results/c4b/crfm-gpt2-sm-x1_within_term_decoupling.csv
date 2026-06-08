@@ -1,0 +1,10 @@
+model,term,rho_early,rho_late,decouple_strict,decouple_attenuate
+crfm-gpt2-sm-x1,alt text,0.4,0.7379,0,0
+crfm-gpt2-sm-x1,aria attribute,0.2108,0.0,1,1
+crfm-gpt2-sm-x1,color contrast,0.6325,0.8944,0,0
+crfm-gpt2-sm-x1,focus indicator,0.2,1.0,0,0
+crfm-gpt2-sm-x1,heading structure,1.0,0.4,0,1
+crfm-gpt2-sm-x1,keyboard navigation,0.8,0.0,1,1
+crfm-gpt2-sm-x1,landmark region,0.0,0.9487,0,0
+crfm-gpt2-sm-x1,screen reader,0.9487,0.2108,0,1
+crfm-gpt2-sm-x1,skip link,0.7379,-0.2108,1,1

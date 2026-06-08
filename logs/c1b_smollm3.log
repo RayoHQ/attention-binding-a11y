@@ -1,0 +1,25 @@
+
+=== C1-B: Within-Term Temporal Precedence Analysis ===
+H1: EB* rise precedes behavioral emergence in >50% of terms
+
+
+============================================================
+C1-B: smollm3-3b
+============================================================
+  alt text                        r_fwd=-0.170  r_bck=+0.220  ← Beh leads
+  aria attribute                  r_fwd=-0.497  r_bck=+0.286  ← Beh leads
+  color contrast                  r_fwd=+0.573  r_bck=+0.490  → EB* leads
+  focus indicator                 r_fwd=-0.225  r_bck=+0.497  ← Beh leads
+  heading structure               r_fwd=-0.072  r_bck=-0.456  → EB* leads
+  keyboard navigation             r_fwd=-0.473  r_bck=+0.337  ← Beh leads
+  landmark region                 r_fwd=+0.583  r_bck=-0.742  → EB* leads
+  screen reader                   r_fwd=-0.531  r_bck=-0.124  ← Beh leads
+  skip link                       r_fwd=+0.136  r_bck=+0.607  ← Beh leads
+
+  Population: 3/9 terms where EB* leads (33.3%)
+  Binomial p = 0.9102  (H1: frac > 0.5)
+  Mean r_forward - r_backward = -0.1992
+  ✅ Saved: smollm3-3b_within_term_lead.csv, smollm3-3b_population_test.json
+
+=== SUMMARY ===
+  smollm3-3b: 3/9 lead (33%)

@@ -1,0 +1,10 @@
+model,term,r_forward,r_backward,lead_diff,lead_indicator
+olmo-1b,alt text,0.1358,-0.6613,0.7971,1
+olmo-1b,aria attribute,-0.1592,-0.3505,0.1913,1
+olmo-1b,color contrast,-0.5925,-0.7549,0.1624,1
+olmo-1b,focus indicator,0.5132,-0.1172,0.6304,1
+olmo-1b,heading structure,-0.2723,-0.9671,0.6948,1
+olmo-1b,keyboard navigation,-0.8986,-0.5646,-0.334,0
+olmo-1b,landmark region,-0.5344,-0.6537,0.1194,1
+olmo-1b,screen reader,-0.1832,-0.6882,0.505,1
+olmo-1b,skip link,-0.0715,0.0578,-0.1293,0

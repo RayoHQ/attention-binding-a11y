@@ -1,0 +1,30 @@
+{
+  "model": "smollm3-3b",
+  "checkpoint": "step3440k",
+  "n_prompts": 205,
+  "baseline_rec": 0.8683,
+  "top_ablated_rec": 0.9024,
+  "rand_ablated_rec": 0.8595,
+  "bot_ablated_rec": 0.8585,
+  "rec_drop_top": -0.0341,
+  "rec_drop_rand": 0.0088,
+  "specificity": -0.0429,
+  "top_heads": [
+    [
+      0,
+      4
+    ],
+    [
+      1,
+      13
+    ],
+    [
+      22,
+      10
+    ],
+    [
+      1,
+      2
+    ]
+  ]
+}

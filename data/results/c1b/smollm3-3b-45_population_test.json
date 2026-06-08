@@ -1,0 +1,9 @@
+{
+  "model": "smollm3-3b-45",
+  "n_terms": 41,
+  "n_lead": 21,
+  "lead_fraction": 0.5122,
+  "binomial_p": 0.5,
+  "mean_lead_diff": -0.0397,
+  "supported": false
+}

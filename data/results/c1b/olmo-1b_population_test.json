@@ -1,0 +1,9 @@
+{
+  "model": "olmo-1b",
+  "n_terms": 9,
+  "n_lead": 7,
+  "lead_fraction": 0.7778,
+  "binomial_p": 0.089844,
+  "mean_lead_diff": 0.293,
+  "supported": false
+}

@@ -1,0 +1,30 @@
+{
+  "model": "qwen2.5-1.5b",
+  "checkpoint": "final",
+  "n_prompts": 205,
+  "baseline_rec": 0.9902,
+  "top_ablated_rec": 0.9805,
+  "rand_ablated_rec": 0.9854,
+  "bot_ablated_rec": 0.9902,
+  "rec_drop_top": 0.0098,
+  "rec_drop_rand": 0.0049,
+  "specificity": 0.0049,
+  "top_heads": [
+    [
+      13,
+      4
+    ],
+    [
+      1,
+      4
+    ],
+    [
+      0,
+      8
+    ],
+    [
+      18,
+      8
+    ]
+  ]
+}

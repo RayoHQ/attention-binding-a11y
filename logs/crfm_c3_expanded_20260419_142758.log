@@ -1,0 +1,68 @@
+=== CRFM C3 Expanded: Sun Apr 19 14:27:58 UTC 2026 ===
+Device: CPU (CUDA not used)
+
+--- crfm1 / ck-1000 ---
+
+=================================================================
+  C3 Expanded (41 terms)  |  crfm1  |  ck-1000
+=================================================================
+  Loading stanford-crfm/alias-gpt2-small-x21 @ ck-1000 on cpu ...
+Traceback (most recent call last):
+  File "/home/zeus/miniconda3/envs/cloudspace/lib/python3.12/site-packages/huggingface_hub/utils/_http.py", line 403, in hf_raise_for_status
+    response.raise_for_status()
+  File "/home/zeus/miniconda3/envs/cloudspace/lib/python3.12/site-packages/requests/models.py", line 1026, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 404 Client Error: Not Found for url: https://huggingface.co/stanford-crfm/alias-gpt2-small-x21/resolve/ck-1000/config.json
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/zeus/miniconda3/envs/cloudspace/lib/python3.12/site-packages/transformers/utils/hub.py", line 479, in cached_files
+    hf_hub_download(
+  File "/home/zeus/miniconda3/envs/cloudspace/lib/python3.12/site-packages/huggingface_hub/utils/_validators.py", line 114, in _inner_fn
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/home/zeus/miniconda3/envs/cloudspace/lib/python3.12/site-packages/huggingface_hub/file_download.py", line 1007, in hf_hub_download
+    return _hf_hub_download_to_cache_dir(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zeus/miniconda3/envs/cloudspace/lib/python3.12/site-packages/huggingface_hub/file_download.py", line 1070, in _hf_hub_download_to_cache_dir
+    (url_to_download, etag, commit_hash, expected_size, xet_file_data, head_call_error) = _get_metadata_or_catch_error(
+                                                                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zeus/miniconda3/envs/cloudspace/lib/python3.12/site-packages/huggingface_hub/file_download.py", line 1543, in _get_metadata_or_catch_error
+    metadata = get_hf_file_metadata(
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zeus/miniconda3/envs/cloudspace/lib/python3.12/site-packages/huggingface_hub/utils/_validators.py", line 114, in _inner_fn
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/home/zeus/miniconda3/envs/cloudspace/lib/python3.12/site-packages/huggingface_hub/file_download.py", line 1460, in get_hf_file_metadata
+    r = _request_wrapper(
+        ^^^^^^^^^^^^^^^^^
+  File "/home/zeus/miniconda3/envs/cloudspace/lib/python3.12/site-packages/huggingface_hub/file_download.py", line 283, in _request_wrapper
+    response = _request_wrapper(
+               ^^^^^^^^^^^^^^^^^
+  File "/home/zeus/miniconda3/envs/cloudspace/lib/python3.12/site-packages/huggingface_hub/file_download.py", line 307, in _request_wrapper
+    hf_raise_for_status(response)
+  File "/home/zeus/miniconda3/envs/cloudspace/lib/python3.12/site-packages/huggingface_hub/utils/_http.py", line 410, in hf_raise_for_status
+    raise _format(RevisionNotFoundError, message, response) from e
+huggingface_hub.errors.RevisionNotFoundError: 404 Client Error. (Request ID: Root=1-69e4e67a-421e0a131d2671c14a191e58;a9f17545-7f45-4e15-808b-f4d2c39e5d3c)
+
+Revision Not Found for url: https://huggingface.co/stanford-crfm/alias-gpt2-small-x21/resolve/ck-1000/config.json.
+Invalid rev id: ck-1000
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/teamspace/studios/this_studio/attention-binding-a11y/src/eval_few_shot_c3_expanded.py", line 395, in <module>
+    evaluate_checkpoint(args.model, args.checkpoint)
+  File "/teamspace/studios/this_studio/attention-binding-a11y/src/eval_few_shot_c3_expanded.py", line 308, in evaluate_checkpoint
+    _hf = AutoModelForCausalLM.from_pretrained(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zeus/miniconda3/envs/cloudspace/lib/python3.12/site-packages/transformers/models/auto/auto_factory.py", line 508, in from_pretrained
+    resolved_config_file = cached_file(
+                           ^^^^^^^^^^^^
+  File "/home/zeus/miniconda3/envs/cloudspace/lib/python3.12/site-packages/transformers/utils/hub.py", line 322, in cached_file
+    file = cached_files(path_or_repo_id=path_or_repo_id, filenames=[filename], **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zeus/miniconda3/envs/cloudspace/lib/python3.12/site-packages/transformers/utils/hub.py", line 518, in cached_files
+    raise OSError(
+OSError: ck-1000 is not a valid git identifier (branch name, tag name or commit id) that exists for this model name. Check the model page at 'https://huggingface.co/stanford-crfm/alias-gpt2-small-x21' for available revisions.

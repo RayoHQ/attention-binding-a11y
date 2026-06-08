@@ -1,0 +1,29 @@
+{
+  "model": "crfm-gpt2-small-x2",
+  "checkpoint": "checkpoint-400000",
+  "n_prompts": 205,
+  "baseline_rec": 0.722,
+  "top_ablated_rec": 0.4878,
+  "rand_ablated_rec": 0.6907,
+  "bot_ablated_rec": 0.6585,
+  "rec_drop_top": 0.2341,
+  "specificity": 0.2029,
+  "top_heads": [
+    [
+      0,
+      10
+    ],
+    [
+      1,
+      9
+    ],
+    [
+      0,
+      4
+    ],
+    [
+      4,
+      5
+    ]
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "model": "olmo",
+  "checkpoint": "step143k",
+  "n_prompts": 54,
+  "n_terms": 9,
+  "zero_shot_mean": 0.5247,
+  "few_shot_mean": 0.6173,
+  "improvement_pp": 9.3,
+  "improvement_relative_pct": 17.6,
+  "zero_shot_per_term": {
+    "screen reader": 0.5556,
+    "skip link": 0.6667,
+    "alt text": 0.5556,
+    "color contrast": 0.5556,
+    "focus indicator": 0.5556,
+    "heading structure": 0.3889,
+    "keyboard navigation": 0.7222,
+    "landmark region": 0.0,
+    "aria attribute": 0.7222
+  },
+  "few_shot_per_term": {
+    "screen reader": 0.5556,
+    "skip link": 0.8333,
+    "alt text": 0.8333,
+    "color contrast": 0.7222,
+    "focus indicator": 0.6111,
+    "heading structure": 0.7778,
+    "keyboard navigation": 0.5,
+    "landmark region": 0.0,
+    "aria attribute": 0.7222
+  }
+}

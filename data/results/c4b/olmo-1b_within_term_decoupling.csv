@@ -1,0 +1,9 @@
+model,term,rho_early,rho_late,decouple_strict,decouple_attenuate
+olmo-1b,alt text,0.4,0.7379,0,0
+olmo-1b,aria attribute,0.8,-0.8,1,1
+olmo-1b,color contrast,0.3162,0.8,0,0
+olmo-1b,focus indicator,0.8,-0.4,1,1
+olmo-1b,heading structure,0.4,-0.9487,1,1
+olmo-1b,keyboard navigation,0.4,-0.8,1,1
+olmo-1b,screen reader,0.8,-0.6325,1,1
+olmo-1b,skip link,0.0,-0.7379,0,0

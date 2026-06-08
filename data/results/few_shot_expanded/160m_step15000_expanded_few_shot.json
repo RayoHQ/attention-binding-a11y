@@ -1,0 +1,1117 @@
+{
+  "model": "160m",
+  "checkpoint": "step15000",
+  "dataset": "expanded_99_prompts",
+  "n_prompts": 54,
+  "n_terms": 9,
+  "zero_shot_mean": 0.2284,
+  "few_shot_mean": 0.5309,
+  "improvement_pp": 30.2,
+  "improvement_relative_pct": 132.4,
+  "zero_shot_per_term": {
+    "screen reader": 0.5,
+    "skip link": 0.4444,
+    "alt text": 0.3333,
+    "color contrast": 0.0,
+    "focus indicator": 0.6111,
+    "heading structure": 0.0555,
+    "keyboard navigation": 0.0,
+    "landmark region": 0.0,
+    "aria attribute": 0.1111
+  },
+  "few_shot_per_term": {
+    "screen reader": 0.8333,
+    "skip link": 1.0,
+    "alt text": 1.0,
+    "color contrast": 0.2778,
+    "focus indicator": 0.8889,
+    "heading structure": 0.3333,
+    "keyboard navigation": 0.0,
+    "landmark region": 0.0,
+    "aria attribute": 0.4444
+  },
+  "zero_shot_details": [
+    {
+      "text_out": "a device that is used to read a web page.\n\nThe screen reader is a device that",
+      "full_output": "In web accessibility, a screen reader is a device that is used to read a web page.\n\nThe screen reader is a device that",
+      "is_correct": true,
+      "score": 1.0,
+      "eval_method": "keyword_rubric",
+      "term": "screen reader",
+      "prompt_id": "gen_001",
+      "template": "In web accessibility, a screen reader is"
+    },
+    {
+      "text_out": "is a good alternative to the one used in the game.\n\nThe game is a good example",
+      "full_output": "For blind users, a screen reader is a good alternative to the one used in the game.\n\nThe game is a good example",
+      "is_correct": false,
+      "score": 0.0,
+      "eval_method": "keyword_rubric",
+      "term": "screen reader",
+      "prompt_id": "gen_002",
+      "template": "For blind users, a screen reader"
+    },
+    {
+      "text_out": "use the following code:\n\n// Create a new screen reader\n// Create a new screen reader\n// Create a new",
+      "full_output": "To ensure screen reader compatibility, developers should use the following code:\n\n// Create a new screen reader\n// Create a new screen reader\n// Create a new",
+      "is_correct": false,
+      "score": 0.3333,
+      "eval_method": "keyword_rubric",
+      "term": "screen reader",
+      "prompt_id": "gen_003",
+      "template": "To ensure screen reader compatibility, developers should"
+    },
+    {
+      "text_out": "not be able to read the screen.\n\nThe screen reader is a device that is designed to be used by a user",
+      "full_output": "Without proper screen reader support, visually impaired users may not be able to read the screen.\n\nThe screen reader is a device that is designed to be used by a user",
+      "is_correct": true,
+      "score": 1.0,
+      "eval_method": "keyword_rubric",
+      "term": "screen reader",
+      "prompt_id": "gen_004",
+      "template": "Without proper screen reader support, visually impaired users may"
+    },
+    {
+      "text_out": "that the site is not a good fit for the user.\n\nThe site is not a good fit for the user.",
+      "full_output": "An accessibility audit found that the site is not screen reader friendly. This means that the site is not a good fit for the user.\n\nThe site is not a good fit for the user.",
+      "is_correct": false,
+      "score": 0.3333,
+      "eval_method": "keyword_rubric",
+      "term": "screen reader",
+      "prompt_id": "gen_005",
+      "template": "An accessibility audit found that the site is not screen reader friendly. This means"
+    },
+    {
+      "text_out": "that the user is able to use the site without having to manually add or remove the site.\n\nThe following are the",
+      "full_output": "When building accessible sites, screen reader compatibility ensures that the user is able to use the site without having to manually add or remove the site.\n\nThe following are the",
+      "is_correct": false,
+      "score": 0.3333,
+      "eval_method": "keyword_rubric",
+      "term": "screen reader",
+      "prompt_id": "gen_006",
+      "template": "When building accessible sites, screen reader compatibility ensures"
+    },
+    {
+      "text_out": "a link that is not a link.\n\nA:\n\nYou can use the following code",
+      "full_output": "In web accessibility, a skip link is a link that is not a link.\n\nA:\n\nYou can use the following code",
+      "is_correct": false,
+      "score": 0.3333,
+      "eval_method": "keyword_rubric",
+      "term": "skip link",
+      "prompt_id": "gen_001",
+      "template": "In web accessibility, a skip link is"
+    },
+    {
+      "text_out": "is added to the list of keyboard navigation links.\n\nThe following code is the same as the",
+      "full_output": "For keyboard navigation, a skip link is added to the list of keyboard navigation links.\n\nThe following code is the same as the",
+      "is_correct": true,
+      "score": 0.6667,
+      "eval_method": "keyword_rubric",
+      "term": "skip link",
+      "prompt_id": "gen_002",
+      "template": "For keyboard navigation, a skip link"
+    },
+    {
+      "text_out": "be able to use the same link as the original link.\n\nA:\n\nI think you should use a link",
+      "full_output": "To implement a skip link, developers should be able to use the same link as the original link.\n\nA:\n\nI think you should use a link",
+      "is_correct": false,
+      "score": 0.3333,
+      "eval_method": "keyword_rubric",
+      "term": "skip link",
+      "prompt_id": "gen_003",
+      "template": "To implement a skip link, developers should"
+    },
+    {
+      "text_out": "not be able to use the keyboard shortcuts.\n\nThe keyboard shortcuts are not supported by the Windows 7 operating system",
+      "full_output": "Without a skip link, keyboard users may not be able to use the keyboard shortcuts.\n\nThe keyboard shortcuts are not supported by the Windows 7 operating system",
+      "is_correct": false,
+      "score": 0.3333,
+      "eval_method": "keyword_rubric",
+      "term": "skip link",
+      "prompt_id": "gen_004",
+      "template": "Without a skip link, keyboard users may"
+    },
+    {
+      "text_out": "that the user can skip the link and the user can click on the skip link.\n\nThe user can also skip the",
+      "full_output": "An accessibility review noted the absence of a skip link. This means that the user can skip the link and the user can click on the skip link.\n\nThe user can also skip the",
+      "is_correct": true,
+      "score": 0.6667,
+      "eval_method": "keyword_rubric",
+      "term": "skip link",
+      "prompt_id": "gen_005",
+      "template": "An accessibility review noted the absence of a skip link. This means"
+    },
+    {
+      "text_out": "that the user is not in the same position as the user.\n\nThe user can also use the navigation bar to navigate",
+      "full_output": "When designing accessible navigation, a skip link ensures that the user is not in the same position as the user.\n\nThe user can also use the navigation bar to navigate",
+      "is_correct": false,
+      "score": 0.3333,
+      "eval_method": "keyword_rubric",
+      "term": "skip link",
+      "prompt_id": "gen_006",
+      "template": "When designing accessible navigation, a skip link ensures"
+    },
+    {
+      "text_out": "not supported.\n\nA:\n\nI think you are missing the issue.\nI have",
+      "full_output": "In web accessibility, alt text is not supported.\n\nA:\n\nI think you are missing the issue.\nI have",
+      "is_correct": false,
+      "score": 0.0,
+      "eval_method": "keyword_rubric",
+      "term": "alt text",
+      "prompt_id": "gen_001",
+      "template": "In web accessibility, alt text is"
+    },
+    {
+      "text_out": "is not a good option.\n\nI have a question about the way I can get the text",
+      "full_output": "For blind users, alt text is not a good option.\n\nI have a question about the way I can get the text",
+      "is_correct": false,
+      "score": 0.3333,
+      "eval_method": "keyword_rubric",
+      "term": "alt text",
+      "prompt_id": "gen_002",
+      "template": "For blind users, alt text"
+    },
+    {
+      "text_out": "be able to write effective alt text, content creators should be able to write effective alt text, content creators should be able to",
+      "full_output": "To write effective alt text, content creators should be able to write effective alt text, content creators should be able to write effective alt text, content creators should be able to",
+      "is_correct": true,
+      "score": 0.6667,
+      "eval_method": "keyword_rubric",
+      "term": "alt text",
+      "prompt_id": "gen_003",
+      "template": "To write effective alt text, content creators should"
+    },
+    {
+      "text_out": "not be able to read the text.\n\nThe following is a list of the most common types of text that are used",
+      "full_output": "Without alt text, screen reader users may not be able to read the text.\n\nThe following is a list of the most common types of text that are used",
+      "is_correct": false,
+      "score": 0.3333,
+      "eval_method": "keyword_rubric",
+      "term": "alt text",
+      "prompt_id": "gen_004",
+      "template": "Without alt text, screen reader users may"
+    },
+    {
+      "text_out": "that the user can't see the text in the browser.\n\nThe problem is that the user can't see the text",
+      "full_output": "An accessibility scan found images lacking alt text. This means that the user can't see the text in the browser.\n\nThe problem is that the user can't see the text",
+      "is_correct": false,
+      "score": 0.3333,
+      "eval_method": "keyword_rubric",
+      "term": "alt text",
+      "prompt_id": "gen_005",
+      "template": "An accessibility scan found images lacking alt text. This means"
+    },
+    {
+      "text_out": "that the content is not copied.\n\nThe following is a sample of the code that I used to create the website.",
+      "full_output": "When publishing web content, alt text ensures that the content is not copied.\n\nThe following is a sample of the code that I used to create the website.",
+      "is_correct": false,
+      "score": 0.3333,
+      "eval_method": "keyword_rubric",
+      "term": "alt text",
+      "prompt_id": "gen_006",
+      "template": "When publishing web content, alt text ensures"
+    },
+    {
+      "text_out": "not a problem.\n\nA:\n\nI think you are missing the point.\nThe",
+      "full_output": "In web accessibility, color contrast is not a problem.\n\nA:\n\nI think you are missing the point.\nThe",
+      "is_correct": false,
+      "score": 0.0,
+      "eval_method": "keyword_rubric",
+      "term": "color contrast",
+      "prompt_id": "gen_001",
+      "template": "In web accessibility, color contrast is"
+    },
+    {
+      "text_out": ", and/or a combination of these factors, the present invention provides a method for the treatment of",
+      "full_output": "For users with low vision, color contrast, and/or a combination of these factors, the present invention provides a method for the treatment of",
+      "is_correct": false,
+      "score": 0.0,
+      "eval_method": "keyword_rubric",
+      "term": "color contrast",
+      "prompt_id": "gen_002",
+      "template": "For users with low vision, color contrast"
+    },
+    {
+      "text_out": "be able to use a color-coded color scheme to achieve the desired color contrast.\n\nThe color-coded color scheme",
+      "full_output": "To achieve sufficient color contrast, designers should be able to use a color-coded color scheme to achieve the desired color contrast.\n\nThe color-coded color scheme",
+      "is_correct": false,
+      "score": 0.0,
+      "eval_method": "keyword_rubric",
+      "term": "color contrast",
+      "prompt_id": "gen_003",
+      "template": "To achieve sufficient color contrast, designers should"
+    },
+    {
+      "text_out": "not be able to use the color contrast.\n\nThe authors of this paper are not aware of any studies that have investigated",
+      "full_output": "Without adequate color contrast, users with visual impairments may not be able to use the color contrast.\n\nThe authors of this paper are not aware of any studies that have investigated",
+      "is_correct": false,
+      "score": 0.0,
+      "eval_method": "keyword_rubric",
+      "term": "color contrast",
+      "prompt_id": "gen_004",
+      "template": "Without adequate color contrast, users with visual impairments may"
+    },
+    {
+      "text_out": "that the color of the screen is not the same as the color of the screen.\n\nThe color of the screen is",
+      "full_output": "An accessibility checker flagged poor color contrast. This means that the color of the screen is not the same as the color of the screen.\n\nThe color of the screen is",
+      "is_correct": false,
+      "score": 0.0,
+      "eval_method": "keyword_rubric",
+      "term": "color contrast",
+      "prompt_id": "gen_005",
+      "template": "An accessibility checker flagged poor color contrast. This means"
+    },
+    {
+      "text_out": "that the color palettes are not too dark or too dark.\n\nColor contrast is a function of the color palette.",
+      "full_output": "When selecting color palettes, color contrast ensures that the color palettes are not too dark or too dark.\n\nColor contrast is a function of the color palette.",
+      "is_correct": false,
+      "score": 0.0,
+      "eval_method": "keyword_rubric",
+      "term": "color contrast",
+      "prompt_id": "gen_006",
+      "template": "When selecting color palettes, color contrast ensures"
+    },
+    {
+      "text_out": "a focus indicator that is used to indicate the accessibility of a web page.\n\nThe focus indicator",
+      "full_output": "In web accessibility, a focus indicator is a focus indicator that is used to indicate the accessibility of a web page.\n\nThe focus indicator",
+      "is_correct": true,
+      "score": 1.0,
+      "eval_method": "keyword_rubric",
+      "term": "focus indicator",
+      "prompt_id": "gen_001",
+      "template": "In web accessibility, a focus indicator is"
+    },
+    {
+      "text_out": "is a keypad that is used to indicate the keyboard user's typing.\n\nThe keyboard user",
+      "full_output": "For keyboard users, a focus indicator is a keypad that is used to indicate the keyboard user's typing.\n\nThe keyboard user",
+      "is_correct": true,
+      "score": 0.6667,
+      "eval_method": "keyword_rubric",
+      "term": "focus indicator",
+      "prompt_id": "gen_002",
+      "template": "For keyboard users, a focus indicator"
+    },
+    {
+      "text_out": "be able to use the built-in visual indicators to detect the focus of the user.\n\nThe visual indicators are not",
+      "full_output": "To implement visible focus indicators, developers should be able to use the built-in visual indicators to detect the focus of the user.\n\nThe visual indicators are not",
+      "is_correct": true,
+      "score": 0.6667,
+      "eval_method": "keyword_rubric",
+      "term": "focus indicator",
+      "prompt_id": "gen_003",
+      "template": "To implement visible focus indicators, developers should"
+    },
+    {
+      "text_out": "be able to use the keyboard-only feature.\n\nThe keyboard-only feature is available in the Windows 10 version of",
+      "full_output": "Without a focus indicator, keyboard-only users may be able to use the keyboard-only feature.\n\nThe keyboard-only feature is available in the Windows 10 version of",
+      "is_correct": false,
+      "score": 0.3333,
+      "eval_method": "keyword_rubric",
+      "term": "focus indicator",
+      "prompt_id": "gen_004",
+      "template": "Without a focus indicator, keyboard-only users may"
+    },
+    {
+      "text_out": "that the user is not able to focus on the task at hand.\n\nThe user is not able to focus on the",
+      "full_output": "A usability test revealed missing focus indicators. This means that the user is not able to focus on the task at hand.\n\nThe user is not able to focus on the",
+      "is_correct": false,
+      "score": 0.3333,
+      "eval_method": "keyword_rubric",
+      "term": "focus indicator",
+      "prompt_id": "gen_005",
+      "template": "A usability test revealed missing focus indicators. This means"
+    },
+    {
+      "text_out": "that the user is able to see the elements in the context of the user's current context.\n\nThe focus indicator is",
+      "full_output": "When styling interactive elements, a focus indicator ensures that the user is able to see the elements in the context of the user's current context.\n\nThe focus indicator is",
+      "is_correct": true,
+      "score": 0.6667,
+      "eval_method": "keyword_rubric",
+      "term": "focus indicator",
+      "prompt_id": "gen_006",
+      "template": "When styling interactive elements, a focus indicator ensures"
+    },
+    {
+      "text_out": "not the same as in the case of the web accessibility.\n\nThe web accessibility is a complex",
+      "full_output": "In web accessibility, heading structure is not the same as in the case of the web accessibility.\n\nThe web accessibility is a complex",
+      "is_correct": false,
+      "score": 0.0,
+      "eval_method": "keyword_rubric",
+      "term": "heading structure",
+      "prompt_id": "gen_001",
+      "template": "In web accessibility, heading structure is"
+    },
+    {
+      "text_out": "is not a good idea.\n\nI have a feeling that the next time I see a screen",
+      "full_output": "For screen readers, heading structure is not a good idea.\n\nI have a feeling that the next time I see a screen",
+      "is_correct": false,
+      "score": 0.0,
+      "eval_method": "keyword_rubric",
+      "term": "heading structure",
+      "prompt_id": "gen_002",
+      "template": "For screen readers, heading structure"
+    },
+    {
+      "text_out": "be able to create proper content.\n\nThe content authors should be able to create proper content.\n\nThe content authors",
+      "full_output": "To create proper heading structure, content authors should be able to create proper content.\n\nThe content authors should be able to create proper content.\n\nThe content authors",
+      "is_correct": false,
+      "score": 0.0,
+      "eval_method": "keyword_rubric",
+      "term": "heading structure",
+      "prompt_id": "gen_003",
+      "template": "To create proper heading structure, content authors should"
+    },
+    {
+      "text_out": "not be able to see the screen.\n\nThe screen reader is a device that is used to read and write text.",
+      "full_output": "Without logical heading structure, screen reader users may not be able to see the screen.\n\nThe screen reader is a device that is used to read and write text.",
+      "is_correct": false,
+      "score": 0.3333,
+      "eval_method": "keyword_rubric",
+      "term": "heading structure",
+      "prompt_id": "gen_004",
+      "template": "Without logical heading structure, screen reader users may"
+    },
+    {
+      "text_out": "that the user should be able to see the head of the vehicle.\n\nThe user should be able to see the head",
+      "full_output": "An accessibility evaluation found improper heading structure. This means that the user should be able to see the head of the vehicle.\n\nThe user should be able to see the head",
+      "is_correct": false,
+      "score": 0.0,
+      "eval_method": "keyword_rubric",
+      "term": "heading structure",
+      "prompt_id": "gen_005",
+      "template": "An accessibility evaluation found improper heading structure. This means"
+    },
+    {
+      "text_out": "that the page is organized in a way that is consistent with the layout of the page.\n\nThe page structure is a",
+      "full_output": "When organizing page content, heading structure ensures that the page is organized in a way that is consistent with the layout of the page.\n\nThe page structure is a",
+      "is_correct": false,
+      "score": 0.0,
+      "eval_method": "keyword_rubric",
+      "term": "heading structure",
+      "prompt_id": "gen_006",
+      "template": "When organizing page content, heading structure ensures"
+    },
+    {
+      "text_out": "not supported.\n\nThe following is a list of the most common keyboard shortcuts:",
+      "full_output": "In web accessibility, keyboard navigation is not supported.\n\nThe following is a list of the most common keyboard shortcuts:\n\n",
+      "is_correct": false,
+      "score": 0.0,
+      "eval_method": "keyword_rubric",
+      "term": "keyboard navigation",
+      "prompt_id": "gen_001",
+      "template": "In web accessibility, keyboard navigation is"
+    },
+    {
+      "text_out": ", and other keyboard-related activities, the use of a keyboard is recommended.\n\nThe use",
+      "full_output": "For users with motor disabilities, keyboard navigation, and other keyboard-related activities, the use of a keyboard is recommended.\n\nThe use",
+      "is_correct": false,
+      "score": 0.0,
+      "eval_method": "keyword_rubric",
+      "term": "keyboard navigation",
+      "prompt_id": "gen_002",
+      "template": "For users with motor disabilities, keyboard navigation"
+    },
+    {
+      "text_out": "use the keyboard shortcuts in the keyboard shortcuts.\n\nThe keyboard shortcuts are not supported by the keyboard shortcuts",
+      "full_output": "To support keyboard navigation, developers should use the keyboard shortcuts in the keyboard shortcuts.\n\nThe keyboard shortcuts are not supported by the keyboard shortcuts",
+      "is_correct": false,
+      "score": 0.0,
+      "eval_method": "keyword_rubric",
+      "term": "keyboard navigation",
+      "prompt_id": "gen_003",
+      "template": "To support keyboard navigation, developers should"
+    },
+    {
+      "text_out": "not be able to use the keyboard navigation feature.\n\nThe keyboard navigation feature is also available in the Android Market.",
+      "full_output": "Without keyboard navigation support, motor-impaired users may not be able to use the keyboard navigation feature.\n\nThe keyboard navigation feature is also available in the Android Market.\n",
+      "is_correct": false,
+      "score": 0.0,
+      "eval_method": "keyword_rubric",
+      "term": "keyboard navigation",
+      "prompt_id": "gen_004",
+      "template": "Without keyboard navigation support, motor-impaired users may"
+    },
+    {
+      "text_out": "that the user can't use the keyboard to navigate to the next page.\n\nThe problem is that the user can't",
+      "full_output": "A manual test revealed keyboard navigation failures. This means that the user can't use the keyboard to navigate to the next page.\n\nThe problem is that the user can't",
+      "is_correct": false,
+      "score": 0.0,
+      "eval_method": "keyword_rubric",
+      "term": "keyboard navigation",
+      "prompt_id": "gen_005",
+      "template": "A manual test revealed keyboard navigation failures. This means"
+    },
+    {
+      "text_out": "that the user can select the desired keystroke.\n\nThe keystroke is the keystroke that is used to select the",
+      "full_output": "When developing interactive features, keyboard navigation ensures that the user can select the desired keystroke.\n\nThe keystroke is the keystroke that is used to select the",
+      "is_correct": false,
+      "score": 0.0,
+      "eval_method": "keyword_rubric",
+      "term": "keyboard navigation",
+      "prompt_id": "gen_006",
+      "template": "When developing interactive features, keyboard navigation ensures"
+    },
+    {
+      "text_out": "a region of the web that is accessible to all users.\n\nThe web accessibility is a key",
+      "full_output": "In web accessibility, a landmark region is a region of the web that is accessible to all users.\n\nThe web accessibility is a key",
+      "is_correct": false,
+      "score": 0.0,
+      "eval_method": "keyword_rubric",
+      "term": "landmark region",
+      "prompt_id": "gen_001",
+      "template": "In web accessibility, a landmark region is"
+    },
+    {
+      "text_out": "are not supported.\n\nThe following table lists the most frequently used landmark regions for the screen reader",
+      "full_output": "For screen reader users, landmark regions are not supported.\n\nThe following table lists the most frequently used landmark regions for the screen reader",
+      "is_correct": false,
+      "score": 0.0,
+      "eval_method": "keyword_rubric",
+      "term": "landmark region",
+      "prompt_id": "gen_002",
+      "template": "For screen reader users, landmark regions"
+    },
+    {
+      "text_out": "use the following code:\n\n// Define a new landmark region\n// Define a new landmark region\n// Define a new",
+      "full_output": "To implement landmark regions, developers should use the following code:\n\n// Define a new landmark region\n// Define a new landmark region\n// Define a new",
+      "is_correct": false,
+      "score": 0.0,
+      "eval_method": "keyword_rubric",
+      "term": "landmark region",
+      "prompt_id": "gen_003",
+      "template": "To implement landmark regions, developers should"
+    },
+    {
+      "text_out": "be able to use the same technology to help them with their daily tasks.\n\nThe new technology is designed to help people",
+      "full_output": "Without proper landmark regions, assistive technology users may be able to use the same technology to help them with their daily tasks.\n\nThe new technology is designed to help people",
+      "is_correct": false,
+      "score": 0.0,
+      "eval_method": "keyword_rubric",
+      "term": "landmark region",
+      "prompt_id": "gen_004",
+      "template": "Without proper landmark regions, assistive technology users may"
+    },
+    {
+      "text_out": "that the landmark regions are not included in the model.\n\nThe model is then used to generate a list of all the",
+      "full_output": "An HTML validation found missing landmark regions. This means that the landmark regions are not included in the model.\n\nThe model is then used to generate a list of all the",
+      "is_correct": false,
+      "score": 0.0,
+      "eval_method": "keyword_rubric",
+      "term": "landmark region",
+      "prompt_id": "gen_005",
+      "template": "An HTML validation found missing landmark regions. This means"
+    },
+    {
+      "text_out": "that the page layout is not too large.\n\nThe following table lists the most important features of the page layout:",
+      "full_output": "When structuring page layout, landmark regions ensure that the page layout is not too large.\n\nThe following table lists the most important features of the page layout:\n",
+      "is_correct": false,
+      "score": 0.0,
+      "eval_method": "keyword_rubric",
+      "term": "landmark region",
+      "prompt_id": "gen_006",
+      "template": "When structuring page layout, landmark regions ensure"
+    },
+    {
+      "text_out": "used to indicate that the user is able to access the web site.\n\nThe following example shows",
+      "full_output": "In web accessibility, an aria attribute is used to indicate that the user is able to access the web site.\n\nThe following example shows",
+      "is_correct": false,
+      "score": 0.0,
+      "eval_method": "keyword_rubric",
+      "term": "aria attribute",
+      "prompt_id": "gen_001",
+      "template": "In web accessibility, an aria attribute is"
+    },
+    {
+      "text_out": "are not supported.\n\nThe following is a list of the most common screen reader errors.",
+      "full_output": "For screen reader users, aria attributes are not supported.\n\nThe following is a list of the most common screen reader errors.\n",
+      "is_correct": false,
+      "score": 0.3333,
+      "eval_method": "keyword_rubric",
+      "term": "aria attribute",
+      "prompt_id": "gen_002",
+      "template": "For screen reader users, aria attributes"
+    },
+    {
+      "text_out": "use the following code:\n\n<a href=\"https://github.com/joshua/joshua-",
+      "full_output": "To use aria attributes correctly, developers should use the following code:\n\n<a href=\"https://github.com/joshua/joshua-",
+      "is_correct": false,
+      "score": 0.0,
+      "eval_method": "keyword_rubric",
+      "term": "aria attribute",
+      "prompt_id": "gen_003",
+      "template": "To use aria attributes correctly, developers should"
+    },
+    {
+      "text_out": "be used to display the selected items.\n\nThe following example shows a simple example of a widget that displays a list of",
+      "full_output": "Without appropriate aria attributes, custom widgets may be used to display the selected items.\n\nThe following example shows a simple example of a widget that displays a list of",
+      "is_correct": false,
+      "score": 0.0,
+      "eval_method": "keyword_rubric",
+      "term": "aria attribute",
+      "prompt_id": "gen_004",
+      "template": "Without appropriate aria attributes, custom widgets may"
+    },
+    {
+      "text_out": "that the user is not able to access the aria attributes.\n\nThe user is able to access the aria attributes.",
+      "full_output": "An accessibility audit found missing aria attributes. This means that the user is not able to access the aria attributes.\n\nThe user is able to access the aria attributes.\n",
+      "is_correct": false,
+      "score": 0.3333,
+      "eval_method": "keyword_rubric",
+      "term": "aria attribute",
+      "prompt_id": "gen_005",
+      "template": "An accessibility audit found missing aria attributes. This means"
+    },
+    {
+      "text_out": "that the component is not null.\n\nA:\n\nYou can use the following code to create custom components:",
+      "full_output": "When creating custom components, aria attributes ensure that the component is not null.\n\nA:\n\nYou can use the following code to create custom components:\n",
+      "is_correct": false,
+      "score": 0.0,
+      "eval_method": "keyword_rubric",
+      "term": "aria attribute",
+      "prompt_id": "gen_006",
+      "template": "When creating custom components, aria attributes ensure"
+    }
+  ],
+  "few_shot_details": [
+    {
+      "text_out": "a device that is able to read a screen for a user. The screen reader is a device that",
+      "full_output": "Example: A screen reader is assistive software that reads digital text aloud for blind or visually impaired users.\n\nIn web accessibility, a screen reader is a device that is able to read a screen for a user. The screen reader is a device that",
+      "is_correct": true,
+      "score": 1.0,
+      "eval_method": "keyword_rubric",
+      "term": "screen reader",
+      "prompt_id": "gen_001_fs",
+      "template": "Example: A screen reader is assistive software that reads digital text aloud for blind or visually impaired users.\n\nIn web accessibility, a screen reader is"
+    },
+    {
+      "text_out": "is a device that reads a screen reader aloud for blind or visually impaired users.\n\nFor blind",
+      "full_output": "Example: A screen reader is assistive software that reads digital text aloud for blind or visually impaired users.\n\nFor blind users, a screen reader is a device that reads a screen reader aloud for blind or visually impaired users.\n\nFor blind",
+      "is_correct": true,
+      "score": 1.0,
+      "eval_method": "keyword_rubric",
+      "term": "screen reader",
+      "prompt_id": "gen_002_fs",
+      "template": "Example: A screen reader is assistive software that reads digital text aloud for blind or visually impaired users.\n\nFor blind users, a screen reader"
+    },
+    {
+      "text_out": "use the following:\n\n- OpenGL ES 2.0 or higher\n\n- OpenGL ES 3.0 or",
+      "full_output": "Example: A screen reader is assistive software that reads digital text aloud for blind or visually impaired users.\n\nTo ensure screen reader compatibility, developers should use the following:\n\n- OpenGL ES 2.0 or higher\n\n- OpenGL ES 3.0 or",
+      "is_correct": false,
+      "score": 0.0,
+      "eval_method": "keyword_rubric",
+      "term": "screen reader",
+      "prompt_id": "gen_003_fs",
+      "template": "Example: A screen reader is assistive software that reads digital text aloud for blind or visually impaired users.\n\nTo ensure screen reader compatibility, developers should"
+    },
+    {
+      "text_out": "not be able to read the screen.\n\nThe screen reader is a software that reads the screen for blind or visually impaired",
+      "full_output": "Example: A screen reader is assistive software that reads digital text aloud for blind or visually impaired users.\n\nWithout proper screen reader support, visually impaired users may not be able to read the screen.\n\nThe screen reader is a software that reads the screen for blind or visually impaired",
+      "is_correct": true,
+      "score": 1.0,
+      "eval_method": "keyword_rubric",
+      "term": "screen reader",
+      "prompt_id": "gen_004_fs",
+      "template": "Example: A screen reader is assistive software that reads digital text aloud for blind or visually impaired users.\n\nWithout proper screen reader support, visually impaired users may"
+    },
+    {
+      "text_out": "that users are not able to read the screen.\n\nThe audit also found that the site is not accessible to blind or",
+      "full_output": "Example: A screen reader is assistive software that reads digital text aloud for blind or visually impaired users.\n\nAn accessibility audit found that the site is not screen reader friendly. This means that users are not able to read the screen.\n\nThe audit also found that the site is not accessible to blind or",
+      "is_correct": true,
+      "score": 1.0,
+      "eval_method": "keyword_rubric",
+      "term": "screen reader",
+      "prompt_id": "gen_005_fs",
+      "template": "Example: A screen reader is assistive software that reads digital text aloud for blind or visually impaired users.\n\nAn accessibility audit found that the site is not screen reader friendly. This means"
+    },
+    {
+      "text_out": "that the user is able to read the screen without having to open the browser.\n\nScreen reader compatibility is a feature that",
+      "full_output": "Example: A screen reader is assistive software that reads digital text aloud for blind or visually impaired users.\n\nWhen building accessible sites, screen reader compatibility ensures that the user is able to read the screen without having to open the browser.\n\nScreen reader compatibility is a feature that",
+      "is_correct": true,
+      "score": 1.0,
+      "eval_method": "keyword_rubric",
+      "term": "screen reader",
+      "prompt_id": "gen_006_fs",
+      "template": "Example: A screen reader is assistive software that reads digital text aloud for blind or visually impaired users.\n\nWhen building accessible sites, screen reader compatibility ensures"
+    },
+    {
+      "text_out": "a keyboard-accessible link that allows users to bypass navigation and jump directly to the main content of a",
+      "full_output": "Example: A skip link is a keyboard-accessible link that allows users to bypass navigation and jump directly to the main content of a webpage.\n\nIn web accessibility, a skip link is a keyboard-accessible link that allows users to bypass navigation and jump directly to the main content of a",
+      "is_correct": true,
+      "score": 1.0,
+      "eval_method": "keyword_rubric",
+      "term": "skip link",
+      "prompt_id": "gen_001_fs",
+      "template": "Example: A skip link is a keyboard-accessible link that allows users to bypass navigation and jump directly to the main content of a webpage.\n\nIn web accessibility, a skip link is"
+    },
+    {
+      "text_out": "is a keyboard-accessible link that allows users to bypass navigation and jump directly to the main content of",
+      "full_output": "Example: A skip link is a keyboard-accessible link that allows users to bypass navigation and jump directly to the main content of a webpage.\n\nFor keyboard navigation, a skip link is a keyboard-accessible link that allows users to bypass navigation and jump directly to the main content of",
+      "is_correct": true,
+      "score": 1.0,
+      "eval_method": "keyword_rubric",
+      "term": "skip link",
+      "prompt_id": "gen_002_fs",
+      "template": "Example: A skip link is a keyboard-accessible link that allows users to bypass navigation and jump directly to the main content of a webpage.\n\nFor keyboard navigation, a skip link"
+    },
+    {
+      "text_out": "use a simple JavaScript library called skipLink.js. This library allows users to skip a page by clicking a link, and",
+      "full_output": "Example: A skip link is a keyboard-accessible link that allows users to bypass navigation and jump directly to the main content of a webpage.\n\nTo implement a skip link, developers should use a simple JavaScript library called skipLink.js. This library allows users to skip a page by clicking a link, and",
+      "is_correct": true,
+      "score": 1.0,
+      "eval_method": "keyword_rubric",
+      "term": "skip link",
+      "prompt_id": "gen_003_fs",
+      "template": "Example: A skip link is a keyboard-accessible link that allows users to bypass navigation and jump directly to the main content of a webpage.\n\nTo implement a skip link, developers should"
+    },
+    {
+      "text_out": "not be able to navigate to the main content of a webpage.\n\nThe following example shows how to skip a page by",
+      "full_output": "Example: A skip link is a keyboard-accessible link that allows users to bypass navigation and jump directly to the main content of a webpage.\n\nWithout a skip link, keyboard users may not be able to navigate to the main content of a webpage.\n\nThe following example shows how to skip a page by",
+      "is_correct": true,
+      "score": 1.0,
+      "eval_method": "keyword_rubric",
+      "term": "skip link",
+      "prompt_id": "gen_004_fs",
+      "template": "Example: A skip link is a keyboard-accessible link that allows users to bypass navigation and jump directly to the main content of a webpage.\n\nWithout a skip link, keyboard users may"
+    },
+    {
+      "text_out": "that users can skip the main content of a webpage by clicking on the skip link.\n\nThe skip link is a keyboard",
+      "full_output": "Example: A skip link is a keyboard-accessible link that allows users to bypass navigation and jump directly to the main content of a webpage.\n\nAn accessibility review noted the absence of a skip link. This means that users can skip the main content of a webpage by clicking on the skip link.\n\nThe skip link is a keyboard",
+      "is_correct": true,
+      "score": 1.0,
+      "eval_method": "keyword_rubric",
+      "term": "skip link",
+      "prompt_id": "gen_005_fs",
+      "template": "Example: A skip link is a keyboard-accessible link that allows users to bypass navigation and jump directly to the main content of a webpage.\n\nAn accessibility review noted the absence of a skip link. This means"
+    },
+    {
+      "text_out": "that users can skip to the main content of the webpage.\n\nThe following example shows how to use a skip link to",
+      "full_output": "Example: A skip link is a keyboard-accessible link that allows users to bypass navigation and jump directly to the main content of a webpage.\n\nWhen designing accessible navigation, a skip link ensures that users can skip to the main content of the webpage.\n\nThe following example shows how to use a skip link to",
+      "is_correct": true,
+      "score": 1.0,
+      "eval_method": "keyword_rubric",
+      "term": "skip link",
+      "prompt_id": "gen_006_fs",
+      "template": "Example: A skip link is a keyboard-accessible link that allows users to bypass navigation and jump directly to the main content of a webpage.\n\nWhen designing accessible navigation, a skip link ensures"
+    },
+    {
+      "text_out": "a written description of an image that screen readers read aloud to blind users, conveying the content and function",
+      "full_output": "Example: Alt text is a written description of an image that screen readers read aloud to blind users, conveying the content and function of the image.\n\nIn web accessibility, alt text is a written description of an image that screen readers read aloud to blind users, conveying the content and function",
+      "is_correct": true,
+      "score": 1.0,
+      "eval_method": "keyword_rubric",
+      "term": "alt text",
+      "prompt_id": "gen_001_fs",
+      "template": "Example: Alt text is a written description of an image that screen readers read aloud to blind users, conveying the content and function of the image.\n\nIn web accessibility, alt text is"
+    },
+    {
+      "text_out": "is a written description of an image that screen readers read aloud to blind users, conveying the content and",
+      "full_output": "Example: Alt text is a written description of an image that screen readers read aloud to blind users, conveying the content and function of the image.\n\nFor blind users, alt text is a written description of an image that screen readers read aloud to blind users, conveying the content and",
+      "is_correct": true,
+      "score": 1.0,
+      "eval_method": "keyword_rubric",
+      "term": "alt text",
+      "prompt_id": "gen_002_fs",
+      "template": "Example: Alt text is a written description of an image that screen readers read aloud to blind users, conveying the content and function of the image.\n\nFor blind users, alt text"
+    },
+    {
+      "text_out": "be able to read the image and write the description of the image.\n\nTo write effective alt text, content creators should",
+      "full_output": "Example: Alt text is a written description of an image that screen readers read aloud to blind users, conveying the content and function of the image.\n\nTo write effective alt text, content creators should be able to read the image and write the description of the image.\n\nTo write effective alt text, content creators should",
+      "is_correct": true,
+      "score": 1.0,
+      "eval_method": "keyword_rubric",
+      "term": "alt text",
+      "prompt_id": "gen_003_fs",
+      "template": "Example: Alt text is a written description of an image that screen readers read aloud to blind users, conveying the content and function of the image.\n\nTo write effective alt text, content creators should"
+    },
+    {
+      "text_out": "not be able to read the image.\n\nThe following example shows how to use alt text to display a picture in a",
+      "full_output": "Example: Alt text is a written description of an image that screen readers read aloud to blind users, conveying the content and function of the image.\n\nWithout alt text, screen reader users may not be able to read the image.\n\nThe following example shows how to use alt text to display a picture in a",
+      "is_correct": true,
+      "score": 1.0,
+      "eval_method": "keyword_rubric",
+      "term": "alt text",
+      "prompt_id": "gen_004_fs",
+      "template": "Example: Alt text is a written description of an image that screen readers read aloud to blind users, conveying the content and function of the image.\n\nWithout alt text, screen reader users may"
+    },
+    {
+      "text_out": "that users can't read the image without the help of a visual search engine.\n\nThe image is displayed in a text",
+      "full_output": "Example: Alt text is a written description of an image that screen readers read aloud to blind users, conveying the content and function of the image.\n\nAn accessibility scan found images lacking alt text. This means that users can't read the image without the help of a visual search engine.\n\nThe image is displayed in a text",
+      "is_correct": true,
+      "score": 1.0,
+      "eval_method": "keyword_rubric",
+      "term": "alt text",
+      "prompt_id": "gen_005_fs",
+      "template": "Example: Alt text is a written description of an image that screen readers read aloud to blind users, conveying the content and function of the image.\n\nAn accessibility scan found images lacking alt text. This means"
+    },
+    {
+      "text_out": "that the reader is able to read the content and the user is able to read the content. Alt text is a written description",
+      "full_output": "Example: Alt text is a written description of an image that screen readers read aloud to blind users, conveying the content and function of the image.\n\nWhen publishing web content, alt text ensures that the reader is able to read the content and the user is able to read the content. Alt text is a written description",
+      "is_correct": true,
+      "score": 1.0,
+      "eval_method": "keyword_rubric",
+      "term": "alt text",
+      "prompt_id": "gen_006_fs",
+      "template": "Example: Alt text is a written description of an image that screen readers read aloud to blind users, conveying the content and function of the image.\n\nWhen publishing web content, alt text ensures"
+    },
+    {
+      "text_out": "a key factor in the overall appearance of the web. Color contrast is a key factor in the overall",
+      "full_output": "Example: Color contrast refers to the difference in brightness between text and its background, ensuring readability for users with low vision or color blindness.\n\nIn web accessibility, color contrast is a key factor in the overall appearance of the web. Color contrast is a key factor in the overall",
+      "is_correct": false,
+      "score": 0.0,
+      "eval_method": "keyword_rubric",
+      "term": "color contrast",
+      "prompt_id": "gen_001_fs",
+      "template": "Example: Color contrast refers to the difference in brightness between text and its background, ensuring readability for users with low vision or color blindness.\n\nIn web accessibility, color contrast is"
+    },
+    {
+      "text_out": "is a key factor in the overall color vision experience. Color contrast is a key factor in the overall",
+      "full_output": "Example: Color contrast refers to the difference in brightness between text and its background, ensuring readability for users with low vision or color blindness.\n\nFor users with low vision, color contrast is a key factor in the overall color vision experience. Color contrast is a key factor in the overall",
+      "is_correct": false,
+      "score": 0.3333,
+      "eval_method": "keyword_rubric",
+      "term": "color contrast",
+      "prompt_id": "gen_002_fs",
+      "template": "Example: Color contrast refers to the difference in brightness between text and its background, ensuring readability for users with low vision or color blindness.\n\nFor users with low vision, color contrast"
+    },
+    {
+      "text_out": "use a color contrast-sensitive medium (such as a white or black) to achieve a high contrast ratio. The medium is",
+      "full_output": "Example: Color contrast refers to the difference in brightness between text and its background, ensuring readability for users with low vision or color blindness.\n\nTo achieve sufficient color contrast, designers should use a color contrast-sensitive medium (such as a white or black) to achieve a high contrast ratio. The medium is",
+      "is_correct": false,
+      "score": 0.3333,
+      "eval_method": "keyword_rubric",
+      "term": "color contrast",
+      "prompt_id": "gen_003_fs",
+      "template": "Example: Color contrast refers to the difference in brightness between text and its background, ensuring readability for users with low vision or color blindness.\n\nTo achieve sufficient color contrast, designers should"
+    },
+    {
+      "text_out": "not be able to read the text.\n\nColor contrast is a subjective measurement of the contrast of the text.",
+      "full_output": "Example: Color contrast refers to the difference in brightness between text and its background, ensuring readability for users with low vision or color blindness.\n\nWithout adequate color contrast, users with visual impairments may not be able to read the text.\n\nColor contrast is a subjective measurement of the contrast of the text.\n\n",
+      "is_correct": false,
+      "score": 0.3333,
+      "eval_method": "keyword_rubric",
+      "term": "color contrast",
+      "prompt_id": "gen_004_fs",
+      "template": "Example: Color contrast refers to the difference in brightness between text and its background, ensuring readability for users with low vision or color blindness.\n\nWithout adequate color contrast, users with visual impairments may"
+    },
+    {
+      "text_out": "that users with color blindness or color blindness will not be able to read the color contrast.\n\nThe color contrast checker",
+      "full_output": "Example: Color contrast refers to the difference in brightness between text and its background, ensuring readability for users with low vision or color blindness.\n\nAn accessibility checker flagged poor color contrast. This means that users with color blindness or color blindness will not be able to read the color contrast.\n\nThe color contrast checker",
+      "is_correct": false,
+      "score": 0.0,
+      "eval_method": "keyword_rubric",
+      "term": "color contrast",
+      "prompt_id": "gen_005_fs",
+      "template": "Example: Color contrast refers to the difference in brightness between text and its background, ensuring readability for users with low vision or color blindness.\n\nAn accessibility checker flagged poor color contrast. This means"
+    },
+    {
+      "text_out": "readability for users with color blindness.\n\nColor contrast is a color that is used to distinguish between different colors.",
+      "full_output": "Example: Color contrast refers to the difference in brightness between text and its background, ensuring readability for users with low vision or color blindness.\n\nWhen selecting color palettes, color contrast ensures readability for users with color blindness.\n\nColor contrast is a color that is used to distinguish between different colors.\n",
+      "is_correct": true,
+      "score": 0.6667,
+      "eval_method": "keyword_rubric",
+      "term": "color contrast",
+      "prompt_id": "gen_006_fs",
+      "template": "Example: Color contrast refers to the difference in brightness between text and its background, ensuring readability for users with low vision or color blindness.\n\nWhen selecting color palettes, color contrast ensures"
+    },
+    {
+      "text_out": "a visual highlight that shows which element on a webpage is currently selected for keyboard interaction, helping keyboard-",
+      "full_output": "Example: A focus indicator is a visual highlight that shows which element on a webpage is currently selected for keyboard interaction, helping keyboard-only users navigate.\n\nIn web accessibility, a focus indicator is a visual highlight that shows which element on a webpage is currently selected for keyboard interaction, helping keyboard-",
+      "is_correct": true,
+      "score": 1.0,
+      "eval_method": "keyword_rubric",
+      "term": "focus indicator",
+      "prompt_id": "gen_001_fs",
+      "template": "Example: A focus indicator is a visual highlight that shows which element on a webpage is currently selected for keyboard interaction, helping keyboard-only users navigate.\n\nIn web accessibility, a focus indicator is"
+    },
+    {
+      "text_out": "is a visual highlight that shows which element on a webpage is currently selected for keyboard interaction, helping keyboard",
+      "full_output": "Example: A focus indicator is a visual highlight that shows which element on a webpage is currently selected for keyboard interaction, helping keyboard-only users navigate.\n\nFor keyboard users, a focus indicator is a visual highlight that shows which element on a webpage is currently selected for keyboard interaction, helping keyboard",
+      "is_correct": true,
+      "score": 1.0,
+      "eval_method": "keyword_rubric",
+      "term": "focus indicator",
+      "prompt_id": "gen_002_fs",
+      "template": "Example: A focus indicator is a visual highlight that shows which element on a webpage is currently selected for keyboard interaction, helping keyboard-only users navigate.\n\nFor keyboard users, a focus indicator"
+    },
+    {
+      "text_out": "use a focus indicator to highlight the current focus of the user. For example, if the user is typing a word, the",
+      "full_output": "Example: A focus indicator is a visual highlight that shows which element on a webpage is currently selected for keyboard interaction, helping keyboard-only users navigate.\n\nTo implement visible focus indicators, developers should use a focus indicator to highlight the current focus of the user. For example, if the user is typing a word, the",
+      "is_correct": true,
+      "score": 1.0,
+      "eval_method": "keyword_rubric",
+      "term": "focus indicator",
+      "prompt_id": "gen_003_fs",
+      "template": "Example: A focus indicator is a visual highlight that shows which element on a webpage is currently selected for keyboard interaction, helping keyboard-only users navigate.\n\nTo implement visible focus indicators, developers should"
+    },
+    {
+      "text_out": "not be able to navigate to a specific page.\n\nThe focus indicator is a visual highlight that shows which element on a",
+      "full_output": "Example: A focus indicator is a visual highlight that shows which element on a webpage is currently selected for keyboard interaction, helping keyboard-only users navigate.\n\nWithout a focus indicator, keyboard-only users may not be able to navigate to a specific page.\n\nThe focus indicator is a visual highlight that shows which element on a",
+      "is_correct": true,
+      "score": 1.0,
+      "eval_method": "keyword_rubric",
+      "term": "focus indicator",
+      "prompt_id": "gen_004_fs",
+      "template": "Example: A focus indicator is a visual highlight that shows which element on a webpage is currently selected for keyboard interaction, helping keyboard-only users navigate.\n\nWithout a focus indicator, keyboard-only users may"
+    },
+    {
+      "text_out": "that users are not able to navigate to a focus indicator, but rather to navigate to a keyboard.\n\nThe test also",
+      "full_output": "Example: A focus indicator is a visual highlight that shows which element on a webpage is currently selected for keyboard interaction, helping keyboard-only users navigate.\n\nA usability test revealed missing focus indicators. This means that users are not able to navigate to a focus indicator, but rather to navigate to a keyboard.\n\nThe test also",
+      "is_correct": true,
+      "score": 0.6667,
+      "eval_method": "keyword_rubric",
+      "term": "focus indicator",
+      "prompt_id": "gen_005_fs",
+      "template": "Example: A focus indicator is a visual highlight that shows which element on a webpage is currently selected for keyboard interaction, helping keyboard-only users navigate.\n\nA usability test revealed missing focus indicators. This means"
+    },
+    {
+      "text_out": "that the user is able to select the element that is currently selected for keyboard interaction.\n\nWhen styling interactive elements, a",
+      "full_output": "Example: A focus indicator is a visual highlight that shows which element on a webpage is currently selected for keyboard interaction, helping keyboard-only users navigate.\n\nWhen styling interactive elements, a focus indicator ensures that the user is able to select the element that is currently selected for keyboard interaction.\n\nWhen styling interactive elements, a",
+      "is_correct": true,
+      "score": 0.6667,
+      "eval_method": "keyword_rubric",
+      "term": "focus indicator",
+      "prompt_id": "gen_006_fs",
+      "template": "Example: A focus indicator is a visual highlight that shows which element on a webpage is currently selected for keyboard interaction, helping keyboard-only users navigate.\n\nWhen styling interactive elements, a focus indicator ensures"
+    },
+    {
+      "text_out": "the hierarchical organization of headings (H1, H2, H3, etc.) that allows",
+      "full_output": "Example: Heading structure is the hierarchical organization of headings (H1, H2, H3, etc.) that allows screen reader users to understand page organization and navigate efficiently.\n\nIn web accessibility, heading structure is the hierarchical organization of headings (H1, H2, H3, etc.) that allows",
+      "is_correct": true,
+      "score": 1.0,
+      "eval_method": "keyword_rubric",
+      "term": "heading structure",
+      "prompt_id": "gen_001_fs",
+      "template": "Example: Heading structure is the hierarchical organization of headings (H1, H2, H3, etc.) that allows screen reader users to understand page organization and navigate efficiently.\n\nIn web accessibility, heading structure is"
+    },
+    {
+      "text_out": "is the hierarchical organization of headings (H1, H2, H3, etc.) that",
+      "full_output": "Example: Heading structure is the hierarchical organization of headings (H1, H2, H3, etc.) that allows screen reader users to understand page organization and navigate efficiently.\n\nFor screen readers, heading structure is the hierarchical organization of headings (H1, H2, H3, etc.) that",
+      "is_correct": true,
+      "score": 1.0,
+      "eval_method": "keyword_rubric",
+      "term": "heading structure",
+      "prompt_id": "gen_002_fs",
+      "template": "Example: Heading structure is the hierarchical organization of headings (H1, H2, H3, etc.) that allows screen reader users to understand page organization and navigate efficiently.\n\nFor screen readers, heading structure"
+    },
+    {
+      "text_out": "be able to create a hierarchical structure of the headings. The content author should be able to create a hierarchical structure of the",
+      "full_output": "Example: Heading structure is the hierarchical organization of headings (H1, H2, H3, etc.) that allows screen reader users to understand page organization and navigate efficiently.\n\nTo create proper heading structure, content authors should be able to create a hierarchical structure of the headings. The content author should be able to create a hierarchical structure of the",
+      "is_correct": false,
+      "score": 0.0,
+      "eval_method": "keyword_rubric",
+      "term": "heading structure",
+      "prompt_id": "gen_003_fs",
+      "template": "Example: Heading structure is the hierarchical organization of headings (H1, H2, H3, etc.) that allows screen reader users to understand page organization and navigate efficiently.\n\nTo create proper heading structure, content authors should"
+    },
+    {
+      "text_out": "not understand the structure of the page.\n\nThe following example shows how to use a simple HTML table to display a table",
+      "full_output": "Example: Heading structure is the hierarchical organization of headings (H1, H2, H3, etc.) that allows screen reader users to understand page organization and navigate efficiently.\n\nWithout logical heading structure, screen reader users may not understand the structure of the page.\n\nThe following example shows how to use a simple HTML table to display a table",
+      "is_correct": false,
+      "score": 0.0,
+      "eval_method": "keyword_rubric",
+      "term": "heading structure",
+      "prompt_id": "gen_004_fs",
+      "template": "Example: Heading structure is the hierarchical organization of headings (H1, H2, H3, etc.) that allows screen reader users to understand page organization and navigate efficiently.\n\nWithout logical heading structure, screen reader users may"
+    },
+    {
+      "text_out": "that the user must be able to navigate to the page in the first place.\n\nThe user must be able to navigate",
+      "full_output": "Example: Heading structure is the hierarchical organization of headings (H1, H2, H3, etc.) that allows screen reader users to understand page organization and navigate efficiently.\n\nAn accessibility evaluation found improper heading structure. This means that the user must be able to navigate to the page in the first place.\n\nThe user must be able to navigate",
+      "is_correct": false,
+      "score": 0.0,
+      "eval_method": "keyword_rubric",
+      "term": "heading structure",
+      "prompt_id": "gen_005_fs",
+      "template": "Example: Heading structure is the hierarchical organization of headings (H1, H2, H3, etc.) that allows screen reader users to understand page organization and navigate efficiently.\n\nAn accessibility evaluation found improper heading structure. This means"
+    },
+    {
+      "text_out": "that the user is able to navigate to the page that is most relevant to the user.\n\nWhen the user is able",
+      "full_output": "Example: Heading structure is the hierarchical organization of headings (H1, H2, H3, etc.) that allows screen reader users to understand page organization and navigate efficiently.\n\nWhen organizing page content, heading structure ensures that the user is able to navigate to the page that is most relevant to the user.\n\nWhen the user is able",
+      "is_correct": false,
+      "score": 0.0,
+      "eval_method": "keyword_rubric",
+      "term": "heading structure",
+      "prompt_id": "gen_006_fs",
+      "template": "Example: Heading structure is the hierarchical organization of headings (H1, H2, H3, etc.) that allows screen reader users to understand page organization and navigate efficiently.\n\nWhen organizing page content, heading structure ensures"
+    },
+    {
+      "text_out": "a key to accessibility. Keyboard navigation is a key to accessibility. Keyboard navigation is a key",
+      "full_output": "Example: Keyboard navigation is the ability to operate all interactive elements of a website using only keyboard input, essential for users with motor disabilities.\n\nIn web accessibility, keyboard navigation is a key to accessibility. Keyboard navigation is a key to accessibility. Keyboard navigation is a key",
+      "is_correct": false,
+      "score": 0.0,
+      "eval_method": "keyword_rubric",
+      "term": "keyboard navigation",
+      "prompt_id": "gen_001_fs",
+      "template": "Example: Keyboard navigation is the ability to operate all interactive elements of a website using only keyboard input, essential for users with motor disabilities.\n\nIn web accessibility, keyboard navigation is"
+    },
+    {
+      "text_out": "is a key to the website. Keyboard navigation is a key to the website. Keyboard navigation",
+      "full_output": "Example: Keyboard navigation is the ability to operate all interactive elements of a website using only keyboard input, essential for users with motor disabilities.\n\nFor users with motor disabilities, keyboard navigation is a key to the website. Keyboard navigation is a key to the website. Keyboard navigation",
+      "is_correct": false,
+      "score": 0.0,
+      "eval_method": "keyword_rubric",
+      "term": "keyboard navigation",
+      "prompt_id": "gen_002_fs",
+      "template": "Example: Keyboard navigation is the ability to operate all interactive elements of a website using only keyboard input, essential for users with motor disabilities.\n\nFor users with motor disabilities, keyboard navigation"
+    },
+    {
+      "text_out": "use a keyboard input device, such as a mouse, keyboard input device, or a keyboard input device.\n\nKeyboard",
+      "full_output": "Example: Keyboard navigation is the ability to operate all interactive elements of a website using only keyboard input, essential for users with motor disabilities.\n\nTo support keyboard navigation, developers should use a keyboard input device, such as a mouse, keyboard input device, or a keyboard input device.\n\nKeyboard",
+      "is_correct": false,
+      "score": 0.0,
+      "eval_method": "keyword_rubric",
+      "term": "keyboard navigation",
+      "prompt_id": "gen_003_fs",
+      "template": "Example: Keyboard navigation is the ability to operate all interactive elements of a website using only keyboard input, essential for users with motor disabilities.\n\nTo support keyboard navigation, developers should"
+    },
+    {
+      "text_out": "not be able to navigate to any other website.\n\nKeyboard navigation is a key-press tool that allows users to",
+      "full_output": "Example: Keyboard navigation is the ability to operate all interactive elements of a website using only keyboard input, essential for users with motor disabilities.\n\nWithout keyboard navigation support, motor-impaired users may not be able to navigate to any other website.\n\nKeyboard navigation is a key-press tool that allows users to",
+      "is_correct": false,
+      "score": 0.0,
+      "eval_method": "keyword_rubric",
+      "term": "keyboard navigation",
+      "prompt_id": "gen_004_fs",
+      "template": "Example: Keyboard navigation is the ability to operate all interactive elements of a website using only keyboard input, essential for users with motor disabilities.\n\nWithout keyboard navigation support, motor-impaired users may"
+    },
+    {
+      "text_out": "that the user can only use the keyboard input to navigate to a page or to a website.\n\nThe test was conducted",
+      "full_output": "Example: Keyboard navigation is the ability to operate all interactive elements of a website using only keyboard input, essential for users with motor disabilities.\n\nA manual test revealed keyboard navigation failures. This means that the user can only use the keyboard input to navigate to a page or to a website.\n\nThe test was conducted",
+      "is_correct": false,
+      "score": 0.0,
+      "eval_method": "keyword_rubric",
+      "term": "keyboard navigation",
+      "prompt_id": "gen_005_fs",
+      "template": "Example: Keyboard navigation is the ability to operate all interactive elements of a website using only keyboard input, essential for users with motor disabilities.\n\nA manual test revealed keyboard navigation failures. This means"
+    },
+    {
+      "text_out": "that the user can navigate through the website without having to type in a keyboard.\n\nKeyboard navigation is a key-",
+      "full_output": "Example: Keyboard navigation is the ability to operate all interactive elements of a website using only keyboard input, essential for users with motor disabilities.\n\nWhen developing interactive features, keyboard navigation ensures that the user can navigate through the website without having to type in a keyboard.\n\nKeyboard navigation is a key-",
+      "is_correct": false,
+      "score": 0.0,
+      "eval_method": "keyword_rubric",
+      "term": "keyboard navigation",
+      "prompt_id": "gen_006_fs",
+      "template": "Example: Keyboard navigation is the ability to operate all interactive elements of a website using only keyboard input, essential for users with motor disabilities.\n\nWhen developing interactive features, keyboard navigation ensures"
+    },
+    {
+      "text_out": "a semantically meaningful section of a webpage (like navigation, main content, or footer) that helps",
+      "full_output": "Example: A landmark region is a semantically meaningful section of a webpage (like navigation, main content, or footer) that helps screen reader users quickly navigate to different page areas.\n\nIn web accessibility, a landmark region is a semantically meaningful section of a webpage (like navigation, main content, or footer) that helps",
+      "is_correct": false,
+      "score": 0.0,
+      "eval_method": "keyword_rubric",
+      "term": "landmark region",
+      "prompt_id": "gen_001_fs",
+      "template": "Example: A landmark region is a semantically meaningful section of a webpage (like navigation, main content, or footer) that helps screen reader users quickly navigate to different page areas.\n\nIn web accessibility, a landmark region is"
+    },
+    {
+      "text_out": "are often used to highlight the page or page that is most important to them. For example, a",
+      "full_output": "Example: A landmark region is a semantically meaningful section of a webpage (like navigation, main content, or footer) that helps screen reader users quickly navigate to different page areas.\n\nFor screen reader users, landmark regions are often used to highlight the page or page that is most important to them. For example, a",
+      "is_correct": false,
+      "score": 0.0,
+      "eval_method": "keyword_rubric",
+      "term": "landmark region",
+      "prompt_id": "gen_002_fs",
+      "template": "Example: A landmark region is a semantically meaningful section of a webpage (like navigation, main content, or footer) that helps screen reader users quickly navigate to different page areas.\n\nFor screen reader users, landmark regions"
+    },
+    {
+      "text_out": "use a library called \"markers\" that is designed to be used in a specific area of the webpage.\n\nMark",
+      "full_output": "Example: A landmark region is a semantically meaningful section of a webpage (like navigation, main content, or footer) that helps screen reader users quickly navigate to different page areas.\n\nTo implement landmark regions, developers should use a library called \"markers\" that is designed to be used in a specific area of the webpage.\n\nMark",
+      "is_correct": false,
+      "score": 0.0,
+      "eval_method": "keyword_rubric",
+      "term": "landmark region",
+      "prompt_id": "gen_003_fs",
+      "template": "Example: A landmark region is a semantically meaningful section of a webpage (like navigation, main content, or footer) that helps screen reader users quickly navigate to different page areas.\n\nTo implement landmark regions, developers should"
+    },
+    {
+      "text_out": "not be able to navigate to the same page area.\n\nThe following example shows how to navigate to a landmark region in",
+      "full_output": "Example: A landmark region is a semantically meaningful section of a webpage (like navigation, main content, or footer) that helps screen reader users quickly navigate to different page areas.\n\nWithout proper landmark regions, assistive technology users may not be able to navigate to the same page area.\n\nThe following example shows how to navigate to a landmark region in",
+      "is_correct": false,
+      "score": 0.0,
+      "eval_method": "keyword_rubric",
+      "term": "landmark region",
+      "prompt_id": "gen_004_fs",
+      "template": "Example: A landmark region is a semantically meaningful section of a webpage (like navigation, main content, or footer) that helps screen reader users quickly navigate to different page areas.\n\nWithout proper landmark regions, assistive technology users may"
+    },
+    {
+      "text_out": "that the user can only see the landmark region that is missing.\n\nThe following example shows how to validate a landmark region",
+      "full_output": "Example: A landmark region is a semantically meaningful section of a webpage (like navigation, main content, or footer) that helps screen reader users quickly navigate to different page areas.\n\nAn HTML validation found missing landmark regions. This means that the user can only see the landmark region that is missing.\n\nThe following example shows how to validate a landmark region",
+      "is_correct": false,
+      "score": 0.0,
+      "eval_method": "keyword_rubric",
+      "term": "landmark region",
+      "prompt_id": "gen_005_fs",
+      "template": "Example: A landmark region is a semantically meaningful section of a webpage (like navigation, main content, or footer) that helps screen reader users quickly navigate to different page areas.\n\nAn HTML validation found missing landmark regions. This means"
+    },
+    {
+      "text_out": "that the page is positioned correctly. For example, if you have a page with a landmark region, you can use a navigation",
+      "full_output": "Example: A landmark region is a semantically meaningful section of a webpage (like navigation, main content, or footer) that helps screen reader users quickly navigate to different page areas.\n\nWhen structuring page layout, landmark regions ensure that the page is positioned correctly. For example, if you have a page with a landmark region, you can use a navigation",
+      "is_correct": false,
+      "score": 0.0,
+      "eval_method": "keyword_rubric",
+      "term": "landmark region",
+      "prompt_id": "gen_006_fs",
+      "template": "Example: A landmark region is a semantically meaningful section of a webpage (like navigation, main content, or footer) that helps screen reader users quickly navigate to different page areas.\n\nWhen structuring page layout, landmark regions ensure"
+    },
+    {
+      "text_out": "a HTML attribute that provides additional accessibility information to assistive technologies, describing the role or state of interactive",
+      "full_output": "Example: An ARIA attribute is an HTML attribute that provides additional accessibility information to assistive technologies, describing the role or state of interactive elements.\n\nIn web accessibility, an aria attribute is a HTML attribute that provides additional accessibility information to assistive technologies, describing the role or state of interactive",
+      "is_correct": true,
+      "score": 0.6667,
+      "eval_method": "keyword_rubric",
+      "term": "aria attribute",
+      "prompt_id": "gen_001_fs",
+      "template": "Example: An ARIA attribute is an HTML attribute that provides additional accessibility information to assistive technologies, describing the role or state of interactive elements.\n\nIn web accessibility, an aria attribute is"
+    },
+    {
+      "text_out": "are used to describe the role or state of interactive elements.\n\nFor example, the following example",
+      "full_output": "Example: An ARIA attribute is an HTML attribute that provides additional accessibility information to assistive technologies, describing the role or state of interactive elements.\n\nFor screen reader users, aria attributes are used to describe the role or state of interactive elements.\n\nFor example, the following example",
+      "is_correct": false,
+      "score": 0.3333,
+      "eval_method": "keyword_rubric",
+      "term": "aria attribute",
+      "prompt_id": "gen_002_fs",
+      "template": "Example: An ARIA attribute is an HTML attribute that provides additional accessibility information to assistive technologies, describing the role or state of interactive elements.\n\nFor screen reader users, aria attributes"
+    },
+    {
+      "text_out": "use the following markup:\n\n<a href=\"http://www.w3.org/TR/1999/REC",
+      "full_output": "Example: An ARIA attribute is an HTML attribute that provides additional accessibility information to assistive technologies, describing the role or state of interactive elements.\n\nTo use aria attributes correctly, developers should use the following markup:\n\n<a href=\"http://www.w3.org/TR/1999/REC",
+      "is_correct": false,
+      "score": 0.0,
+      "eval_method": "keyword_rubric",
+      "term": "aria attribute",
+      "prompt_id": "gen_003_fs",
+      "template": "Example: An ARIA attribute is an HTML attribute that provides additional accessibility information to assistive technologies, describing the role or state of interactive elements.\n\nTo use aria attributes correctly, developers should"
+    },
+    {
+      "text_out": "not be able to be displayed.\n\nThe following example demonstrates how to use the ARIA attribute to display a custom widget",
+      "full_output": "Example: An ARIA attribute is an HTML attribute that provides additional accessibility information to assistive technologies, describing the role or state of interactive elements.\n\nWithout appropriate aria attributes, custom widgets may not be able to be displayed.\n\nThe following example demonstrates how to use the ARIA attribute to display a custom widget",
+      "is_correct": true,
+      "score": 0.6667,
+      "eval_method": "keyword_rubric",
+      "term": "aria attribute",
+      "prompt_id": "gen_004_fs",
+      "template": "Example: An ARIA attribute is an HTML attribute that provides additional accessibility information to assistive technologies, describing the role or state of interactive elements.\n\nWithout appropriate aria attributes, custom widgets may"
+    },
+    {
+      "text_out": "that the ARIA attribute is missing from the list of ARIA attributes.\n\nAn ARIA attribute is an HTML attribute",
+      "full_output": "Example: An ARIA attribute is an HTML attribute that provides additional accessibility information to assistive technologies, describing the role or state of interactive elements.\n\nAn accessibility audit found missing aria attributes. This means that the ARIA attribute is missing from the list of ARIA attributes.\n\nAn ARIA attribute is an HTML attribute",
+      "is_correct": true,
+      "score": 0.6667,
+      "eval_method": "keyword_rubric",
+      "term": "aria attribute",
+      "prompt_id": "gen_005_fs",
+      "template": "Example: An ARIA attribute is an HTML attribute that provides additional accessibility information to assistive technologies, describing the role or state of interactive elements.\n\nAn accessibility audit found missing aria attributes. This means"
+    },
+    {
+      "text_out": "that the component is accessible to the user.\n\nWhen creating custom components, the component is accessible to the user.",
+      "full_output": "Example: An ARIA attribute is an HTML attribute that provides additional accessibility information to assistive technologies, describing the role or state of interactive elements.\n\nWhen creating custom components, aria attributes ensure that the component is accessible to the user.\n\nWhen creating custom components, the component is accessible to the user.\n",
+      "is_correct": false,
+      "score": 0.3333,
+      "eval_method": "keyword_rubric",
+      "term": "aria attribute",
+      "prompt_id": "gen_006_fs",
+      "template": "Example: An ARIA attribute is an HTML attribute that provides additional accessibility information to assistive technologies, describing the role or state of interactive elements.\n\nWhen creating custom components, aria attributes ensure"
+    }
+  ]
+}

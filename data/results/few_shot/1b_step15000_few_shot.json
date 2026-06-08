@@ -1,0 +1,132 @@
+{
+  "model": "1b",
+  "checkpoint": "step15000",
+  "zero_shot_mean": 0.5555,
+  "few_shot_mean": 0.9444,
+  "improvement_pp": 38.9,
+  "improvement_relative_pct": 70.0,
+  "zero_shot_details": [
+    {
+      "text_out": "a tool that allows you to read text on a web page.\n\nThe screen reader is a",
+      "full_output": "In web accessibility, a screen reader is a tool that allows you to read text on a web page.\n\nThe screen reader is a",
+      "is_correct": true,
+      "score": 1.0,
+      "eval_method": "keyword_rubric",
+      "term": "screen reader",
+      "prompt_id": "gen_001",
+      "template": "In web accessibility, a screen reader is"
+    },
+    {
+      "text_out": "is a device that allows you to read text on a screen.\n\nThe screen reader is a",
+      "full_output": "For blind users, a screen reader is a device that allows you to read text on a screen.\n\nThe screen reader is a",
+      "is_correct": true,
+      "score": 1.0,
+      "eval_method": "keyword_rubric",
+      "term": "screen reader",
+      "prompt_id": "gen_002",
+      "template": "For blind users, a screen reader"
+    },
+    {
+      "text_out": "a link that is not accessible by the user.\n\nA:",
+      "full_output": "In web accessibility, a skip link is a link that is not accessible by the user.\n\nA:\n",
+      "is_correct": false,
+      "score": 0.3333,
+      "eval_method": "keyword_rubric",
+      "term": "skip link",
+      "prompt_id": "gen_001",
+      "template": "In web accessibility, a skip link is"
+    },
+    {
+      "text_out": "to find the page by typing the URL.\n\nIf you want to",
+      "full_output": "For keyboard navigation, skip links help users to find the page by typing the URL.\n\nIf you want to",
+      "is_correct": false,
+      "score": 0.3333,
+      "eval_method": "keyword_rubric",
+      "term": "skip link",
+      "prompt_id": "gen_002",
+      "template": "For keyboard navigation, skip links help users"
+    },
+    {
+      "text_out": "used to describe the text.\n\nThe alt text is used to describe",
+      "full_output": "In web accessibility, alt text is used to describe the text.\n\nThe alt text is used to describe",
+      "is_correct": true,
+      "score": 0.6667,
+      "eval_method": "keyword_rubric",
+      "term": "alt text",
+      "prompt_id": "gen_001",
+      "template": "In web accessibility, alt text is"
+    },
+    {
+      "text_out": "a link to the full version of the article.\n\nThe full version",
+      "full_output": "For screen reader users, alt text provides a link to the full version of the article.\n\nThe full version",
+      "is_correct": false,
+      "score": 0.0,
+      "eval_method": "keyword_rubric",
+      "term": "alt text",
+      "prompt_id": "gen_002",
+      "template": "For screen reader users, alt text provides"
+    }
+  ],
+  "few_shot_details": [
+    {
+      "text_out": "a software application that reads digital text aloud for blind or visually impaired users.\n\nIn web accessibility",
+      "full_output": "Example: A screen reader is assistive software that reads digital text aloud for blind or visually impaired users.\n\nIn web accessibility, a screen reader is a software application that reads digital text aloud for blind or visually impaired users.\n\nIn web accessibility",
+      "is_correct": true,
+      "score": 1.0,
+      "eval_method": "keyword_rubric",
+      "term": "screen reader",
+      "prompt_id": "gen_001_fs",
+      "template": "Example: A screen reader is assistive software that reads digital text aloud for blind or visually impaired users.\n\nIn web accessibility, a screen reader is"
+    },
+    {
+      "text_out": "is a software application that reads digital text aloud for blind or visually impaired users.\n\nFor blind",
+      "full_output": "Example: A screen reader is assistive software that reads digital text aloud for blind or visually impaired users.\n\nFor blind users, a screen reader is a software application that reads digital text aloud for blind or visually impaired users.\n\nFor blind",
+      "is_correct": true,
+      "score": 1.0,
+      "eval_method": "keyword_rubric",
+      "term": "screen reader",
+      "prompt_id": "gen_002_fs",
+      "template": "Example: A screen reader is assistive software that reads digital text aloud for blind or visually impaired users.\n\nFor blind users, a screen reader"
+    },
+    {
+      "text_out": "a link that allows users to skip to the main content of a webpage.",
+      "full_output": "Example: A skip link is a keyboard-accessible link that allows users to bypass navigation and jump directly to the main content of a webpage.\n\nIn web accessibility, a skip link is a link that allows users to skip to the main content of a webpage.",
+      "is_correct": true,
+      "score": 1.0,
+      "eval_method": "keyword_rubric",
+      "term": "skip link",
+      "prompt_id": "gen_001_fs",
+      "template": "Example: A skip link is a keyboard-accessible link that allows users to bypass navigation and jump directly to the main content of a webpage.\n\nIn web accessibility, a skip link is"
+    },
+    {
+      "text_out": "navigate to the main content of a webpage.\n\nFor example, if",
+      "full_output": "Example: A skip link is a keyboard-accessible link that allows users to bypass navigation and jump directly to the main content of a webpage.\n\nFor keyboard navigation, skip links help users navigate to the main content of a webpage.\n\nFor example, if",
+      "is_correct": true,
+      "score": 0.6667,
+      "eval_method": "keyword_rubric",
+      "term": "skip link",
+      "prompt_id": "gen_002_fs",
+      "template": "Example: A skip link is a keyboard-accessible link that allows users to bypass navigation and jump directly to the main content of a webpage.\n\nFor keyboard navigation, skip links help users"
+    },
+    {
+      "text_out": "a written description of an image that screen readers read aloud to blind users,",
+      "full_output": "Example: Alt text is a written description of an image that screen readers read aloud to blind users, conveying the content and function of the image.\n\nIn web accessibility, alt text is a written description of an image that screen readers read aloud to blind users,",
+      "is_correct": true,
+      "score": 1.0,
+      "eval_method": "keyword_rubric",
+      "term": "alt text",
+      "prompt_id": "gen_001_fs",
+      "template": "Example: Alt text is a written description of an image that screen readers read aloud to blind users, conveying the content and function of the image.\n\nIn web accessibility, alt text is"
+    },
+    {
+      "text_out": "a visual representation of the image. For example, the screen reader may display",
+      "full_output": "Example: Alt text is a written description of an image that screen readers read aloud to blind users, conveying the content and function of the image.\n\nFor screen reader users, alt text provides a visual representation of the image. For example, the screen reader may display",
+      "is_correct": true,
+      "score": 1.0,
+      "eval_method": "keyword_rubric",
+      "term": "alt text",
+      "prompt_id": "gen_002_fs",
+      "template": "Example: Alt text is a written description of an image that screen readers read aloud to blind users, conveying the content and function of the image.\n\nFor screen reader users, alt text provides"
+    }
+  ]
+}

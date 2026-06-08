@@ -1,0 +1,101 @@
+
+=== C1-B: Within-Term Temporal Precedence Analysis ===
+H1: EB* rise precedes behavioral emergence in >50% of terms
+
+
+============================================================
+C1-B: crfm-gpt2-sm-x1
+============================================================
+  alt text                        r_fwd=+0.716  r_bck=+0.140  → EB* leads
+  aria attribute                  r_fwd=+0.674  r_bck=+0.174  → EB* leads
+  color contrast                  r_fwd=-0.027  r_bck=+0.357  ← Beh leads
+  focus indicator                 r_fwd=-0.059  r_bck=-0.004  ← Beh leads
+  heading structure               r_fwd=+0.322  r_bck=+0.066  → EB* leads
+  keyboard navigation             r_fwd=-0.278  r_bck=-0.148  ← Beh leads
+  landmark region                 r_fwd=+0.194  r_bck=+0.850  ← Beh leads
+  screen reader                   r_fwd=+0.361  r_bck=+0.339  → EB* leads
+  skip link                       r_fwd=+0.580  r_bck=+0.385  → EB* leads
+
+  Population: 5/9 terms where EB* leads (55.6%)
+  Binomial p = 0.5000  (H1: frac > 0.5)
+  Mean r_forward - r_backward = +0.0362
+  ✅ Saved: crfm-gpt2-sm-x1_within_term_lead.csv, crfm-gpt2-sm-x1_population_test.json
+
+============================================================
+C1-B: crfm-gpt2-sm-x2
+============================================================
+  alt text                        r_fwd=+0.604  r_bck=-0.522  → EB* leads
+  aria attribute                  r_fwd=+0.474  r_bck=+0.595  ← Beh leads
+  color contrast                  r_fwd=+0.477  r_bck=-0.336  → EB* leads
+  focus indicator                 r_fwd=+0.659  r_bck=-0.512  → EB* leads
+  heading structure               r_fwd=+0.832  r_bck=+0.155  → EB* leads
+  keyboard navigation             r_fwd=+0.113  r_bck=-0.407  → EB* leads
+  landmark region                 r_fwd=+0.475  r_bck=+0.227  → EB* leads
+  screen reader                   r_fwd=+0.200  r_bck=+0.231  ← Beh leads
+  skip link                       r_fwd=+0.637  r_bck=-0.270  → EB* leads
+
+  Population: 7/9 terms where EB* leads (77.8%)
+  Binomial p = 0.0898  (H1: frac > 0.5)
+  Mean r_forward - r_backward = +0.5899
+  ✅ Saved: crfm-gpt2-sm-x2_within_term_lead.csv, crfm-gpt2-sm-x2_population_test.json
+
+============================================================
+C1-B: crfm-gpt2-sm-x3
+============================================================
+  alt text                        r_fwd=+0.243  r_bck=+0.059  → EB* leads
+  aria attribute                  r_fwd=+0.630  r_bck=+0.608  → EB* leads
+  color contrast                  r_fwd=+0.868  r_bck=-0.331  → EB* leads
+  focus indicator                 r_fwd=+0.281  r_bck=+0.413  ← Beh leads
+  heading structure               r_fwd=+0.258  r_bck=+0.103  → EB* leads
+  keyboard navigation             r_fwd=+0.215  r_bck=-0.076  → EB* leads
+  landmark region                 r_fwd=-0.082  r_bck=-0.049  ← Beh leads
+  screen reader                   r_fwd=+0.388  r_bck=+0.346  → EB* leads
+  skip link                       r_fwd=+0.130  r_bck=-0.218  → EB* leads
+
+  Population: 7/9 terms where EB* leads (77.8%)
+  Binomial p = 0.0898  (H1: frac > 0.5)
+  Mean r_forward - r_backward = +0.2306
+  ✅ Saved: crfm-gpt2-sm-x3_within_term_lead.csv, crfm-gpt2-sm-x3_population_test.json
+
+============================================================
+C1-B: crfm-gpt2-sm-x4
+============================================================
+  alt text                        r_fwd=+0.756  r_bck=+0.052  → EB* leads
+  aria attribute                  r_fwd=+0.606  r_bck=+0.328  → EB* leads
+  color contrast                  r_fwd=+0.057  r_bck=+0.155  ← Beh leads
+  focus indicator                 r_fwd=-0.162  r_bck=-0.167  → EB* leads
+  heading structure               r_fwd=+0.348  r_bck=-0.021  → EB* leads
+  keyboard navigation             r_fwd=+0.891  r_bck=+0.503  → EB* leads
+  landmark region                 r_fwd=+0.540  r_bck=+0.189  → EB* leads
+  screen reader                   r_fwd=+0.446  r_bck=+0.796  ← Beh leads
+  skip link                       r_fwd=+0.756  r_bck=-0.257  → EB* leads
+
+  Population: 7/9 terms where EB* leads (77.8%)
+  Binomial p = 0.0898  (H1: frac > 0.5)
+  Mean r_forward - r_backward = +0.2958
+  ✅ Saved: crfm-gpt2-sm-x4_within_term_lead.csv, crfm-gpt2-sm-x4_population_test.json
+
+============================================================
+C1-B: crfm-gpt2-sm-x5
+============================================================
+  alt text                        r_fwd=+0.493  r_bck=-0.298  → EB* leads
+  aria attribute                  r_fwd=+0.932  r_bck=-0.238  → EB* leads
+  color contrast                  r_fwd=+0.588  r_bck=-0.207  → EB* leads
+  focus indicator                 r_fwd=-0.278  r_bck=-0.124  ← Beh leads
+  heading structure               r_fwd=+0.118  r_bck=+0.412  ← Beh leads
+  keyboard navigation             r_fwd=+0.651  r_bck=+0.386  → EB* leads
+  landmark region                 r_fwd=+0.740  r_bck=+0.653  → EB* leads
+  screen reader                   r_fwd=+0.758  r_bck=-0.234  → EB* leads
+  skip link                       r_fwd=+0.547  r_bck=-0.759  → EB* leads
+
+  Population: 7/9 terms where EB* leads (77.8%)
+  Binomial p = 0.0898  (H1: frac > 0.5)
+  Mean r_forward - r_backward = +0.5511
+  ✅ Saved: crfm-gpt2-sm-x5_within_term_lead.csv, crfm-gpt2-sm-x5_population_test.json
+
+=== SUMMARY ===
+  crfm-gpt2-sm-x1: 5/9 lead (56%)
+  crfm-gpt2-sm-x2: 7/9 lead (78%)
+  crfm-gpt2-sm-x3: 7/9 lead (78%)
+  crfm-gpt2-sm-x4: 7/9 lead (78%)
+  crfm-gpt2-sm-x5: 7/9 lead (78%)

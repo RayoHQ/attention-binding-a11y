@@ -1,0 +1,9 @@
+{
+  "model": "crfm-gpt2-sm-x3-45",
+  "n_terms": 41,
+  "n_lead": 36,
+  "lead_fraction": 0.878,
+  "binomial_p": 0.0,
+  "mean_lead_diff": 0.3416,
+  "supported": true
+}

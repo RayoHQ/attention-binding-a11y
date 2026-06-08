@@ -1,0 +1,1676 @@
+{
+  "pythia-2.8b": {
+    "thresh_1.0": {
+      "threshold": 1.0,
+      "n_terms": 29,
+      "n_excluded_ceiling": 0,
+      "rho_late_pooled": 0.1209,
+      "pval": 0.196,
+      "per_term": [
+        {
+          "term": "reflow content",
+          "rho_late": -0.632455532033676
+        },
+        {
+          "term": "focus management",
+          "rho_late": -0.6000000000000001
+        },
+        {
+          "term": "focus indicator",
+          "rho_late": -0.39999999999999997
+        },
+        {
+          "term": "audio description",
+          "rho_late": -0.39999999999999997
+        },
+        {
+          "term": "captions closed",
+          "rho_late": -0.39999999999999997
+        },
+        {
+          "term": "voice control",
+          "rho_late": -0.39999999999999997
+        },
+        {
+          "term": "keyboard navigation",
+          "rho_late": -0.19999999999999998
+        },
+        {
+          "term": "error identification",
+          "rho_late": -0.19999999999999998
+        },
+        {
+          "term": "aria attribute",
+          "rho_late": -0.10540925533894598
+        },
+        {
+          "term": "heading structure",
+          "rho_late": 0.0
+        },
+        {
+          "term": "screen magnifier",
+          "rho_late": 0.0
+        },
+        {
+          "term": "text spacing",
+          "rho_late": 0.0
+        },
+        {
+          "term": "color contrast",
+          "rho_late": 0.2581988897471611
+        },
+        {
+          "term": "tree grid",
+          "rho_late": 0.316227766016838
+        },
+        {
+          "term": "non-text content",
+          "rho_late": 0.316227766016838
+        },
+        {
+          "term": "text resize",
+          "rho_late": 0.4472135954999579
+        },
+        {
+          "term": "cognitive load",
+          "rho_late": 0.6000000000000001
+        },
+        {
+          "term": "keyboard shortcut",
+          "rho_late": 0.6000000000000001
+        },
+        {
+          "term": "alt text",
+          "rho_late": 0.632455532033676
+        },
+        {
+          "term": "braille display",
+          "rho_late": 0.632455532033676
+        },
+        {
+          "term": "alert dialog",
+          "rho_late": 0.632455532033676
+        },
+        {
+          "term": "high contrast",
+          "rho_late": 0.7745966692414834
+        },
+        {
+          "term": "live region",
+          "rho_late": 0.7999999999999999
+        },
+        {
+          "term": "skip link",
+          "rho_late": 0.9486832980505139
+        },
+        {
+          "term": "skip navigation",
+          "rho_late": 0.9486832980505139
+        },
+        {
+          "term": "screen reader",
+          "rho_late": 1.0
+        },
+        {
+          "term": "input purpose",
+          "rho_late": 1.0
+        },
+        {
+          "term": "switch access",
+          "rho_late": 1.0
+        }
+      ]
+    },
+    "thresh_0.9": {
+      "threshold": 0.9,
+      "n_terms": 29,
+      "n_excluded_ceiling": 0,
+      "rho_late_pooled": 0.1209,
+      "pval": 0.196,
+      "per_term": [
+        {
+          "term": "reflow content",
+          "rho_late": -0.632455532033676
+        },
+        {
+          "term": "focus management",
+          "rho_late": -0.6000000000000001
+        },
+        {
+          "term": "focus indicator",
+          "rho_late": -0.39999999999999997
+        },
+        {
+          "term": "audio description",
+          "rho_late": -0.39999999999999997
+        },
+        {
+          "term": "captions closed",
+          "rho_late": -0.39999999999999997
+        },
+        {
+          "term": "voice control",
+          "rho_late": -0.39999999999999997
+        },
+        {
+          "term": "keyboard navigation",
+          "rho_late": -0.19999999999999998
+        },
+        {
+          "term": "error identification",
+          "rho_late": -0.19999999999999998
+        },
+        {
+          "term": "aria attribute",
+          "rho_late": -0.10540925533894598
+        },
+        {
+          "term": "heading structure",
+          "rho_late": 0.0
+        },
+        {
+          "term": "screen magnifier",
+          "rho_late": 0.0
+        },
+        {
+          "term": "text spacing",
+          "rho_late": 0.0
+        },
+        {
+          "term": "color contrast",
+          "rho_late": 0.2581988897471611
+        },
+        {
+          "term": "tree grid",
+          "rho_late": 0.316227766016838
+        },
+        {
+          "term": "non-text content",
+          "rho_late": 0.316227766016838
+        },
+        {
+          "term": "text resize",
+          "rho_late": 0.4472135954999579
+        },
+        {
+          "term": "cognitive load",
+          "rho_late": 0.6000000000000001
+        },
+        {
+          "term": "keyboard shortcut",
+          "rho_late": 0.6000000000000001
+        },
+        {
+          "term": "alt text",
+          "rho_late": 0.632455532033676
+        },
+        {
+          "term": "braille display",
+          "rho_late": 0.632455532033676
+        },
+        {
+          "term": "alert dialog",
+          "rho_late": 0.632455532033676
+        },
+        {
+          "term": "high contrast",
+          "rho_late": 0.7745966692414834
+        },
+        {
+          "term": "live region",
+          "rho_late": 0.7999999999999999
+        },
+        {
+          "term": "skip link",
+          "rho_late": 0.9486832980505139
+        },
+        {
+          "term": "skip navigation",
+          "rho_late": 0.9486832980505139
+        },
+        {
+          "term": "screen reader",
+          "rho_late": 1.0
+        },
+        {
+          "term": "input purpose",
+          "rho_late": 1.0
+        },
+        {
+          "term": "switch access",
+          "rho_late": 1.0
+        }
+      ]
+    },
+    "thresh_0.8": {
+      "threshold": 0.8,
+      "n_terms": 25,
+      "n_excluded_ceiling": 4,
+      "rho_late_pooled": 0.0317,
+      "pval": 0.7543,
+      "per_term": [
+        {
+          "term": "reflow content",
+          "rho_late": -0.632455532033676
+        },
+        {
+          "term": "focus management",
+          "rho_late": -0.6000000000000001
+        },
+        {
+          "term": "focus indicator",
+          "rho_late": -0.39999999999999997
+        },
+        {
+          "term": "audio description",
+          "rho_late": -0.39999999999999997
+        },
+        {
+          "term": "captions closed",
+          "rho_late": -0.39999999999999997
+        },
+        {
+          "term": "voice control",
+          "rho_late": -0.39999999999999997
+        },
+        {
+          "term": "keyboard navigation",
+          "rho_late": -0.19999999999999998
+        },
+        {
+          "term": "error identification",
+          "rho_late": -0.19999999999999998
+        },
+        {
+          "term": "aria attribute",
+          "rho_late": -0.10540925533894598
+        },
+        {
+          "term": "heading structure",
+          "rho_late": 0.0
+        },
+        {
+          "term": "screen magnifier",
+          "rho_late": 0.0
+        },
+        {
+          "term": "text spacing",
+          "rho_late": 0.0
+        },
+        {
+          "term": "color contrast",
+          "rho_late": 0.2581988897471611
+        },
+        {
+          "term": "non-text content",
+          "rho_late": 0.316227766016838
+        },
+        {
+          "term": "text resize",
+          "rho_late": 0.4472135954999579
+        },
+        {
+          "term": "cognitive load",
+          "rho_late": 0.6000000000000001
+        },
+        {
+          "term": "alt text",
+          "rho_late": 0.632455532033676
+        },
+        {
+          "term": "braille display",
+          "rho_late": 0.632455532033676
+        },
+        {
+          "term": "alert dialog",
+          "rho_late": 0.632455532033676
+        },
+        {
+          "term": "live region",
+          "rho_late": 0.7999999999999999
+        },
+        {
+          "term": "skip navigation",
+          "rho_late": 0.9486832980505139
+        },
+        {
+          "term": "screen reader",
+          "rho_late": 1.0
+        },
+        {
+          "term": "input purpose",
+          "rho_late": 1.0
+        },
+        {
+          "term": "switch access",
+          "rho_late": 1.0
+        }
+      ]
+    },
+    "thresh_0.7": {
+      "threshold": 0.7,
+      "n_terms": 12,
+      "n_excluded_ceiling": 17,
+      "rho_late_pooled": 0.1848,
+      "pval": 0.2087,
+      "per_term": [
+        {
+          "term": "focus management",
+          "rho_late": -0.6000000000000001
+        },
+        {
+          "term": "focus indicator",
+          "rho_late": -0.39999999999999997
+        },
+        {
+          "term": "captions closed",
+          "rho_late": -0.39999999999999997
+        },
+        {
+          "term": "keyboard navigation",
+          "rho_late": -0.19999999999999998
+        },
+        {
+          "term": "heading structure",
+          "rho_late": 0.0
+        },
+        {
+          "term": "screen magnifier",
+          "rho_late": 0.0
+        },
+        {
+          "term": "non-text content",
+          "rho_late": 0.316227766016838
+        },
+        {
+          "term": "alert dialog",
+          "rho_late": 0.632455532033676
+        },
+        {
+          "term": "live region",
+          "rho_late": 0.7999999999999999
+        },
+        {
+          "term": "input purpose",
+          "rho_late": 1.0
+        },
+        {
+          "term": "switch access",
+          "rho_late": 1.0
+        }
+      ]
+    },
+    "ceiling_terms": [
+      "high contrast",
+      "keyboard shortcut",
+      "skip link",
+      "tree grid"
+    ],
+    "subceil_terms": [
+      "alert dialog",
+      "alt text",
+      "aria attribute",
+      "audio description",
+      "braille display",
+      "captions closed",
+      "cognitive load",
+      "color contrast",
+      "error identification",
+      "focus indicator",
+      "focus management",
+      "heading structure",
+      "input purpose",
+      "keyboard navigation",
+      "landmark region",
+      "live region",
+      "non-text content",
+      "reflow content",
+      "screen magnifier",
+      "screen reader",
+      "skip navigation",
+      "switch access",
+      "text resize",
+      "text spacing",
+      "voice control"
+    ],
+    "term_mean_beh_late": {
+      "skip link": 0.8636,
+      "alt text": 0.7727,
+      "screen reader": 0.7348,
+      "focus indicator": 0.6667,
+      "color contrast": 0.7955,
+      "landmark region": 0.4545,
+      "aria attribute": 0.7424,
+      "keyboard navigation": 0.6818,
+      "heading structure": 0.5909,
+      "braille display": 0.7273,
+      "audio description": 0.7879,
+      "alert dialog": 0.697,
+      "screen magnifier": 0.5,
+      "focus management": 0.6136,
+      "live region": 0.6818,
+      "reflow content": 0.7045,
+      "captions closed": 0.6742,
+      "high contrast": 0.8333,
+      "text spacing": 0.7727,
+      "voice control": 0.7424,
+      "skip navigation": 0.7348,
+      "tree grid": 0.803,
+      "cognitive load": 0.7273,
+      "non-text content": 0.697,
+      "keyboard shortcut": 0.8485,
+      "text resize": 0.7879,
+      "error identification": 0.7121,
+      "input purpose": 0.6515,
+      "switch access": 0.6364
+    }
+  },
+  "pythia-1b": {
+    "thresh_1.0": {
+      "threshold": 1.0,
+      "n_terms": 29,
+      "n_excluded_ceiling": 0,
+      "rho_late_pooled": 0.0932,
+      "pval": 0.3198,
+      "per_term": [
+        {
+          "term": "high contrast",
+          "rho_late": -1.0
+        },
+        {
+          "term": "reflow content",
+          "rho_late": -0.9486832980505139
+        },
+        {
+          "term": "non-text content",
+          "rho_late": -0.7999999999999999
+        },
+        {
+          "term": "braille display",
+          "rho_late": -0.632455532033676
+        },
+        {
+          "term": "switch access",
+          "rho_late": -0.6000000000000001
+        },
+        {
+          "term": "aria attribute",
+          "rho_late": -0.39999999999999997
+        },
+        {
+          "term": "live region",
+          "rho_late": -0.39999999999999997
+        },
+        {
+          "term": "text spacing",
+          "rho_late": -0.39999999999999997
+        },
+        {
+          "term": "voice control",
+          "rho_late": -0.39999999999999997
+        },
+        {
+          "term": "skip navigation",
+          "rho_late": -0.39999999999999997
+        },
+        {
+          "term": "input purpose",
+          "rho_late": -0.39999999999999997
+        },
+        {
+          "term": "alt text",
+          "rho_late": -0.316227766016838
+        },
+        {
+          "term": "focus management",
+          "rho_late": -0.316227766016838
+        },
+        {
+          "term": "color contrast",
+          "rho_late": -0.19999999999999998
+        },
+        {
+          "term": "error identification",
+          "rho_late": 0.0
+        },
+        {
+          "term": "skip link",
+          "rho_late": 0.19999999999999998
+        },
+        {
+          "term": "focus indicator",
+          "rho_late": 0.19999999999999998
+        },
+        {
+          "term": "screen magnifier",
+          "rho_late": 0.19999999999999998
+        },
+        {
+          "term": "text resize",
+          "rho_late": 0.21081851067789195
+        },
+        {
+          "term": "heading structure",
+          "rho_late": 0.316227766016838
+        },
+        {
+          "term": "tree grid",
+          "rho_late": 0.316227766016838
+        },
+        {
+          "term": "cognitive load",
+          "rho_late": 0.316227766016838
+        },
+        {
+          "term": "screen reader",
+          "rho_late": 0.39999999999999997
+        },
+        {
+          "term": "captions closed",
+          "rho_late": 0.39999999999999997
+        },
+        {
+          "term": "keyboard shortcut",
+          "rho_late": 0.39999999999999997
+        },
+        {
+          "term": "keyboard navigation",
+          "rho_late": 0.7999999999999999
+        },
+        {
+          "term": "audio description",
+          "rho_late": 0.9486832980505139
+        },
+        {
+          "term": "alert dialog",
+          "rho_late": 1.0
+        }
+      ]
+    },
+    "thresh_0.9": {
+      "threshold": 0.9,
+      "n_terms": 29,
+      "n_excluded_ceiling": 0,
+      "rho_late_pooled": 0.0932,
+      "pval": 0.3198,
+      "per_term": [
+        {
+          "term": "high contrast",
+          "rho_late": -1.0
+        },
+        {
+          "term": "reflow content",
+          "rho_late": -0.9486832980505139
+        },
+        {
+          "term": "non-text content",
+          "rho_late": -0.7999999999999999
+        },
+        {
+          "term": "braille display",
+          "rho_late": -0.632455532033676
+        },
+        {
+          "term": "switch access",
+          "rho_late": -0.6000000000000001
+        },
+        {
+          "term": "aria attribute",
+          "rho_late": -0.39999999999999997
+        },
+        {
+          "term": "live region",
+          "rho_late": -0.39999999999999997
+        },
+        {
+          "term": "text spacing",
+          "rho_late": -0.39999999999999997
+        },
+        {
+          "term": "voice control",
+          "rho_late": -0.39999999999999997
+        },
+        {
+          "term": "skip navigation",
+          "rho_late": -0.39999999999999997
+        },
+        {
+          "term": "input purpose",
+          "rho_late": -0.39999999999999997
+        },
+        {
+          "term": "alt text",
+          "rho_late": -0.316227766016838
+        },
+        {
+          "term": "focus management",
+          "rho_late": -0.316227766016838
+        },
+        {
+          "term": "color contrast",
+          "rho_late": -0.19999999999999998
+        },
+        {
+          "term": "error identification",
+          "rho_late": 0.0
+        },
+        {
+          "term": "skip link",
+          "rho_late": 0.19999999999999998
+        },
+        {
+          "term": "focus indicator",
+          "rho_late": 0.19999999999999998
+        },
+        {
+          "term": "screen magnifier",
+          "rho_late": 0.19999999999999998
+        },
+        {
+          "term": "text resize",
+          "rho_late": 0.21081851067789195
+        },
+        {
+          "term": "heading structure",
+          "rho_late": 0.316227766016838
+        },
+        {
+          "term": "tree grid",
+          "rho_late": 0.316227766016838
+        },
+        {
+          "term": "cognitive load",
+          "rho_late": 0.316227766016838
+        },
+        {
+          "term": "screen reader",
+          "rho_late": 0.39999999999999997
+        },
+        {
+          "term": "captions closed",
+          "rho_late": 0.39999999999999997
+        },
+        {
+          "term": "keyboard shortcut",
+          "rho_late": 0.39999999999999997
+        },
+        {
+          "term": "keyboard navigation",
+          "rho_late": 0.7999999999999999
+        },
+        {
+          "term": "audio description",
+          "rho_late": 0.9486832980505139
+        },
+        {
+          "term": "alert dialog",
+          "rho_late": 1.0
+        }
+      ]
+    },
+    "thresh_0.8": {
+      "threshold": 0.8,
+      "n_terms": 29,
+      "n_excluded_ceiling": 0,
+      "rho_late_pooled": 0.0932,
+      "pval": 0.3198,
+      "per_term": [
+        {
+          "term": "high contrast",
+          "rho_late": -1.0
+        },
+        {
+          "term": "reflow content",
+          "rho_late": -0.9486832980505139
+        },
+        {
+          "term": "non-text content",
+          "rho_late": -0.7999999999999999
+        },
+        {
+          "term": "braille display",
+          "rho_late": -0.632455532033676
+        },
+        {
+          "term": "switch access",
+          "rho_late": -0.6000000000000001
+        },
+        {
+          "term": "aria attribute",
+          "rho_late": -0.39999999999999997
+        },
+        {
+          "term": "live region",
+          "rho_late": -0.39999999999999997
+        },
+        {
+          "term": "text spacing",
+          "rho_late": -0.39999999999999997
+        },
+        {
+          "term": "voice control",
+          "rho_late": -0.39999999999999997
+        },
+        {
+          "term": "skip navigation",
+          "rho_late": -0.39999999999999997
+        },
+        {
+          "term": "input purpose",
+          "rho_late": -0.39999999999999997
+        },
+        {
+          "term": "alt text",
+          "rho_late": -0.316227766016838
+        },
+        {
+          "term": "focus management",
+          "rho_late": -0.316227766016838
+        },
+        {
+          "term": "color contrast",
+          "rho_late": -0.19999999999999998
+        },
+        {
+          "term": "error identification",
+          "rho_late": 0.0
+        },
+        {
+          "term": "skip link",
+          "rho_late": 0.19999999999999998
+        },
+        {
+          "term": "focus indicator",
+          "rho_late": 0.19999999999999998
+        },
+        {
+          "term": "screen magnifier",
+          "rho_late": 0.19999999999999998
+        },
+        {
+          "term": "text resize",
+          "rho_late": 0.21081851067789195
+        },
+        {
+          "term": "heading structure",
+          "rho_late": 0.316227766016838
+        },
+        {
+          "term": "tree grid",
+          "rho_late": 0.316227766016838
+        },
+        {
+          "term": "cognitive load",
+          "rho_late": 0.316227766016838
+        },
+        {
+          "term": "screen reader",
+          "rho_late": 0.39999999999999997
+        },
+        {
+          "term": "captions closed",
+          "rho_late": 0.39999999999999997
+        },
+        {
+          "term": "keyboard shortcut",
+          "rho_late": 0.39999999999999997
+        },
+        {
+          "term": "keyboard navigation",
+          "rho_late": 0.7999999999999999
+        },
+        {
+          "term": "audio description",
+          "rho_late": 0.9486832980505139
+        },
+        {
+          "term": "alert dialog",
+          "rho_late": 1.0
+        }
+      ]
+    },
+    "thresh_0.7": {
+      "threshold": 0.7,
+      "n_terms": 27,
+      "n_excluded_ceiling": 2,
+      "rho_late_pooled": 0.1497,
+      "pval": 0.122,
+      "per_term": [
+        {
+          "term": "high contrast",
+          "rho_late": -1.0
+        },
+        {
+          "term": "reflow content",
+          "rho_late": -0.9486832980505139
+        },
+        {
+          "term": "non-text content",
+          "rho_late": -0.7999999999999999
+        },
+        {
+          "term": "braille display",
+          "rho_late": -0.632455532033676
+        },
+        {
+          "term": "switch access",
+          "rho_late": -0.6000000000000001
+        },
+        {
+          "term": "live region",
+          "rho_late": -0.39999999999999997
+        },
+        {
+          "term": "text spacing",
+          "rho_late": -0.39999999999999997
+        },
+        {
+          "term": "voice control",
+          "rho_late": -0.39999999999999997
+        },
+        {
+          "term": "skip navigation",
+          "rho_late": -0.39999999999999997
+        },
+        {
+          "term": "input purpose",
+          "rho_late": -0.39999999999999997
+        },
+        {
+          "term": "focus management",
+          "rho_late": -0.316227766016838
+        },
+        {
+          "term": "color contrast",
+          "rho_late": -0.19999999999999998
+        },
+        {
+          "term": "error identification",
+          "rho_late": 0.0
+        },
+        {
+          "term": "skip link",
+          "rho_late": 0.19999999999999998
+        },
+        {
+          "term": "focus indicator",
+          "rho_late": 0.19999999999999998
+        },
+        {
+          "term": "screen magnifier",
+          "rho_late": 0.19999999999999998
+        },
+        {
+          "term": "text resize",
+          "rho_late": 0.21081851067789195
+        },
+        {
+          "term": "heading structure",
+          "rho_late": 0.316227766016838
+        },
+        {
+          "term": "tree grid",
+          "rho_late": 0.316227766016838
+        },
+        {
+          "term": "cognitive load",
+          "rho_late": 0.316227766016838
+        },
+        {
+          "term": "screen reader",
+          "rho_late": 0.39999999999999997
+        },
+        {
+          "term": "captions closed",
+          "rho_late": 0.39999999999999997
+        },
+        {
+          "term": "keyboard shortcut",
+          "rho_late": 0.39999999999999997
+        },
+        {
+          "term": "keyboard navigation",
+          "rho_late": 0.7999999999999999
+        },
+        {
+          "term": "audio description",
+          "rho_late": 0.9486832980505139
+        },
+        {
+          "term": "alert dialog",
+          "rho_late": 1.0
+        }
+      ]
+    },
+    "thresh_0.6": {
+      "threshold": 0.6,
+      "n_terms": 15,
+      "n_excluded_ceiling": 14,
+      "rho_late_pooled": 0.2796,
+      "pval": 0.0305,
+      "per_term": [
+        {
+          "term": "high contrast",
+          "rho_late": -1.0
+        },
+        {
+          "term": "non-text content",
+          "rho_late": -0.7999999999999999
+        },
+        {
+          "term": "switch access",
+          "rho_late": -0.6000000000000001
+        },
+        {
+          "term": "text spacing",
+          "rho_late": -0.39999999999999997
+        },
+        {
+          "term": "voice control",
+          "rho_late": -0.39999999999999997
+        },
+        {
+          "term": "input purpose",
+          "rho_late": -0.39999999999999997
+        },
+        {
+          "term": "focus management",
+          "rho_late": -0.316227766016838
+        },
+        {
+          "term": "color contrast",
+          "rho_late": -0.19999999999999998
+        },
+        {
+          "term": "error identification",
+          "rho_late": 0.0
+        },
+        {
+          "term": "focus indicator",
+          "rho_late": 0.19999999999999998
+        },
+        {
+          "term": "screen magnifier",
+          "rho_late": 0.19999999999999998
+        },
+        {
+          "term": "heading structure",
+          "rho_late": 0.316227766016838
+        },
+        {
+          "term": "captions closed",
+          "rho_late": 0.39999999999999997
+        },
+        {
+          "term": "alert dialog",
+          "rho_late": 1.0
+        }
+      ]
+    },
+    "ceiling_terms": [],
+    "subceil_terms": [
+      "alert dialog",
+      "alt text",
+      "aria attribute",
+      "audio description",
+      "braille display",
+      "captions closed",
+      "cognitive load",
+      "color contrast",
+      "error identification",
+      "focus indicator",
+      "focus management",
+      "heading structure",
+      "high contrast",
+      "input purpose",
+      "keyboard navigation",
+      "keyboard shortcut",
+      "landmark region",
+      "live region",
+      "non-text content",
+      "reflow content",
+      "screen magnifier",
+      "screen reader",
+      "skip link",
+      "skip navigation",
+      "switch access",
+      "text resize",
+      "text spacing",
+      "tree grid",
+      "voice control"
+    ],
+    "term_mean_beh_late": {
+      "skip link": 0.697,
+      "alt text": 0.7348,
+      "screen reader": 0.6288,
+      "focus indicator": 0.5682,
+      "color contrast": 0.5455,
+      "landmark region": 0.3636,
+      "aria attribute": 0.7121,
+      "keyboard navigation": 0.6212,
+      "heading structure": 0.553,
+      "braille display": 0.6364,
+      "audio description": 0.6818,
+      "alert dialog": 0.5909,
+      "screen magnifier": 0.4242,
+      "focus management": 0.5682,
+      "live region": 0.6591,
+      "reflow content": 0.6288,
+      "captions closed": 0.4545,
+      "high contrast": 0.553,
+      "text spacing": 0.5909,
+      "voice control": 0.5985,
+      "skip navigation": 0.6212,
+      "tree grid": 0.697,
+      "cognitive load": 0.6742,
+      "non-text content": 0.553,
+      "keyboard shortcut": 0.6212,
+      "text resize": 0.6591,
+      "error identification": 0.5076,
+      "input purpose": 0.4924,
+      "switch access": 0.5
+    }
+  },
+  "pythia-160m": {
+    "thresh_1.0": {
+      "threshold": 1.0,
+      "n_terms": 29,
+      "n_excluded_ceiling": 0,
+      "rho_late_pooled": 0.2896,
+      "pval": 0.0016,
+      "per_term": [
+        {
+          "term": "live region",
+          "rho_late": -0.9486832980505139
+        },
+        {
+          "term": "keyboard navigation",
+          "rho_late": -0.7378647873726218
+        },
+        {
+          "term": "reflow content",
+          "rho_late": -0.7378647873726218
+        },
+        {
+          "term": "focus indicator",
+          "rho_late": -0.632455532033676
+        },
+        {
+          "term": "non-text content",
+          "rho_late": -0.6000000000000001
+        },
+        {
+          "term": "error identification",
+          "rho_late": -0.6000000000000001
+        },
+        {
+          "term": "focus management",
+          "rho_late": -0.39999999999999997
+        },
+        {
+          "term": "cognitive load",
+          "rho_late": -0.39999999999999997
+        },
+        {
+          "term": "color contrast",
+          "rho_late": -0.316227766016838
+        },
+        {
+          "term": "input purpose",
+          "rho_late": -0.316227766016838
+        },
+        {
+          "term": "text resize",
+          "rho_late": -0.19999999999999998
+        },
+        {
+          "term": "braille display",
+          "rho_late": 0.0
+        },
+        {
+          "term": "tree grid",
+          "rho_late": 0.0
+        },
+        {
+          "term": "alert dialog",
+          "rho_late": 0.19999999999999998
+        },
+        {
+          "term": "screen magnifier",
+          "rho_late": 0.19999999999999998
+        },
+        {
+          "term": "switch access",
+          "rho_late": 0.19999999999999998
+        },
+        {
+          "term": "skip navigation",
+          "rho_late": 0.21081851067789195
+        },
+        {
+          "term": "alt text",
+          "rho_late": 0.316227766016838
+        },
+        {
+          "term": "aria attribute",
+          "rho_late": 0.316227766016838
+        },
+        {
+          "term": "voice control",
+          "rho_late": 0.316227766016838
+        },
+        {
+          "term": "skip link",
+          "rho_late": 0.39999999999999997
+        },
+        {
+          "term": "high contrast",
+          "rho_late": 0.39999999999999997
+        },
+        {
+          "term": "keyboard shortcut",
+          "rho_late": 0.39999999999999997
+        },
+        {
+          "term": "screen reader",
+          "rho_late": 0.7378647873726218
+        },
+        {
+          "term": "captions closed",
+          "rho_late": 0.7378647873726218
+        },
+        {
+          "term": "audio description",
+          "rho_late": 0.7999999999999999
+        },
+        {
+          "term": "heading structure",
+          "rho_late": 0.9486832980505139
+        },
+        {
+          "term": "text spacing",
+          "rho_late": 0.9486832980505139
+        }
+      ]
+    },
+    "thresh_0.9": {
+      "threshold": 0.9,
+      "n_terms": 29,
+      "n_excluded_ceiling": 0,
+      "rho_late_pooled": 0.2896,
+      "pval": 0.0016,
+      "per_term": [
+        {
+          "term": "live region",
+          "rho_late": -0.9486832980505139
+        },
+        {
+          "term": "keyboard navigation",
+          "rho_late": -0.7378647873726218
+        },
+        {
+          "term": "reflow content",
+          "rho_late": -0.7378647873726218
+        },
+        {
+          "term": "focus indicator",
+          "rho_late": -0.632455532033676
+        },
+        {
+          "term": "non-text content",
+          "rho_late": -0.6000000000000001
+        },
+        {
+          "term": "error identification",
+          "rho_late": -0.6000000000000001
+        },
+        {
+          "term": "focus management",
+          "rho_late": -0.39999999999999997
+        },
+        {
+          "term": "cognitive load",
+          "rho_late": -0.39999999999999997
+        },
+        {
+          "term": "color contrast",
+          "rho_late": -0.316227766016838
+        },
+        {
+          "term": "input purpose",
+          "rho_late": -0.316227766016838
+        },
+        {
+          "term": "text resize",
+          "rho_late": -0.19999999999999998
+        },
+        {
+          "term": "braille display",
+          "rho_late": 0.0
+        },
+        {
+          "term": "tree grid",
+          "rho_late": 0.0
+        },
+        {
+          "term": "alert dialog",
+          "rho_late": 0.19999999999999998
+        },
+        {
+          "term": "screen magnifier",
+          "rho_late": 0.19999999999999998
+        },
+        {
+          "term": "switch access",
+          "rho_late": 0.19999999999999998
+        },
+        {
+          "term": "skip navigation",
+          "rho_late": 0.21081851067789195
+        },
+        {
+          "term": "alt text",
+          "rho_late": 0.316227766016838
+        },
+        {
+          "term": "aria attribute",
+          "rho_late": 0.316227766016838
+        },
+        {
+          "term": "voice control",
+          "rho_late": 0.316227766016838
+        },
+        {
+          "term": "skip link",
+          "rho_late": 0.39999999999999997
+        },
+        {
+          "term": "high contrast",
+          "rho_late": 0.39999999999999997
+        },
+        {
+          "term": "keyboard shortcut",
+          "rho_late": 0.39999999999999997
+        },
+        {
+          "term": "screen reader",
+          "rho_late": 0.7378647873726218
+        },
+        {
+          "term": "captions closed",
+          "rho_late": 0.7378647873726218
+        },
+        {
+          "term": "audio description",
+          "rho_late": 0.7999999999999999
+        },
+        {
+          "term": "heading structure",
+          "rho_late": 0.9486832980505139
+        },
+        {
+          "term": "text spacing",
+          "rho_late": 0.9486832980505139
+        }
+      ]
+    },
+    "thresh_0.8": {
+      "threshold": 0.8,
+      "n_terms": 29,
+      "n_excluded_ceiling": 0,
+      "rho_late_pooled": 0.2896,
+      "pval": 0.0016,
+      "per_term": [
+        {
+          "term": "live region",
+          "rho_late": -0.9486832980505139
+        },
+        {
+          "term": "keyboard navigation",
+          "rho_late": -0.7378647873726218
+        },
+        {
+          "term": "reflow content",
+          "rho_late": -0.7378647873726218
+        },
+        {
+          "term": "focus indicator",
+          "rho_late": -0.632455532033676
+        },
+        {
+          "term": "non-text content",
+          "rho_late": -0.6000000000000001
+        },
+        {
+          "term": "error identification",
+          "rho_late": -0.6000000000000001
+        },
+        {
+          "term": "focus management",
+          "rho_late": -0.39999999999999997
+        },
+        {
+          "term": "cognitive load",
+          "rho_late": -0.39999999999999997
+        },
+        {
+          "term": "color contrast",
+          "rho_late": -0.316227766016838
+        },
+        {
+          "term": "input purpose",
+          "rho_late": -0.316227766016838
+        },
+        {
+          "term": "text resize",
+          "rho_late": -0.19999999999999998
+        },
+        {
+          "term": "braille display",
+          "rho_late": 0.0
+        },
+        {
+          "term": "tree grid",
+          "rho_late": 0.0
+        },
+        {
+          "term": "alert dialog",
+          "rho_late": 0.19999999999999998
+        },
+        {
+          "term": "screen magnifier",
+          "rho_late": 0.19999999999999998
+        },
+        {
+          "term": "switch access",
+          "rho_late": 0.19999999999999998
+        },
+        {
+          "term": "skip navigation",
+          "rho_late": 0.21081851067789195
+        },
+        {
+          "term": "alt text",
+          "rho_late": 0.316227766016838
+        },
+        {
+          "term": "aria attribute",
+          "rho_late": 0.316227766016838
+        },
+        {
+          "term": "voice control",
+          "rho_late": 0.316227766016838
+        },
+        {
+          "term": "skip link",
+          "rho_late": 0.39999999999999997
+        },
+        {
+          "term": "high contrast",
+          "rho_late": 0.39999999999999997
+        },
+        {
+          "term": "keyboard shortcut",
+          "rho_late": 0.39999999999999997
+        },
+        {
+          "term": "screen reader",
+          "rho_late": 0.7378647873726218
+        },
+        {
+          "term": "captions closed",
+          "rho_late": 0.7378647873726218
+        },
+        {
+          "term": "audio description",
+          "rho_late": 0.7999999999999999
+        },
+        {
+          "term": "heading structure",
+          "rho_late": 0.9486832980505139
+        },
+        {
+          "term": "text spacing",
+          "rho_late": 0.9486832980505139
+        }
+      ]
+    },
+    "thresh_0.7": {
+      "threshold": 0.7,
+      "n_terms": 24,
+      "n_excluded_ceiling": 5,
+      "rho_late_pooled": 0.1617,
+      "pval": 0.1154,
+      "per_term": [
+        {
+          "term": "live region",
+          "rho_late": -0.9486832980505139
+        },
+        {
+          "term": "keyboard navigation",
+          "rho_late": -0.7378647873726218
+        },
+        {
+          "term": "reflow content",
+          "rho_late": -0.7378647873726218
+        },
+        {
+          "term": "focus indicator",
+          "rho_late": -0.632455532033676
+        },
+        {
+          "term": "non-text content",
+          "rho_late": -0.6000000000000001
+        },
+        {
+          "term": "error identification",
+          "rho_late": -0.6000000000000001
+        },
+        {
+          "term": "focus management",
+          "rho_late": -0.39999999999999997
+        },
+        {
+          "term": "cognitive load",
+          "rho_late": -0.39999999999999997
+        },
+        {
+          "term": "color contrast",
+          "rho_late": -0.316227766016838
+        },
+        {
+          "term": "input purpose",
+          "rho_late": -0.316227766016838
+        },
+        {
+          "term": "braille display",
+          "rho_late": 0.0
+        },
+        {
+          "term": "alert dialog",
+          "rho_late": 0.19999999999999998
+        },
+        {
+          "term": "screen magnifier",
+          "rho_late": 0.19999999999999998
+        },
+        {
+          "term": "switch access",
+          "rho_late": 0.19999999999999998
+        },
+        {
+          "term": "skip navigation",
+          "rho_late": 0.21081851067789195
+        },
+        {
+          "term": "alt text",
+          "rho_late": 0.316227766016838
+        },
+        {
+          "term": "aria attribute",
+          "rho_late": 0.316227766016838
+        },
+        {
+          "term": "high contrast",
+          "rho_late": 0.39999999999999997
+        },
+        {
+          "term": "keyboard shortcut",
+          "rho_late": 0.39999999999999997
+        },
+        {
+          "term": "screen reader",
+          "rho_late": 0.7378647873726218
+        },
+        {
+          "term": "captions closed",
+          "rho_late": 0.7378647873726218
+        },
+        {
+          "term": "heading structure",
+          "rho_late": 0.9486832980505139
+        },
+        {
+          "term": "text spacing",
+          "rho_late": 0.9486832980505139
+        }
+      ]
+    },
+    "thresh_0.6": {
+      "threshold": 0.6,
+      "n_terms": 17,
+      "n_excluded_ceiling": 12,
+      "rho_late_pooled": -0.0812,
+      "pval": 0.5102,
+      "per_term": [
+        {
+          "term": "reflow content",
+          "rho_late": -0.7378647873726218
+        },
+        {
+          "term": "non-text content",
+          "rho_late": -0.6000000000000001
+        },
+        {
+          "term": "focus management",
+          "rho_late": -0.39999999999999997
+        },
+        {
+          "term": "cognitive load",
+          "rho_late": -0.39999999999999997
+        },
+        {
+          "term": "color contrast",
+          "rho_late": -0.316227766016838
+        },
+        {
+          "term": "input purpose",
+          "rho_late": -0.316227766016838
+        },
+        {
+          "term": "braille display",
+          "rho_late": 0.0
+        },
+        {
+          "term": "screen magnifier",
+          "rho_late": 0.19999999999999998
+        },
+        {
+          "term": "switch access",
+          "rho_late": 0.19999999999999998
+        },
+        {
+          "term": "skip navigation",
+          "rho_late": 0.21081851067789195
+        },
+        {
+          "term": "alt text",
+          "rho_late": 0.316227766016838
+        },
+        {
+          "term": "aria attribute",
+          "rho_late": 0.316227766016838
+        },
+        {
+          "term": "high contrast",
+          "rho_late": 0.39999999999999997
+        },
+        {
+          "term": "keyboard shortcut",
+          "rho_late": 0.39999999999999997
+        },
+        {
+          "term": "captions closed",
+          "rho_late": 0.7378647873726218
+        },
+        {
+          "term": "heading structure",
+          "rho_late": 0.9486832980505139
+        }
+      ]
+    },
+    "ceiling_terms": [],
+    "subceil_terms": [
+      "alert dialog",
+      "alt text",
+      "aria attribute",
+      "audio description",
+      "braille display",
+      "captions closed",
+      "cognitive load",
+      "color contrast",
+      "error identification",
+      "focus indicator",
+      "focus management",
+      "heading structure",
+      "high contrast",
+      "input purpose",
+      "keyboard navigation",
+      "keyboard shortcut",
+      "landmark region",
+      "live region",
+      "non-text content",
+      "reflow content",
+      "screen magnifier",
+      "screen reader",
+      "skip link",
+      "skip navigation",
+      "switch access",
+      "text resize",
+      "text spacing",
+      "tree grid",
+      "voice control"
+    ],
+    "term_mean_beh_late": {
+      "skip link": 0.7424,
+      "alt text": 0.5758,
+      "screen reader": 0.6742,
+      "focus indicator": 0.6061,
+      "color contrast": 0.4924,
+      "landmark region": 0.4545,
+      "aria attribute": 0.5682,
+      "keyboard navigation": 0.6667,
+      "heading structure": 0.3939,
+      "braille display": 0.4848,
+      "audio description": 0.7727,
+      "alert dialog": 0.6818,
+      "screen magnifier": 0.5152,
+      "focus management": 0.5379,
+      "live region": 0.6061,
+      "reflow content": 0.5985,
+      "captions closed": 0.4697,
+      "high contrast": 0.5,
+      "text spacing": 0.6667,
+      "voice control": 0.7121,
+      "skip navigation": 0.5606,
+      "tree grid": 0.7803,
+      "cognitive load": 0.5076,
+      "non-text content": 0.5303,
+      "keyboard shortcut": 0.5909,
+      "text resize": 0.7197,
+      "error identification": 0.6667,
+      "input purpose": 0.5076,
+      "switch access": 0.4924
+    }
+  }
+}

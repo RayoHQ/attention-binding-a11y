@@ -1,0 +1,10 @@
+model,term,tier,n_tokens,token_ids,token_strings,is_clean,valid_for_binding
+olmo-1b,screen reader,current,2,"[14396, 9414]","[""screen"", "" reader""]",True,True
+olmo-1b,skip link,current,2,"[19259, 3048]","[""skip"", "" link""]",True,True
+olmo-1b,alt text,current,2,"[2711, 2505]","[""alt"", "" text""]",True,True
+olmo-1b,aria attribute,current,2,"[8125, 11104]","[""aria"", "" attribute""]",True,True
+olmo-1b,color contrast,current,2,"[4897, 4499]","[""color"", "" contrast""]",True,True
+olmo-1b,focus indicator,current,2,"[16651, 15301]","[""focus"", "" indicator""]",True,True
+olmo-1b,form validation,current,2,"[630, 12820]","[""form"", "" validation""]",True,True
+olmo-1b,heading structure,current,2,"[33049, 2605]","[""heading"", "" structure""]",True,True
+olmo-1b,tab order,current,2,"[8476, 1340]","[""tab"", "" order""]",True,True

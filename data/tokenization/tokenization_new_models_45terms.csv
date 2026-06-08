@@ -1,0 +1,127 @@
+model,term,tier,n_tokens,token_ids,token_strings,is_clean,valid_for_binding
+crfm-gpt2-sm,screen reader,current,2,"[9612, 9173]","[""screen"", "" reader""]",True,True
+crfm-gpt2-sm,skip link,current,2,"[48267, 2792]","[""skip"", "" link""]",True,True
+crfm-gpt2-sm,alt text,current,2,"[2501, 2420]","[""alt"", "" text""]",True,True
+crfm-gpt2-sm,aria attribute,current,2,"[10312, 11688]","[""aria"", "" attribute""]",True,True
+crfm-gpt2-sm,color contrast,current,2,"[8043, 6273]","[""color"", "" contrast""]",True,True
+crfm-gpt2-sm,focus indicator,current,2,"[37635, 16916]","[""focus"", "" indicator""]",True,True
+crfm-gpt2-sm,form validation,current,2,"[687, 21201]","[""form"", "" validation""]",True,True
+crfm-gpt2-sm,heading structure,current,2,"[33878, 4645]","[""heading"", "" structure""]",True,True
+crfm-gpt2-sm,tab order,current,2,"[8658, 1502]","[""tab"", "" order""]",True,True
+crfm-gpt2-sm,braille display,tier1,3,"[16057, 8270, 3359]","[""bra"", ""ille"", "" display""]",True,True
+crfm-gpt2-sm,screen magnifier,tier1,3,"[9612, 7842, 7483]","[""screen"", "" magn"", ""ifier""]",True,True
+crfm-gpt2-sm,voice control,tier1,2,"[38888, 1630]","[""voice"", "" control""]",True,True
+crfm-gpt2-sm,switch access,tier1,2,"[31943, 1895]","[""switch"", "" access""]",True,True
+crfm-gpt2-sm,audio description,tier1,2,"[24051, 6764]","[""audio"", "" description""]",True,True
+crfm-gpt2-sm,captions closed,tier1,3,"[27144, 507, 4838]","[""capt"", ""ions"", "" closed""]",True,True
+crfm-gpt2-sm,cognitive load,tier1,3,"[66, 46610, 3440]","[""c"", ""ognitive"", "" load""]",True,True
+crfm-gpt2-sm,high contrast,tier1,2,"[8929, 6273]","[""high"", "" contrast""]",True,True
+crfm-gpt2-sm,keyboard shortcut,tier1,3,"[2539, 3526, 29401]","[""key"", ""board"", "" shortcut""]",True,True
+crfm-gpt2-sm,text resize,tier1,2,"[5239, 47558]","[""text"", "" resize""]",True,True
+crfm-gpt2-sm,keyboard navigation,tier2,3,"[2539, 3526, 16408]","[""key"", ""board"", "" navigation""]",True,True
+crfm-gpt2-sm,focus management,tier2,2,"[37635, 4542]","[""focus"", "" management""]",True,True
+crfm-gpt2-sm,skip navigation,tier2,2,"[48267, 16408]","[""skip"", "" navigation""]",True,True
+crfm-gpt2-sm,reflow content,tier2,3,"[260, 11125, 2695]","[""re"", ""flow"", "" content""]",True,True
+crfm-gpt2-sm,non-text content,tier2,4,"[13159, 12, 5239, 2695]","[""non"", ""-"", ""text"", "" content""]",True,True
+crfm-gpt2-sm,error identification,tier2,2,"[18224, 11795]","[""error"", "" identification""]",True,True
+crfm-gpt2-sm,input purpose,tier2,2,"[15414, 4007]","[""input"", "" purpose""]",True,True
+crfm-gpt2-sm,text spacing,tier2,2,"[5239, 31050]","[""text"", "" spacing""]",True,True
+crfm-gpt2-sm,live region,tier3,2,"[12583, 3814]","[""live"", "" region""]",True,True
+crfm-gpt2-sm,alert dialog,tier3,2,"[44598, 17310]","[""alert"", "" dialog""]",True,True
+crfm-gpt2-sm,tree grid,tier3,2,"[21048, 10706]","[""tree"", "" grid""]",True,True
+crfm-gpt2-sm,contrast ratio,tier3,3,"[3642, 5685, 8064]","[""cont"", ""rast"", "" ratio""]",True,True
+crfm-gpt2-sm,eye tracking,tier3,2,"[25379, 9646]","[""eye"", "" tracking""]",True,True
+crfm-gpt2-sm,focus trap,tier3,2,"[37635, 12840]","[""focus"", "" trap""]",True,True
+crfm-gpt2-sm,haptic feedback,tier3,3,"[71, 32963, 7538]","[""h"", ""aptic"", "" feedback""]",True,True
+crfm-gpt2-sm,motion sensitivity,tier3,2,"[38714, 14233]","[""motion"", "" sensitivity""]",True,True
+crfm-gpt2-sm,orientation support,tier3,3,"[13989, 341, 1104]","[""orient"", ""ation"", "" support""]",True,True
+crfm-gpt2-sm,plain language,tier3,2,"[25638, 3303]","[""plain"", "" language""]",True,True
+crfm-gpt2-sm,reduced motion,tier3,3,"[445, 19513, 6268]","[""red"", ""uced"", "" motion""]",True,True
+crfm-gpt2-sm,semantic html,tier3,3,"[43616, 5109, 27711]","[""sem"", ""antic"", "" html""]",True,True
+crfm-gpt2-sm,sign language,tier3,2,"[12683, 3303]","[""sign"", "" language""]",True,True
+crfm-gpt2-sm,time limits,tier3,2,"[2435, 7095]","[""time"", "" limits""]",True,True
+crfm-gpt2-sm,touch target size,tier3,3,"[29332, 2496, 2546]","[""touch"", "" target"", "" size""]",True,True
+smollm3-3b,screen reader,current,2,"[8337, 6742]","[""screen"", "" reader""]",True,True
+smollm3-3b,skip link,current,2,"[21247, 2723]","[""skip"", "" link""]",True,True
+smollm3-3b,alt text,current,2,"[3223, 1495]","[""alt"", "" text""]",True,True
+smollm3-3b,aria attribute,current,2,"[10649, 7180]","[""aria"", "" attribute""]",True,True
+smollm3-3b,color contrast,current,2,"[3506, 13168]","[""color"", "" contrast""]",True,True
+smollm3-3b,focus indicator,current,2,"[17870, 21070]","[""focus"", "" indicator""]",True,True
+smollm3-3b,form validation,current,2,"[630, 10741]","[""form"", "" validation""]",True,True
+smollm3-3b,heading structure,current,2,"[11666, 6070]","[""heading"", "" structure""]",True,True
+smollm3-3b,tab order,current,2,"[6323, 2015]","[""tab"", "" order""]",True,True
+smollm3-3b,braille display,tier1,3,"[1347, 52009, 3113]","[""br"", ""aille"", "" display""]",True,True
+smollm3-3b,screen magnifier,tier1,3,"[8337, 8622, 3125]","[""screen"", "" magn"", ""ifier""]",True,True
+smollm3-3b,voice control,tier1,2,"[10063, 2585]","[""voice"", "" control""]",True,True
+smollm3-3b,switch access,tier1,2,"[17790, 2680]","[""switch"", "" access""]",True,True
+smollm3-3b,audio description,tier1,2,"[17152, 4096]","[""audio"", "" description""]",True,True
+smollm3-3b,captions closed,tier1,3,"[44303, 919, 8036]","[""capt"", ""ions"", "" closed""]",True,True
+smollm3-3b,cognitive load,tier1,3,"[66, 51549, 2865]","[""c"", ""ognitive"", "" load""]",True,True
+smollm3-3b,high contrast,tier1,2,"[12156, 13168]","[""high"", "" contrast""]",True,True
+smollm3-3b,keyboard shortcut,tier1,2,"[42813, 38215]","[""keyboard"", "" shortcut""]",True,True
+smollm3-3b,text resize,tier1,2,"[1342, 21595]","[""text"", "" resize""]",True,True
+smollm3-3b,keyboard navigation,tier2,2,"[42813, 10873]","[""keyboard"", "" navigation""]",True,True
+smollm3-3b,focus management,tier2,2,"[17870, 6373]","[""focus"", "" management""]",True,True
+smollm3-3b,skip navigation,tier2,2,"[21247, 10873]","[""skip"", "" navigation""]",True,True
+smollm3-3b,reflow content,tier2,3,"[1116, 10516, 2262]","[""ref"", ""low"", "" content""]",True,True
+smollm3-3b,non-text content,tier2,3,"[6414, 9529, 2262]","[""non"", ""-text"", "" content""]",True,True
+smollm3-3b,error identification,tier2,2,"[850, 22654]","[""error"", "" identification""]",True,True
+smollm3-3b,input purpose,tier2,2,"[1379, 7580]","[""input"", "" purpose""]",True,True
+smollm3-3b,text spacing,tier2,2,"[1342, 27032]","[""text"", "" spacing""]",True,True
+smollm3-3b,live region,tier3,2,"[25859, 5654]","[""live"", "" region""]",True,True
+smollm3-3b,alert dialog,tier3,2,"[5193, 7402]","[""alert"", "" dialog""]",True,True
+smollm3-3b,tree grid,tier3,2,"[9528, 5950]","[""tree"", "" grid""]",True,True
+smollm3-3b,contrast ratio,tier3,2,"[85324, 11595]","[""contrast"", "" ratio""]",True,True
+smollm3-3b,eye tracking,tier3,2,"[19494, 15194]","[""eye"", "" tracking""]",True,True
+smollm3-3b,focus trap,tier3,2,"[17870, 23709]","[""focus"", "" trap""]",True,True
+smollm3-3b,haptic feedback,tier3,3,"[71, 53274, 11302]","[""h"", ""aptic"", "" feedback""]",True,True
+smollm3-3b,motion sensitivity,tier3,2,"[49975, 27541]","[""motion"", "" sensitivity""]",True,True
+smollm3-3b,orientation support,tier3,2,"[25280, 1862]","[""orientation"", "" support""]",True,True
+smollm3-3b,plain language,tier3,2,"[21435, 4221]","[""plain"", "" language""]",True,True
+smollm3-3b,reduced motion,tier3,3,"[265, 54478, 11633]","[""re"", ""duced"", "" motion""]",True,True
+smollm3-3b,semantic html,tier3,2,"[48958, 5385]","[""semantic"", "" html""]",True,True
+smollm3-3b,sign language,tier3,2,"[7908, 4221]","[""sign"", "" language""]",True,True
+smollm3-3b,time limits,tier3,2,"[1712, 13693]","[""time"", "" limits""]",True,True
+smollm3-3b,touch target size,tier3,3,"[22794, 2218, 1404]","[""touch"", "" target"", "" size""]",True,True
+qwen2.5-1.5b,screen reader,current,2,"[8174, 6604]","[""screen"", "" reader""]",True,True
+qwen2.5-1.5b,skip link,current,2,"[20599, 2656]","[""skip"", "" link""]",True,True
+qwen2.5-1.5b,alt text,current,2,"[3145, 1467]","[""alt"", "" text""]",True,True
+qwen2.5-1.5b,aria attribute,current,2,"[10432, 7035]","[""aria"", "" attribute""]",True,True
+qwen2.5-1.5b,color contrast,current,2,"[3423, 12872]","[""color"", "" contrast""]",True,True
+qwen2.5-1.5b,focus indicator,current,2,"[17414, 20438]","[""focus"", "" indicator""]",True,True
+qwen2.5-1.5b,form validation,current,2,"[627, 10519]","[""form"", "" validation""]",True,True
+qwen2.5-1.5b,heading structure,current,2,"[11412, 5944]","[""heading"", "" structure""]",True,True
+qwen2.5-1.5b,tab order,current,2,"[6192, 1973]","[""tab"", "" order""]",True,True
+qwen2.5-1.5b,braille display,tier1,3,"[1323, 50909, 3037]","[""br"", ""aille"", "" display""]",True,True
+qwen2.5-1.5b,screen magnifier,tier1,3,"[8174, 8455, 3049]","[""screen"", "" magn"", ""ifier""]",True,True
+qwen2.5-1.5b,voice control,tier1,2,"[9862, 2524]","[""voice"", "" control""]",True,True
+qwen2.5-1.5b,switch access,tier1,2,"[17338, 2615]","[""switch"", "" access""]",True,True
+qwen2.5-1.5b,audio description,tier1,2,"[16736, 4008]","[""audio"", "" description""]",True,True
+qwen2.5-1.5b,captions closed,tier1,3,"[43203, 908, 7877]","[""capt"", ""ions"", "" closed""]",True,True
+qwen2.5-1.5b,cognitive load,tier1,3,"[66, 50449, 2795]","[""c"", ""ognitive"", "" load""]",True,True
+qwen2.5-1.5b,high contrast,tier1,2,"[11892, 12872]","[""high"", "" contrast""]",True,True
+qwen2.5-1.5b,keyboard shortcut,tier1,2,"[41713, 37115]","[""keyboard"", "" shortcut""]",True,True
+qwen2.5-1.5b,text resize,tier1,2,"[1318, 20925]","[""text"", "" resize""]",True,True
+qwen2.5-1.5b,keyboard navigation,tier2,2,"[41713, 10646]","[""keyboard"", "" navigation""]",True,True
+qwen2.5-1.5b,focus management,tier2,2,"[17414, 6240]","[""focus"", "" management""]",True,True
+qwen2.5-1.5b,skip navigation,tier2,2,"[20599, 10646]","[""skip"", "" navigation""]",True,True
+qwen2.5-1.5b,reflow content,tier2,3,"[1097, 10303, 2213]","[""ref"", ""low"", "" content""]",True,True
+qwen2.5-1.5b,non-text content,tier2,3,"[6280, 9345, 2213]","[""non"", ""-text"", "" content""]",True,True
+qwen2.5-1.5b,error identification,tier2,2,"[841, 21892]","[""error"", "" identification""]",True,True
+qwen2.5-1.5b,input purpose,tier2,2,"[1355, 7428]","[""input"", "" purpose""]",True,True
+qwen2.5-1.5b,text spacing,tier2,2,"[1318, 25943]","[""text"", "" spacing""]",True,True
+qwen2.5-1.5b,live region,tier3,2,"[24822, 5537]","[""live"", "" region""]",True,True
+qwen2.5-1.5b,alert dialog,tier3,2,"[5083, 7254]","[""alert"", "" dialog""]",True,True
+qwen2.5-1.5b,tree grid,tier3,2,"[9344, 5827]","[""tree"", "" grid""]",True,True
+qwen2.5-1.5b,contrast ratio,tier3,2,"[84224, 11341]","[""contrast"", "" ratio""]",True,True
+qwen2.5-1.5b,eye tracking,tier3,2,"[18958, 14849]","[""eye"", "" tracking""]",True,True
+qwen2.5-1.5b,focus trap,tier3,2,"[17414, 22862]","[""focus"", "" trap""]",True,True
+qwen2.5-1.5b,haptic feedback,tier3,3,"[71, 52174, 11055]","[""h"", ""aptic"", "" feedback""]",True,True
+qwen2.5-1.5b,motion sensitivity,tier3,2,"[48875, 26443]","[""motion"", "" sensitivity""]",True,True
+qwen2.5-1.5b,orientation support,tier3,2,"[24294, 1824]","[""orientation"", "" support""]",True,True
+qwen2.5-1.5b,plain language,tier3,2,"[20772, 4128]","[""plain"", "" language""]",True,True
+qwen2.5-1.5b,reduced motion,tier3,3,"[265, 53378, 11379]","[""re"", ""duced"", "" motion""]",True,True
+qwen2.5-1.5b,semantic html,tier3,2,"[47858, 5272]","[""semantic"", "" html""]",True,True
+qwen2.5-1.5b,sign language,tier3,2,"[7752, 4128]","[""sign"", "" language""]",True,True
+qwen2.5-1.5b,time limits,tier3,2,"[1678, 13388]","[""time"", "" limits""]",True,True
+qwen2.5-1.5b,touch target size,tier3,3,"[22020, 2169, 1379]","[""touch"", "" target"", "" size""]",True,True

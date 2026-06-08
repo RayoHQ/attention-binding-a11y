@@ -1,0 +1,9 @@
+{
+  "model": "pythia-2.8b",
+  "n_terms": 34,
+  "n_lead": 27,
+  "lead_fraction": 0.7941,
+  "binomial_p": 0.000411,
+  "mean_lead_diff": 0.2299,
+  "supported": true
+}

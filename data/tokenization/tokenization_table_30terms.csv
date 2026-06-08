@@ -1,0 +1,91 @@
+model,term,tier,n_tokens,token_ids,token_strings,is_clean,valid_for_binding
+pythia-160m,screen reader,current,2,"[14396, 9414]","[""screen"", "" reader""]",True,True
+pythia-160m,skip link,current,2,"[19259, 3048]","[""skip"", "" link""]",True,True
+pythia-160m,alt text,current,2,"[2711, 2505]","[""alt"", "" text""]",True,True
+pythia-160m,aria attribute,current,2,"[8125, 11104]","[""aria"", "" attribute""]",True,True
+pythia-160m,color contrast,current,2,"[4897, 4499]","[""color"", "" contrast""]",True,True
+pythia-160m,focus indicator,current,2,"[16651, 15301]","[""focus"", "" indicator""]",True,True
+pythia-160m,form validation,current,2,"[630, 12820]","[""form"", "" validation""]",True,True
+pythia-160m,heading structure,current,2,"[33049, 2605]","[""heading"", "" structure""]",True,True
+pythia-160m,tab order,current,2,"[8476, 1340]","[""tab"", "" order""]",True,True
+pythia-160m,braille display,tier1,3,"[4946, 4002, 3148]","[""bra"", ""ille"", "" display""]",True,True
+pythia-160m,screen magnifier,tier1,3,"[14396, 2849, 5425]","[""screen"", "" magn"", ""ifier""]",True,True
+pythia-160m,voice control,tier1,2,"[22619, 1453]","[""voice"", "" control""]",True,True
+pythia-160m,switch access,tier1,2,"[16065, 2289]","[""switch"", "" access""]",True,True
+pythia-160m,audio description,tier1,2,"[22172, 5740]","[""audio"", "" description""]",True,True
+pythia-160m,captions closed,tier1,3,"[17140, 621, 4581]","[""capt"", ""ions"", "" closed""]",True,True
+pythia-160m,cognitive load,tier1,3,"[68, 26833, 3301]","[""c"", ""ognitive"", "" load""]",True,True
+pythia-160m,high contrast,tier1,2,"[8656, 4499]","[""high"", "" contrast""]",True,True
+pythia-160m,keyboard shortcut,tier1,3,"[2364, 4697, 28194]","[""key"", ""board"", "" shortcut""]",True,True
+pythia-160m,text resize,tier1,2,"[1156, 39332]","[""text"", "" resize""]",True,True
+pythia-160m,keyboard navigation,tier2,3,"[2364, 4697, 15034]","[""key"", ""board"", "" navigation""]",True,True
+pythia-160m,focus management,tier2,2,"[16651, 4323]","[""focus"", "" management""]",True,True
+pythia-160m,skip navigation,tier2,2,"[19259, 15034]","[""skip"", "" navigation""]",True,True
+pythia-160m,reflow content,tier2,3,"[709, 676, 2600]","[""ref"", ""low"", "" content""]",True,True
+pythia-160m,non-text content,tier2,4,"[4160, 14, 1156, 2600]","[""non"", ""-"", ""text"", "" content""]",True,True
+pythia-160m,error identification,tier2,2,"[3775, 8137]","[""error"", "" identification""]",True,True
+pythia-160m,input purpose,tier2,2,"[5423, 4096]","[""input"", "" purpose""]",True,True
+pythia-160m,text spacing,tier2,2,"[1156, 22735]","[""text"", "" spacing""]",True,True
+pythia-160m,live region,tier3,2,"[22621, 2919]","[""live"", "" region""]",True,True
+pythia-160m,alert dialog,tier3,2,"[26544, 10756]","[""alert"", "" dialog""]",True,True
+pythia-160m,tree grid,tier3,2,"[12588, 9860]","[""tree"", "" grid""]",True,True
+pythia-1b,screen reader,current,2,"[14396, 9414]","[""screen"", "" reader""]",True,True
+pythia-1b,skip link,current,2,"[19259, 3048]","[""skip"", "" link""]",True,True
+pythia-1b,alt text,current,2,"[2711, 2505]","[""alt"", "" text""]",True,True
+pythia-1b,aria attribute,current,2,"[8125, 11104]","[""aria"", "" attribute""]",True,True
+pythia-1b,color contrast,current,2,"[4897, 4499]","[""color"", "" contrast""]",True,True
+pythia-1b,focus indicator,current,2,"[16651, 15301]","[""focus"", "" indicator""]",True,True
+pythia-1b,form validation,current,2,"[630, 12820]","[""form"", "" validation""]",True,True
+pythia-1b,heading structure,current,2,"[33049, 2605]","[""heading"", "" structure""]",True,True
+pythia-1b,tab order,current,2,"[8476, 1340]","[""tab"", "" order""]",True,True
+pythia-1b,braille display,tier1,3,"[4946, 4002, 3148]","[""bra"", ""ille"", "" display""]",True,True
+pythia-1b,screen magnifier,tier1,3,"[14396, 2849, 5425]","[""screen"", "" magn"", ""ifier""]",True,True
+pythia-1b,voice control,tier1,2,"[22619, 1453]","[""voice"", "" control""]",True,True
+pythia-1b,switch access,tier1,2,"[16065, 2289]","[""switch"", "" access""]",True,True
+pythia-1b,audio description,tier1,2,"[22172, 5740]","[""audio"", "" description""]",True,True
+pythia-1b,captions closed,tier1,3,"[17140, 621, 4581]","[""capt"", ""ions"", "" closed""]",True,True
+pythia-1b,cognitive load,tier1,3,"[68, 26833, 3301]","[""c"", ""ognitive"", "" load""]",True,True
+pythia-1b,high contrast,tier1,2,"[8656, 4499]","[""high"", "" contrast""]",True,True
+pythia-1b,keyboard shortcut,tier1,3,"[2364, 4697, 28194]","[""key"", ""board"", "" shortcut""]",True,True
+pythia-1b,text resize,tier1,2,"[1156, 39332]","[""text"", "" resize""]",True,True
+pythia-1b,keyboard navigation,tier2,3,"[2364, 4697, 15034]","[""key"", ""board"", "" navigation""]",True,True
+pythia-1b,focus management,tier2,2,"[16651, 4323]","[""focus"", "" management""]",True,True
+pythia-1b,skip navigation,tier2,2,"[19259, 15034]","[""skip"", "" navigation""]",True,True
+pythia-1b,reflow content,tier2,3,"[709, 676, 2600]","[""ref"", ""low"", "" content""]",True,True
+pythia-1b,non-text content,tier2,4,"[4160, 14, 1156, 2600]","[""non"", ""-"", ""text"", "" content""]",True,True
+pythia-1b,error identification,tier2,2,"[3775, 8137]","[""error"", "" identification""]",True,True
+pythia-1b,input purpose,tier2,2,"[5423, 4096]","[""input"", "" purpose""]",True,True
+pythia-1b,text spacing,tier2,2,"[1156, 22735]","[""text"", "" spacing""]",True,True
+pythia-1b,live region,tier3,2,"[22621, 2919]","[""live"", "" region""]",True,True
+pythia-1b,alert dialog,tier3,2,"[26544, 10756]","[""alert"", "" dialog""]",True,True
+pythia-1b,tree grid,tier3,2,"[12588, 9860]","[""tree"", "" grid""]",True,True
+pythia-2.8b,screen reader,current,2,"[14396, 9414]","[""screen"", "" reader""]",True,True
+pythia-2.8b,skip link,current,2,"[19259, 3048]","[""skip"", "" link""]",True,True
+pythia-2.8b,alt text,current,2,"[2711, 2505]","[""alt"", "" text""]",True,True
+pythia-2.8b,aria attribute,current,2,"[8125, 11104]","[""aria"", "" attribute""]",True,True
+pythia-2.8b,color contrast,current,2,"[4897, 4499]","[""color"", "" contrast""]",True,True
+pythia-2.8b,focus indicator,current,2,"[16651, 15301]","[""focus"", "" indicator""]",True,True
+pythia-2.8b,form validation,current,2,"[630, 12820]","[""form"", "" validation""]",True,True
+pythia-2.8b,heading structure,current,2,"[33049, 2605]","[""heading"", "" structure""]",True,True
+pythia-2.8b,tab order,current,2,"[8476, 1340]","[""tab"", "" order""]",True,True
+pythia-2.8b,braille display,tier1,3,"[4946, 4002, 3148]","[""bra"", ""ille"", "" display""]",True,True
+pythia-2.8b,screen magnifier,tier1,3,"[14396, 2849, 5425]","[""screen"", "" magn"", ""ifier""]",True,True
+pythia-2.8b,voice control,tier1,2,"[22619, 1453]","[""voice"", "" control""]",True,True
+pythia-2.8b,switch access,tier1,2,"[16065, 2289]","[""switch"", "" access""]",True,True
+pythia-2.8b,audio description,tier1,2,"[22172, 5740]","[""audio"", "" description""]",True,True
+pythia-2.8b,captions closed,tier1,3,"[17140, 621, 4581]","[""capt"", ""ions"", "" closed""]",True,True
+pythia-2.8b,cognitive load,tier1,3,"[68, 26833, 3301]","[""c"", ""ognitive"", "" load""]",True,True
+pythia-2.8b,high contrast,tier1,2,"[8656, 4499]","[""high"", "" contrast""]",True,True
+pythia-2.8b,keyboard shortcut,tier1,3,"[2364, 4697, 28194]","[""key"", ""board"", "" shortcut""]",True,True
+pythia-2.8b,text resize,tier1,2,"[1156, 39332]","[""text"", "" resize""]",True,True
+pythia-2.8b,keyboard navigation,tier2,3,"[2364, 4697, 15034]","[""key"", ""board"", "" navigation""]",True,True
+pythia-2.8b,focus management,tier2,2,"[16651, 4323]","[""focus"", "" management""]",True,True
+pythia-2.8b,skip navigation,tier2,2,"[19259, 15034]","[""skip"", "" navigation""]",True,True
+pythia-2.8b,reflow content,tier2,3,"[709, 676, 2600]","[""ref"", ""low"", "" content""]",True,True
+pythia-2.8b,non-text content,tier2,4,"[4160, 14, 1156, 2600]","[""non"", ""-"", ""text"", "" content""]",True,True
+pythia-2.8b,error identification,tier2,2,"[3775, 8137]","[""error"", "" identification""]",True,True
+pythia-2.8b,input purpose,tier2,2,"[5423, 4096]","[""input"", "" purpose""]",True,True
+pythia-2.8b,text spacing,tier2,2,"[1156, 22735]","[""text"", "" spacing""]",True,True
+pythia-2.8b,live region,tier3,2,"[22621, 2919]","[""live"", "" region""]",True,True
+pythia-2.8b,alert dialog,tier3,2,"[26544, 10756]","[""alert"", "" dialog""]",True,True
+pythia-2.8b,tree grid,tier3,2,"[12588, 9860]","[""tree"", "" grid""]",True,True

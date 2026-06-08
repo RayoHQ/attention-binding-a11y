@@ -1,0 +1,60 @@
+{
+  "model": "2.8b",
+  "checkpoint": "step15000",
+  "n_prompts": 54,
+  "n_terms": 9,
+  "zero_shot_mean": 0.4222,
+  "fs_original_mean": 0.7099,
+  "fs_paraphrase_mean": 0.5901,
+  "delta_orig_pp": 28.77,
+  "delta_para_pp": 16.79,
+  "orig_minus_para_pp": 11.98,
+  "verdict": "\u26a0  COPYING: orig >> para \u2014 exemplar phrasing drives score",
+  "per_term": {
+    "alt text": {
+      "zs": 0.5,
+      "orig": 0.9444,
+      "para": 0.6556
+    },
+    "aria attribute": {
+      "zs": 0.6667,
+      "orig": 0.7778,
+      "para": 0.4111
+    },
+    "color contrast": {
+      "zs": 0.1111,
+      "orig": 0.7222,
+      "para": 0.7222
+    },
+    "focus indicator": {
+      "zs": 0.5222,
+      "orig": 1.0,
+      "para": 0.7444
+    },
+    "heading structure": {
+      "zs": 0.3333,
+      "orig": 0.6111,
+      "para": 0.3889
+    },
+    "keyboard navigation": {
+      "zs": 0.3333,
+      "orig": 0.5556,
+      "para": 0.8333
+    },
+    "landmark region": {
+      "zs": 0.0,
+      "orig": 0.0,
+      "para": 0.0
+    },
+    "screen reader": {
+      "zs": 0.6111,
+      "orig": 0.8889,
+      "para": 0.6111
+    },
+    "skip link": {
+      "zs": 0.7222,
+      "orig": 0.8889,
+      "para": 0.9444
+    }
+  }
+}

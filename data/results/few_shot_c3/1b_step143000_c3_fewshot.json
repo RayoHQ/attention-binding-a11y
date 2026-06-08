@@ -1,0 +1,32 @@
+{
+  "model": "1b",
+  "checkpoint": "step143000",
+  "n_prompts": 54,
+  "n_terms": 9,
+  "zero_shot_mean": 0.3951,
+  "few_shot_mean": 0.6667,
+  "improvement_pp": 27.2,
+  "improvement_relative_pct": 68.8,
+  "zero_shot_per_term": {
+    "screen reader": 0.5,
+    "skip link": 0.6667,
+    "alt text": 0.6667,
+    "color contrast": 0.3333,
+    "focus indicator": 0.2778,
+    "heading structure": 0.1667,
+    "keyboard navigation": 0.4444,
+    "landmark region": 0.0,
+    "aria attribute": 0.5
+  },
+  "few_shot_per_term": {
+    "screen reader": 0.7222,
+    "skip link": 0.7778,
+    "alt text": 0.7222,
+    "color contrast": 0.6667,
+    "focus indicator": 0.8889,
+    "heading structure": 0.7222,
+    "keyboard navigation": 0.6111,
+    "landmark region": 0.0,
+    "aria attribute": 0.8889
+  }
+}

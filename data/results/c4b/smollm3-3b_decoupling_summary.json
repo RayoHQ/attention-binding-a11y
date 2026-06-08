@@ -1,0 +1,11 @@
+{
+  "model": "smollm3-3b",
+  "n_terms": 9,
+  "n_early_coupled": 7,
+  "n_decouple_strict": 6,
+  "n_decouple_attenuate": 7,
+  "frac_decouple_strict": 0.6667,
+  "frac_decouple_attenuate": 0.7778,
+  "mean_rho_early": 0.2473,
+  "mean_rho_late": -0.1891
+}

@@ -1,0 +1,180 @@
+
+=== C1-B: Within-Term Temporal Precedence Analysis ===
+H1: EB* rise precedes behavioral emergence in >50% of terms
+
+
+============================================================
+C1-B: pythia-160m
+============================================================
+  alert dialog                    r_fwd=-0.251  r_bck=+0.288  ← Beh leads
+  alt text                        r_fwd=+0.117  r_bck=+0.564  ← Beh leads
+  aria attribute                  r_fwd=+0.851  r_bck=+0.738  → EB* leads
+  audio description               r_fwd=-0.433  r_bck=+0.469  ← Beh leads
+  braille display                 r_fwd=-0.781  r_bck=+0.137  ← Beh leads
+  captions closed                 r_fwd=+0.248  r_bck=+0.054  → EB* leads
+  cognitive load                  r_fwd=-0.640  r_bck=+0.239  ← Beh leads
+  color contrast                  r_fwd=-0.028  r_bck=+0.585  ← Beh leads
+  contrast ratio                  r_fwd=-0.472  r_bck=+0.456  ← Beh leads
+  error identification            r_fwd=+0.384  r_bck=+0.573  ← Beh leads
+  eye tracking                    r_fwd=-0.400  r_bck=+0.557  ← Beh leads
+  focus indicator                 r_fwd=-0.016  r_bck=+0.550  ← Beh leads
+  focus management                r_fwd=-0.445  r_bck=+0.303  ← Beh leads
+  focus trap                      r_fwd=-0.513  r_bck=+0.335  ← Beh leads
+  haptic feedback                 r_fwd=-0.306  r_bck=+0.659  ← Beh leads
+  heading structure               r_fwd=-0.033  r_bck=+0.373  ← Beh leads
+  high contrast                   r_fwd=-0.317  r_bck=+0.132  ← Beh leads
+  input purpose                   r_fwd=-0.361  r_bck=+0.381  ← Beh leads
+  keyboard navigation             r_fwd=-0.495  r_bck=+0.464  ← Beh leads
+  keyboard shortcut               r_fwd=-0.553  r_bck=+0.297  ← Beh leads
+  landmark region                 r_fwd=+0.005  r_bck=+0.480  ← Beh leads
+  live region                     r_fwd=+0.087  r_bck=+0.576  ← Beh leads
+  motion sensitivity              r_fwd=-0.465  r_bck=+0.423  ← Beh leads
+  non-text content                r_fwd=-0.433  r_bck=+0.321  ← Beh leads
+  orientation support             r_fwd=-0.538  r_bck=+0.420  ← Beh leads
+  plain language                  r_fwd=-0.559  r_bck=+0.309  ← Beh leads
+  reduced motion                  r_fwd=-0.662  r_bck=+0.404  ← Beh leads
+  reflow content                  r_fwd=-0.598  r_bck=+0.188  ← Beh leads
+  screen magnifier                r_fwd=-0.257  r_bck=+0.540  ← Beh leads
+  screen reader                   r_fwd=+0.691  r_bck=+0.672  → EB* leads
+  semantic html                   r_fwd=-0.440  r_bck=+0.604  ← Beh leads
+  sign language                   r_fwd=-0.263  r_bck=+0.209  ← Beh leads
+  skip link                       r_fwd=+0.605  r_bck=+0.700  ← Beh leads
+  skip navigation                 r_fwd=-0.544  r_bck=+0.273  ← Beh leads
+  switch access                   r_fwd=-0.555  r_bck=+0.189  ← Beh leads
+  text resize                     r_fwd=-0.250  r_bck=+0.299  ← Beh leads
+  text spacing                    r_fwd=+0.094  r_bck=+0.477  ← Beh leads
+  time limits                     r_fwd=-0.472  r_bck=+0.348  ← Beh leads
+  touch target size               r_fwd=-0.507  r_bck=+0.257  ← Beh leads
+  tree grid                       r_fwd=-0.260  r_bck=+0.446  ← Beh leads
+  voice control                   r_fwd=+0.005  r_bck=+0.411  ← Beh leads
+
+  Population: 3/41 terms where EB* leads (7.3%)
+  Binomial p = 1.0000  (H1: frac > 0.5)
+  Mean r_forward - r_backward = -0.6454
+  ✅ Saved: pythia-160m_within_term_lead.csv, pythia-160m_population_test.json
+
+============================================================
+C1-B: pythia-1b
+============================================================
+  alert dialog                    r_fwd=-0.039  r_bck=-0.852  → EB* leads
+  alt text                        r_fwd=+0.051  r_bck=-0.920  → EB* leads
+  aria attribute                  r_fwd=-0.129  r_bck=-0.726  → EB* leads
+  audio description               r_fwd=+0.220  r_bck=-0.742  → EB* leads
+  braille display                 r_fwd=-0.085  r_bck=-0.752  → EB* leads
+  captions closed                 r_fwd=-0.004  r_bck=-0.764  → EB* leads
+  cognitive load                  r_fwd=-0.686  r_bck=-0.862  → EB* leads
+  color contrast                  r_fwd=+0.483  r_bck=-0.294  → EB* leads
+  contrast ratio                  r_fwd=-0.466  r_bck=-0.830  → EB* leads
+  error identification            r_fwd=-0.575  r_bck=+0.621  ← Beh leads
+  eye tracking                    r_fwd=-0.531  r_bck=-0.736  → EB* leads
+  focus indicator                 r_fwd=+0.341  r_bck=-0.361  → EB* leads
+  focus management                r_fwd=-0.511  r_bck=-0.861  → EB* leads
+  focus trap                      r_fwd=-0.515  r_bck=-0.365  ← Beh leads
+  haptic feedback                 r_fwd=-0.522  r_bck=-0.322  ← Beh leads
+  heading structure               r_fwd=-0.053  r_bck=-0.153  → EB* leads
+  high contrast                   r_fwd=-0.657  r_bck=-0.702  → EB* leads
+  input purpose                   r_fwd=-0.081  r_bck=-0.539  → EB* leads
+  keyboard navigation             r_fwd=-0.460  r_bck=-0.345  ← Beh leads
+  keyboard shortcut               r_fwd=+0.099  r_bck=-0.075  → EB* leads
+  landmark region                 r_fwd=-0.996  r_bck=-0.825  ← Beh leads
+  live region                     r_fwd=-0.116  r_bck=-0.021  ← Beh leads
+  motion sensitivity              r_fwd=-0.568  r_bck=-0.614  → EB* leads
+  non-text content                r_fwd=-0.319  r_bck=-0.721  → EB* leads
+  orientation support             r_fwd=-0.362  r_bck=-0.746  → EB* leads
+  plain language                  r_fwd=-0.522  r_bck=-0.375  ← Beh leads
+  reduced motion                  r_fwd=-0.489  r_bck=-0.525  → EB* leads
+  reflow content                  r_fwd=-0.779  r_bck=-0.814  → EB* leads
+  screen magnifier                r_fwd=+0.014  r_bck=+0.058  ← Beh leads
+  screen reader                   r_fwd=-0.486  r_bck=-0.677  → EB* leads
+  semantic html                   r_fwd=-0.612  r_bck=-0.660  → EB* leads
+  sign language                   r_fwd=-0.526  r_bck=-0.605  → EB* leads
+  skip link                       r_fwd=-0.237  r_bck=-0.657  → EB* leads
+  skip navigation                 r_fwd=-0.417  r_bck=-0.057  ← Beh leads
+  switch access                   r_fwd=-0.821  r_bck=-0.571  ← Beh leads
+  text resize                     r_fwd=-0.760  r_bck=-0.546  ← Beh leads
+  text spacing                    r_fwd=-0.491  r_bck=-0.825  → EB* leads
+  time limits                     r_fwd=-0.490  r_bck=-0.849  → EB* leads
+  touch target size               r_fwd=-0.537  r_bck=-0.688  → EB* leads
+  tree grid                       r_fwd=+0.271  r_bck=-0.848  → EB* leads
+  voice control                   r_fwd=-0.089  r_bck=-0.641  → EB* leads
+
+  Population: 30/41 terms where EB* leads (73.2%)
+  Binomial p = 0.0022  (H1: frac > 0.5)
+  Mean r_forward - r_backward = +0.2276
+  ✅ Saved: pythia-1b_within_term_lead.csv, pythia-1b_population_test.json
+
+============================================================
+C1-B: pythia-2.8b
+============================================================
+  alert dialog                    r_fwd=-0.185  r_bck=+0.065  ← Beh leads
+  alt text                        r_fwd=+0.073  r_bck=-0.390  → EB* leads
+  aria attribute                  r_fwd=-0.433  r_bck=+0.342  ← Beh leads
+  audio description               r_fwd=-0.018  r_bck=-0.320  → EB* leads
+  braille display                 r_fwd=-0.381  r_bck=-0.398  → EB* leads
+  captions closed                 r_fwd=+0.699  r_bck=-0.786  → EB* leads
+  cognitive load                  r_fwd=+0.377  r_bck=-0.649  → EB* leads
+  color contrast                  r_fwd=+0.950  r_bck=-0.502  → EB* leads
+/home/zeus/miniconda3/envs/cloudspace/lib/python3.12/site-packages/scipy/stats/_stats_py.py:4781: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  warnings.warn(stats.ConstantInputWarning(msg))
+  (skip constant)                 contrast ratio
+  error identification            r_fwd=-0.266  r_bck=-0.361  → EB* leads
+  eye tracking                    r_fwd=-0.169  r_bck=-0.186  → EB* leads
+  focus indicator                 r_fwd=+0.244  r_bck=-0.255  → EB* leads
+  focus management                r_fwd=+0.031  r_bck=-0.440  → EB* leads
+  focus trap                      r_fwd=-0.124  r_bck=-0.383  → EB* leads
+  (skip constant)                 haptic feedback
+  heading structure               r_fwd=+0.547  r_bck=-0.435  → EB* leads
+  high contrast                   r_fwd=+0.237  r_bck=-0.015  → EB* leads
+  input purpose                   r_fwd=-0.113  r_bck=-0.406  → EB* leads
+  keyboard navigation             r_fwd=-0.382  r_bck=-0.122  ← Beh leads
+  keyboard shortcut               r_fwd=-0.032  r_bck=-0.453  → EB* leads
+  (skip constant)                 landmark region
+  live region                     r_fwd=-0.147  r_bck=-0.433  → EB* leads
+  motion sensitivity              r_fwd=-0.149  r_bck=-0.342  → EB* leads
+  non-text content                r_fwd=-0.533  r_bck=+0.591  ← Beh leads
+  orientation support             r_fwd=-0.137  r_bck=-0.498  → EB* leads
+  plain language                  r_fwd=-0.217  r_bck=+0.373  ← Beh leads
+  (skip constant)                 reduced motion
+  reflow content                  r_fwd=-0.582  r_bck=-0.607  → EB* leads
+  screen magnifier                r_fwd=-0.710  r_bck=-0.769  → EB* leads
+  screen reader                   r_fwd=-0.258  r_bck=-0.386  → EB* leads
+  (skip constant)                 semantic html
+  (skip constant)                 sign language
+  skip link                       r_fwd=+0.006  r_bck=-0.260  → EB* leads
+  skip navigation                 r_fwd=+0.086  r_bck=+0.673  ← Beh leads
+  switch access                   r_fwd=-0.088  r_bck=-0.646  → EB* leads
+  text resize                     r_fwd=-0.148  r_bck=-0.381  → EB* leads
+  text spacing                    r_fwd=+0.148  r_bck=-0.786  → EB* leads
+  time limits                     r_fwd=-0.112  r_bck=-0.465  → EB* leads
+  (skip constant)                 touch target size
+  tree grid                       r_fwd=+0.097  r_bck=-0.536  → EB* leads
+  voice control                   r_fwd=-0.600  r_bck=+0.059  ← Beh leads
+
+  Population: 27/34 terms where EB* leads (79.4%)
+  Binomial p = 0.0004  (H1: frac > 0.5)
+  Mean r_forward - r_backward = +0.2299
+  ✅ Saved: pythia-28b_within_term_lead.csv, pythia-28b_population_test.json
+
+============================================================
+C1-B: olmo-1b
+============================================================
+  alt text                        r_fwd=+0.136  r_bck=-0.661  → EB* leads
+  aria attribute                  r_fwd=-0.159  r_bck=-0.350  → EB* leads
+  color contrast                  r_fwd=-0.593  r_bck=-0.755  → EB* leads
+  focus indicator                 r_fwd=+0.513  r_bck=-0.117  → EB* leads
+  heading structure               r_fwd=-0.272  r_bck=-0.967  → EB* leads
+  keyboard navigation             r_fwd=-0.899  r_bck=-0.565  ← Beh leads
+  landmark region                 r_fwd=-0.534  r_bck=-0.654  → EB* leads
+  screen reader                   r_fwd=-0.183  r_bck=-0.688  → EB* leads
+  skip link                       r_fwd=-0.071  r_bck=+0.058  ← Beh leads
+
+  Population: 7/9 terms where EB* leads (77.8%)
+  Binomial p = 0.0898  (H1: frac > 0.5)
+  Mean r_forward - r_backward = +0.2930
+  ✅ Saved: olmo-1b_within_term_lead.csv, olmo-1b_population_test.json
+
+=== SUMMARY ===
+  pythia-160m: 3/41 lead (7%)
+  pythia-1b: 30/41 lead (73%)
+  pythia-2.8b: 27/34 lead (79%)
+  olmo-1b: 7/9 lead (78%)

@@ -1,0 +1,15 @@
+{"term": "pterodactyl altimeter", "control_group": "rare_token_pairs", "source_domain": "none", "task": "generation", "template": "In aviation, a pterodactyl altimeter is", "max_tokens": 20, "prompt_id": "ctrl_rare_001"}
+{"term": "fibonacci decibel", "control_group": "rare_token_pairs", "source_domain": "none", "task": "generation", "template": "In acoustics, a fibonacci decibel is", "max_tokens": 20, "prompt_id": "ctrl_rare_002"}
+{"term": "quartz thermostat", "control_group": "rare_token_pairs", "source_domain": "none", "task": "generation", "template": "In engineering, a quartz thermostat is", "max_tokens": 20, "prompt_id": "ctrl_rare_003"}
+{"term": "limestone bandwidth", "control_group": "rare_token_pairs", "source_domain": "none", "task": "generation", "template": "In networking, a limestone bandwidth is", "max_tokens": 20, "prompt_id": "ctrl_rare_004"}
+{"term": "velvet compiler", "control_group": "rare_token_pairs", "source_domain": "none", "task": "generation", "template": "In programming, a velvet compiler is", "max_tokens": 20, "prompt_id": "ctrl_rare_005"}
+{"term": "glacier transistor", "control_group": "rare_token_pairs", "source_domain": "none", "task": "generation", "template": "In electronics, a glacier transistor is", "max_tokens": 20, "prompt_id": "ctrl_rare_006"}
+{"term": "écran reader", "control_group": "cross_language", "source_term": "screen reader", "task": "generation", "template": "In web accessibility, an écran reader is", "max_tokens": 20, "prompt_id": "ctrl_lang_001"}
+{"term": "skip enlace", "control_group": "cross_language", "source_term": "skip link", "task": "generation", "template": "In web accessibility, a skip enlace is", "max_tokens": 20, "prompt_id": "ctrl_lang_002"}
+{"term": "texto alt", "control_group": "cross_language", "source_term": "alt text", "task": "generation", "template": "In web accessibility, texto alt is", "max_tokens": 20, "prompt_id": "ctrl_lang_003"}
+{"term": "clavier souris", "control_group": "cross_language", "source_domain": "accessibility", "task": "generation", "template": "In web accessibility, a clavier souris is", "max_tokens": 20, "prompt_id": "ctrl_lang_004"}
+{"term": "zqx plarf", "control_group": "true_nonsense", "source_domain": "none", "task": "generation", "template": "In technology, a zqx plarf is", "max_tokens": 20, "prompt_id": "ctrl_ns_001"}
+{"term": "glib thrang", "control_group": "true_nonsense", "source_domain": "none", "task": "generation", "template": "In software, a glib thrang is", "max_tokens": 20, "prompt_id": "ctrl_ns_002"}
+{"term": "blorf quendel", "control_group": "true_nonsense", "source_domain": "none", "task": "generation", "template": "In computing, a blorf quendel is", "max_tokens": 20, "prompt_id": "ctrl_ns_003"}
+{"term": "vrix spondule", "control_group": "true_nonsense", "source_domain": "none", "task": "generation", "template": "In systems, a vrix spondule is", "max_tokens": 20, "prompt_id": "ctrl_ns_004"}
+{"term": "trelp zonkify", "control_group": "true_nonsense", "source_domain": "none", "task": "generation", "template": "In design, to trelp zonkify is", "max_tokens": 20, "prompt_id": "ctrl_ns_005"}

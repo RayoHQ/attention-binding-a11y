@@ -1,0 +1,10 @@
+model_size,term,n_tokens,token_ids,token_strings,span_start,span_end,is_clean,valid_for_binding
+160m,screen reader,2,"[14396, 9414]","[""screen"", "" reader""]",0,1,True,True
+160m,skip link,2,"[19259, 3048]","[""skip"", "" link""]",0,1,True,True
+160m,alt text,2,"[2711, 2505]","[""alt"", "" text""]",0,1,True,True
+1b,screen reader,2,"[14396, 9414]","[""screen"", "" reader""]",0,1,True,True
+1b,skip link,2,"[19259, 3048]","[""skip"", "" link""]",0,1,True,True
+1b,alt text,2,"[2711, 2505]","[""alt"", "" text""]",0,1,True,True
+2.8b,screen reader,2,"[14396, 9414]","[""screen"", "" reader""]",0,1,True,True
+2.8b,skip link,2,"[19259, 3048]","[""skip"", "" link""]",0,1,True,True
+2.8b,alt text,2,"[2711, 2505]","[""alt"", "" text""]",0,1,True,True

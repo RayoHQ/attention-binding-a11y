@@ -1,0 +1,9 @@
+{
+  "model": "pythia-160m",
+  "n_terms": 41,
+  "n_lead": 3,
+  "lead_fraction": 0.0732,
+  "binomial_p": 1.0,
+  "mean_lead_diff": -0.6454,
+  "supported": false
+}

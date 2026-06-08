@@ -1,0 +1,11 @@
+{
+  "model": "pythia-1b",
+  "n_terms": 28,
+  "n_early_coupled": 28,
+  "n_decouple_strict": 15,
+  "n_decouple_attenuate": 20,
+  "frac_decouple_strict": 0.5357,
+  "frac_decouple_attenuate": 0.7143,
+  "mean_rho_early": 0.739,
+  "mean_rho_late": -0.0538
+}

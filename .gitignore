@@ -1,0 +1,68 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+.env
+*.egg-info/
+dist/
+build/
+
+# Large model files
+*.pt
+*.pth
+*.safetensors
+*.bin
+
+# Jupyter
+.ipynb_checkpoints/
+
+# IDE temp files
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# HuggingFace cache
+.cache/
+
+# ── Tool / IDE / studio files (never publish) ─────────────────────────────────
+.claude/
+.claude.json
+.codeium/
+.lightning_studio/
+.lightningignore
+.idea/
+.vscode/
+vscode_cli.tar.gz
+
+# ── Shell / user dotfiles ─────────────────────────────────────────────────────
+.bashrc
+.zshrc
+.zsh_history
+.zcompdump
+.vimrc
+.gitconfig
+
+# ── Internal / planning / reviewer materials ──────────────────────────────────
+analysis/
+tmlr-style-file-main/
+implementation_plan_r3.md
+abstract_openreview.txt
+changes_since_submission.txt
+TEST_PLAN_v3.md
+reviewer_response*.txt
+research_notes_reviewer3.txt
+REPLICATION_ANALYSIS.md
+REPLICATION_SUMMARY.md
+
+# ── Scratch outputs ───────────────────────────────────────────────────────────
+output.png
+
+# ── Duplicate paper source (LaTeX is canonical) ───────────────────────────────
+paper/main.md
+paper/references.md
