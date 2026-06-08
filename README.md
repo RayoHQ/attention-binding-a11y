@@ -1,6 +1,8 @@
 # Attention-Head Binding as a Mechanistic Marker of Accessibility Concept Emergence
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![TMLR](https://img.shields.io/badge/TMLR-Paper-blue)](https://openreview.net/forum?id=QG7mfCy9mu)
+[![YouTube](https://img.shields.io/badge/YouTube-Video%20Overview-red?logo=youtube)](https://youtu.be/HEGpxYme6wg)
 
 Code and data for the paper *"Attention-Head Binding as a Term-Conditioned Mechanistic Marker of Accessibility Concept Emergence in Language Models"* (Tran, 2026).
 
